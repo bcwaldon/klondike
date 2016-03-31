@@ -1,0 +1,8 @@
+/cluster
+/inventory
+/vars/
+/tmp
+/roles/kubelet/files/kubelet
+/files
+/*.retry
+/contrib/stackrc

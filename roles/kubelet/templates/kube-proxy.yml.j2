@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: kube-proxy
+  namespace: kube-system
+spec:
+  hostNetwork: true
+  containers:
+  - name: "kube-proxy"
+    image: "gcr.io/google_containers/hyperkube:v1.2.0"
+    args:
+    - "/hyperkube"
+    - "proxy"
+    - "--v=2"
+    - "--proxy-mode=iptables"
+    - "--bind-address={{ proxy_bind }}"
+    - "--hostname-override={{ hostname }}"
+    - "--master={{ apiserver_client_endpoint }}"
+{% if apiserver_client_tls_enabled %}
+    - "--kubeconfig=/etc/kubernetes/kubeconfig"
+{% endif %}
+    volumeMounts:
+    - mountPath: "/tmp"
+      name: "tmp"
+    - mountPath: "/var/run/dbus/system_bus_socket"
+      name: "dbus"
+{% if apiserver_client_tls_enabled %}
+    - mountPath: "/etc/kubernetes"
+      name: "etc-kubernetes"
+{% endif %}
+    securityContext:
+      privileged: true
+
+  volumes:
+  - name: "dbus"
+    hostPath:
+      path: "/var/run/dbus/system_bus_socket"
+  - name: "tmp"
+    emptyDir:
+      path: "/tmp"
+      medium: "Memory"
+{% if apiserver_client_tls_enabled %}
+  - name: "etc-kubernetes"
+    hostPath:
+      path: "/etc/kubernetes"
+{% endif %}

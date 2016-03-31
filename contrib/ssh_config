@@ -1,0 +1,5 @@
+Host 10.0.*
+	ProxyCommand ssh -A core@<REPLACE> -W %h:%p
+	ForwardAgent yes
+	StrictHostKeyChecking no
+	UserKnownHostsFile /dev/null

@@ -1,0 +1,16 @@
+- name: create addons directory
+  file: path={{ playbook_dir }}/cluster/addons state=directory
+
+- name: render addons
+  template: src={{ item }}.j2 dest={{ playbook_dir }}/cluster/addons/{{ item }}
+  with_items:
+  - kube-system.yml
+  - dns.yml
+  - dashboard.yml
+
+- name: create addons
+  command: kubectl --kubeconfig={{ playbook_dir }}/cluster/kubeconfig create -f {{ playbook_dir }}/cluster/addons/{{ item }}
+  with_items:
+  - kube-system.yml
+  - dns.yml
+  - dashboard.yml

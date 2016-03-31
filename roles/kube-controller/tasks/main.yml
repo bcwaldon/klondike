@@ -1,0 +1,18 @@
+- name: upload apiserver TLS certificate
+  copy: content={{ pki_clients.apiserver.cert }} dest=/etc/kubernetes/apiserver.pem mode=0644
+  sudo: true
+
+- name: upload apiserver private key
+  copy: content={{ pki_clients.apiserver.key }} dest=/etc/kubernetes/apiserver-key.pem mode=0644
+  sudo: true
+
+- name: upload pods
+  template: src={{ item }}.j2 dest=/etc/kubernetes/manifests/{{ item }} mode=0644
+  sudo: true
+  with_items:
+  - etcd.yml
+  - kube-apiserver.yml
+  - kube-scheduler.yml
+  - kube-controller-manager.yml
+  vars:
+    etcd_client_endpoint: "http://{{ internal_ip }}:2379"

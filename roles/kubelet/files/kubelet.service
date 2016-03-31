@@ -1,0 +1,11 @@
+[Unit]
+Description=Kubernetes Kubelet
+
+[Service]
+EnvironmentFile=/etc/kubernetes/kubelet.env
+ExecStart=/opt/bin/kubelet $KUBELET_OPTS
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

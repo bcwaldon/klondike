@@ -1,0 +1,25 @@
+- set_fact:
+    cert_name: "{{ item.name }}"
+    cert_profile: "{{ item.profile }}"
+    cfssl_cert_csr_dest: "{{ ca_dir }}/cert-{{ item.name }}-csr.json"
+
+- name: CERT | generate CSR
+  template: src=csr.json.j2 dest={{ cfssl_cert_csr_dest }} mode=0644
+  vars:
+    hosts: "{{ item.hosts }}"
+
+- name: CERT | {{ cert_name }} | generate private key
+  shell: "cfssl gencert -ca={{ ca_cert_file }} -ca-key={{ ca_key_file }} -config={{ cfssl_ca_config }} -profile={{ cert_profile }} {{ cfssl_cert_csr_dest }} | cfssljson -bare {{ cert_name }}"
+  args:
+    chdir: "{{ workspace }}"
+
+- name: read cert
+  command: "cat {{ workspace }}/{{ cert_name }}.pem"
+  register: cert_shell
+- name: read key
+  command: "cat {{ workspace }}/{{ cert_name }}-key.pem"
+  register: key_shell
+
+- set_fact:
+    client_{{ cert_name }}_cert: "{{ cert_shell.stdout }}"
+    client_{{ cert_name }}_key: "{{ key_shell.stdout }}"

@@ -1,0 +1,10 @@
+pki_clients:
+{% for item in clients %}
+  {{ item.name }}:
+    cert: |
+{{ vars["client_"+ item.name +"_cert"]|indent(6,True) }}
+
+    key: |
+{{ vars["client_"+ item.name +"_key"]|indent(6,True) }}
+
+{% endfor %}

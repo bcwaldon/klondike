@@ -1,0 +1,61 @@
+- name: create manifests directory
+  file: path=/etc/kubernetes/manifests state=directory
+  sudo: true
+
+- name: upload kube-proxy pod
+  template: src=kube-proxy.yml.j2 dest=/etc/kubernetes/manifests/kube-proxy.yml mode=0644
+  sudo: true
+
+- name: upload kubelet.env
+  template: src=kubelet.env.j2 dest=/etc/kubernetes/kubelet.env mode=0644
+  sudo: true
+  notify:
+  - restart kubelet.service
+
+- name: upload cluster CA certificate
+  copy: content={{ pki_ca.cert }} dest=/etc/kubernetes/ca.pem mode=0644
+  sudo: true
+  notify:
+  - restart kubelet.service
+
+- name: upload kubeconfig
+  when: apiserver_client_tls_enabled
+  template: src=kubeconfig.j2 dest=/etc/kubernetes/kubeconfig mode=0644
+  sudo: true
+  notify:
+  - restart kubelet.service
+
+- name: upload kubelet TLS certificate
+  when: apiserver_client_tls_enabled
+  copy: content={{ apiserver_client_tls_cert }} dest=/etc/kubernetes/kubelet.pem mode=0644
+  sudo: true
+  notify:
+  - restart kubelet.service
+
+- name: upload kubelet key
+  when: apiserver_client_tls_enabled
+  copy: content={{ apiserver_client_tls_key }} dest=/etc/kubernetes/kubelet-key.pem mode=0644
+  sudo: true
+  notify:
+  - restart kubelet.service
+
+- name: create /opt/bin
+  file: path=/opt/bin state=directory
+  sudo: true
+
+- name: upload kubelet
+  copy: src=kubelet dest=/opt/bin/kubelet mode=0755
+  sudo: true
+  notify:
+  - restart kubelet.service
+
+- name: upload kubelet.service
+  copy: src=kubelet.service dest=/etc/systemd/system/kubelet.service mode=0644
+  sudo: true
+  notify:
+  - daemon-reload
+  - restart kubelet.service
+
+- name: kubelet.service started
+  service: name=kubelet.service state=started
+  sudo: true

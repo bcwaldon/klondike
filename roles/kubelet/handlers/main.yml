@@ -1,0 +1,8 @@
+- name: daemon-reload
+  shell: systemctl daemon-reload
+  sudo: true
+
+- name: restart kubelet.service
+  service: name=kubelet.service state=restarted
+  sudo: true
+

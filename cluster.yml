@@ -1,0 +1,9 @@
+- hosts: 127.0.0.1
+  connection: local
+  gather_facts: False
+  roles:
+  - kubeconfig
+  - kube-addons
+  vars_files:
+  - "{{ playbook_dir }}/vars/pki-{{ ca_name }}-ca.yml"
+  - "{{ playbook_dir }}/vars/pki-{{ ca_name }}-clients.yml"

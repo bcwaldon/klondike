@@ -1,0 +1,5 @@
+- name: create cluster directory
+  file: path={{ playbook_dir }}/cluster state=directory
+
+- name: render kubeconfig
+  template: src=kubeconfig.j2 dest={{ playbook_dir }}/cluster/kubeconfig

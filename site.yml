@@ -1,0 +1,21 @@
+- hosts: all
+  gather_facts: False
+  roles:
+  - defunctzombie.coreos-bootstrap
+
+- hosts: tag_group_controller
+  gather_facts: False
+  roles:
+  - kubelet
+  - kube-controller
+  vars_files:
+  - "{{ playbook_dir }}/vars/pki-{{ ca_name }}-ca.yml"
+  - "{{ playbook_dir }}/vars/pki-{{ ca_name }}-clients.yml"
+    
+- hosts: tag_group_worker
+  gather_facts: False
+  roles:
+  - kubelet
+  vars_files:
+    - "{{ playbook_dir }}/vars/pki-{{ ca_name }}-ca.yml"
+    - "{{ playbook_dir }}/vars/pki-{{ ca_name }}-clients.yml"
