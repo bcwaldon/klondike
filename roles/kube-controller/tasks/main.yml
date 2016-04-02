@@ -6,12 +6,24 @@
   copy: content={{ pki_clients.apiserver.key }} dest=/etc/kubernetes/apiserver-key.pem mode=0644
   sudo: true
 
-- name: upload pods
+- name: upload active pods
   template: src={{ item }}.j2 dest=/etc/kubernetes/manifests/{{ item }} mode=0644
   sudo: true
   with_items:
   - etcd.yml
   - kube-apiserver.yml
+  - podmaster.yml
+  vars:
+    etcd_client_endpoint: "http://{{ internal_ip }}:2379"
+
+- name: create inactive pods directory
+  file: path=/srv/kubernetes/manifests state=directory
+  sudo: true
+
+- name: upload inactive pods
+  template: src={{ item }}.j2 dest=/srv/kubernetes/manifests/{{ item }} mode=0644
+  sudo: true
+  with_items:
   - kube-scheduler.yml
   - kube-controller-manager.yml
   vars:

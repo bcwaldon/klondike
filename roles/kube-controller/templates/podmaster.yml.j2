@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kube-podmaster
+  namespace: kube-system
+spec:
+  hostNetwork: true
+  containers:
+  - name: scheduler-elector
+    image: gcr.io/google_containers/podmaster:1.1
+    command:
+    - /podmaster
+    - --etcd-servers={{ etcd_client_endpoint }}
+    - --key=scheduler
+    - --whoami={{ hostname }}
+    - --source-file=/inactive/kube-scheduler.yml
+    - --dest-file=/active/kube-scheduler.yml
+    volumeMounts:
+    - mountPath: /inactive
+      name: manifest-inactive
+      readOnly: true
+    - mountPath: /active
+      name: manifest-active
+  - name: controller-manager-elector
+    image: gcr.io/google_containers/podmaster:1.1
+    command:
+    - /podmaster
+    - --etcd-servers={{ etcd_client_endpoint }}
+    - --key=controller
+    - --whoami={{ hostname }}
+    - --source-file=/inactive/kube-controller-manager.yml
+    - --dest-file=/active/kube-controller-manager.yml
+    volumeMounts:
+    - mountPath: /inactive
+      name: manifest-inactive
+      readOnly: true
+    - mountPath: /active
+      name: manifest-active
+  volumes:
+  - hostPath:
+      path: /srv/kubernetes/manifests
+    name: manifest-inactive
+  - hostPath:
+      path: /etc/kubernetes/manifests
+    name: manifest-active
