@@ -1,26 +1,27 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: etcd-peer
+  name: etcd
   namespace: kube-system
+
 spec:
   hostNetwork: true
   containers:
   - name: etcd
-    image: quay.io/coreos/etcd:v2.3.0
+    image: "{{ etcd_image }}"
     env:
     - name: ETCD_NAME
-      value: "{{ inventory_hostname }}"
+      value: "{{ etcd_name }}"
     - name: ETCD_DATA_DIR
       value: /var/lib/etcd/
     - name: ETCD_LISTEN_CLIENT_URLS
-      value: http://{{ internal_ip }}:2379
+      value: "{{ etcd_client_endpoint }}"
     - name: ETCD_ADVERTISE_CLIENT_URLS
-      value: http://{{ internal_ip }}:2379
+      value: "{{ etcd_client_endpoint }}"
     - name: ETCD_LISTEN_PEER_URLS
-      value: http://{{ internal_ip }}:2380
+      value: "{{ etcd_peer_endpoint }}"
     - name: ETCD_INITIAL_ADVERTISE_PEER_URLS
-      value: http://{{ internal_ip }}:2380
+      value: "{{ etcd_peer_endpoint }}"
     - name: ETCD_INITIAL_CLUSTER
       value: {% for host in groups['tag_group_controller'] %}
 {{ hostvars[host]['inventory_hostname'] }}=http://{{ hostvars[host]['internal_ip'] }}:2380{% if not loop.last %},{% endif %}
@@ -36,9 +37,9 @@ spec:
 
     volumeMounts:
     - mountPath: /var/lib/etcd
-      name: etcd-data
+      name: etcd-data-dir
 
   volumes:
-  - name: etcd-data
+  - name: etcd-data-dir
     hostPath:
-      path: /var/lib/etcd
+      path: "{{ etcd_data_dir }}"

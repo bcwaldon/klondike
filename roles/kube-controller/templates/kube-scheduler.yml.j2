@@ -7,9 +7,9 @@ spec:
   hostNetwork: true
   containers:
   - name: "kube-scheduler"
-    image: "gcr.io/google_containers/hyperkube:v1.2.0"
+    image: "{{ hyperkube_image }}"
     args:
     - "/hyperkube"
     - "scheduler"
-    - "--master={{ apiserver_client_endpoint }}"
+    - "--master={{ apiserver_local_endpoint }}"
     - "--v=2"

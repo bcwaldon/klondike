@@ -13,8 +13,6 @@
   - etcd.yml
   - kube-apiserver.yml
   - podmaster.yml
-  vars:
-    etcd_client_endpoint: "http://{{ internal_ip }}:2379"
 
 - name: create inactive pods directory
   file: path=/srv/kubernetes/manifests state=directory
@@ -26,5 +24,3 @@
   with_items:
   - kube-scheduler.yml
   - kube-controller-manager.yml
-  vars:
-    etcd_client_endpoint: "http://{{ internal_ip }}:2379"

@@ -7,7 +7,7 @@ spec:
   hostNetwork: true
   containers:
   - name: "kube-apiserver"
-    image: "gcr.io/google_containers/hyperkube:v1.2.0"
+    image: "{{ hyperkube_image }}"
     args: 
     - "/hyperkube"
     - "apiserver"
@@ -23,9 +23,12 @@ spec:
     - "--admission-control=NamespaceLifecycle,LimitRanger,SecurityContextDeny,ServiceAccount,ResourceQuota"
     - "--runtime-config=extensions/v1beta1/deployments=true,extensions/v1beta1/daemonsets=true"
     ports: 
-    - containerPort: 8080
-      hostPort: 8080
-      name: "api"
+    - containerPort: "{{ apiserver_insecure_port }}"
+      hostPort: "{{ apiserver_insecure_port }}"
+      name: "api-insecure"
+    - containerPort: "{{ apiserver_secure_port }}"
+      hostPort: "{{ apiserver_secure_port }}"
+      name: "api-secure"
     volumeMounts:
     - mountPath: "/etc/kubernetes"
       name: "tls"
