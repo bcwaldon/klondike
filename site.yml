@@ -9,6 +9,7 @@
   - kubelet
   - kube-controller
   vars_files:
+  - "{{ playbook_dir }}/vars/main.yml"
   - "{{ playbook_dir }}/vars/pki-{{ ca_name }}-ca.yml"
   - "{{ playbook_dir }}/vars/pki-{{ ca_name }}-clients.yml"
     
@@ -17,5 +18,6 @@
   roles:
   - kubelet
   vars_files:
-    - "{{ playbook_dir }}/vars/pki-{{ ca_name }}-ca.yml"
-    - "{{ playbook_dir }}/vars/pki-{{ ca_name }}-clients.yml"
+  - "{{ playbook_dir }}/vars/main.yml"
+  - "{{ playbook_dir }}/vars/pki-{{ ca_name }}-ca.yml"
+  - "{{ playbook_dir }}/vars/pki-{{ ca_name }}-clients.yml"

@@ -1,0 +1,17 @@
+# control_plane_host represents the IP or DNS name that will route
+# traffic to the controllers. This is typically an ELB DNS name.
+control_plane_host:
+
+# cluster_service_ip_range defines the range of IPs to use for
+# the kubernetes service network. These IPs must not conflict
+# with the host-level networking.
+cluster_service_ip_range: 10.200.20.0/24
+
+# cluster_dns_service_ip is the service network IP address used by
+# the DNS addon. This must be within the cluster_service_ip_range.
+cluster_dns_service_ip: 10.200.20.10
+
+# cluster_dns_zone is the DNS zone used by the DNS addon. For example,
+# if "cluster.local" is used here, the default Kubernetes service
+# will be available at "kubernetes.default.svc.cluster.local".
+cluster_dns_zone: cluster.local
