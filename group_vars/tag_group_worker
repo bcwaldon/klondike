@@ -1,6 +1,6 @@
 kubelet_schedulable: true
 
-apiserver_client_endpoint: "https://{{ control_plane_host }}"
+apiserver_client_endpoint: "{{ control_plane_endpoint }}"
 apiserver_client_tls_enabled: true
 apiserver_client_tls_cert: "{{ pki_clients.admin.cert }}"
 apiserver_client_tls_key: "{{ pki_clients.admin.key }}"

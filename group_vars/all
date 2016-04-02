@@ -5,6 +5,7 @@ cluster_dns_service_ip: 10.200.20.10
 cluster_dns_zone: cluster.local
 
 control_plane_host: <REPLACE>
+control_plane_endpoint: "https://{{ control_plane_host }}:6443"
 
 ca_name: kubernetes
 
@@ -12,4 +13,3 @@ internal_ip: "{{ ec2_private_ip_address }}"
 hostname: "{{ internal_ip }}"
 proxy_bind: "{{ internal_ip }}"
 kubelet_bind: "{{ internal_ip }}"
-
