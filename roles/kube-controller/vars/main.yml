@@ -1,4 +1,4 @@
-hyperkube_image: "gcr.io/google_containers/hyperkube:v1.2.0"
+hyperkube_image: "gcr.io/google_containers/hyperkube:v1.2.1"
 
 apiserver_secure_port: 6443
 apiserver_insecure_port: 8080
