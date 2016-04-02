@@ -1,0 +1,26 @@
+{
+  "kind": "ReplicationController",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "fectrl",
+    "labels": {"name": "frontend"}
+  },
+  "spec": {
+    "replicas": 1,
+    "selector": {"name": "frontend"},
+    "template": {
+      "metadata": {
+        "labels": {
+          "name": "frontend",
+          "uses": "redis-master"
+        }
+      },
+      "spec": {
+         "containers": [{
+           "name": "frontend-go-restapi",
+           "image": "jayunit100/k8-petstore-web-server:r.2.8.19"
+         }]
+      }
+    }
+  }
+}

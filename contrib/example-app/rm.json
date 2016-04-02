@@ -1,0 +1,19 @@
+{
+  "kind": "Pod",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "redismaster",
+    "labels": {
+      "name": "redis-master"
+    }
+  },
+  "spec": {
+    "containers": [{
+      "name": "master",
+      "image": "jayunit100/k8-petstore-redis-master:r.2.8.19",
+      "ports": [{
+        "containerPort": 6379
+      }]
+    }]
+  }
+}
