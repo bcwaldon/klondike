@@ -6,6 +6,7 @@
 - name: CERT | generate CSR
   template: src=csr.json.j2 dest={{ cfssl_cert_csr_dest }} mode=0644
   vars:
+    common_name: "{{ cert_name }}"
     hosts: "{{ item.hosts }}"
 
 - name: CERT | {{ cert_name }} | generate private key

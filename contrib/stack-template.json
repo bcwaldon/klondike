@@ -857,6 +857,20 @@
         }
       }
     },
+    "ControllerSecurityGroupIngressLoadBalancer": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "ControllerSecurityGroup"
+        },
+        "SourceSecurityGroupId": {
+          "Ref": "ControllerLoadBalancerSecurityGroup"
+        },
+        "FromPort": 6443,
+        "ToPort": 6443,
+        "IpProtocol": "TCP"
+      }
+    },
     "WorkerSecurityGroup": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {

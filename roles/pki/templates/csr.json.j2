@@ -1,7 +1,17 @@
 {
+  "CN": "{{ common_name }}",
   "hosts": {{ hosts | to_json }},
   "key": {
     "algo": "rsa",
     "size": 2048
-  }
+  },
+  "names": [
+    {
+      "C": "US",
+      "L": "CA",
+      "ST": "San Francisco",
+      "O": "Kubernetes",
+      "OU": "Security"
+    }
+  ]
 }
