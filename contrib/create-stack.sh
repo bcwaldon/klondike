@@ -11,6 +11,7 @@ vars=(
 	"WORKER_INSTANCE_TYPE"
 	"SSH_KEYNAME"
 	"IMAGE_ID"
+	"USER_DATA_FILE"
 )
 
 for var in "${vars[@]}"; do
@@ -19,8 +20,9 @@ for var in "${vars[@]}"; do
 		echo "Must set $var"
 		exit 1;
 	fi
-
 done
+
+USER_DATA=$(cat $USER_DATA_FILE | base64)
 
 PARAMETERS=( 
 	"ParameterKey=AvailabilityZone,ParameterValue=$AZ"
@@ -29,6 +31,8 @@ PARAMETERS=(
 	"ParameterKey=SSHKeyName,ParameterValue=$SSH_KEYNAME"
 	"ParameterKey=CoreOSImageID,ParameterValue=$IMAGE_ID"
 	"ParameterKey=ClusterName,ParameterValue=$CLUSTER_NAME"
+	"ParameterKey=ControllerUserData,ParameterValue=$USER_DATA"
+	"ParameterKey=WorkerUserData,ParameterValue=$USER_DATA"
 )
 
 function join { local IFS="$1"; shift; echo "$*"; }

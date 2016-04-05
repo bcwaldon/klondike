@@ -294,6 +294,7 @@
         },
         "z": 1,
         "embeds": [
+          "317ab59f-2379-451a-9fbc-c397fd31dd5c",
           "873403fc-c264-4f6b-86ae-092abee2a1d0",
           "37fc6d23-1902-4172-ab24-1c0cd8eab5b7",
           "f591c362-5976-4efe-aca1-f1c0cb9f31af",
@@ -505,6 +506,7 @@
           "y": 450
         },
         "z": 0,
+        "parent": "a487cf69-e5ce-4956-85df-761e6427deef",
         "embeds": []
       },
       "ba5ed5e4-dbc6-46d0-99b6-11844d72790b": {
@@ -515,6 +517,15 @@
           "id": "317ab59f-2379-451a-9fbc-c397fd31dd5c"
         },
         "z": 12
+      },
+      "63fb8b3c-ade4-4fab-a675-c2a2b30eb4a0": {
+        "source": {
+          "id": "4cd01314-51ae-4fac-9c95-36004183543b"
+        },
+        "target": {
+          "id": "317ab59f-2379-451a-9fbc-c397fd31dd5c"
+        },
+        "z": 2
       }
     }
   },
@@ -539,7 +550,10 @@
           {
             "Ref": "ControllerSecurityGroup"
           }
-        ]
+        ],
+        "UserData": {
+          "Ref": "ControllerUserData"
+        }
       },
       "Metadata": {
         "AWS::CloudFormation::Designer": {
@@ -652,7 +666,10 @@
           {
             "Ref": "WorkerSecurityGroup"
           }
-        ]
+        ],
+        "UserData": {
+          "Ref": "WorkerUserData"
+        }
       },
       "Metadata": {
         "AWS::CloudFormation::Designer": {
@@ -869,6 +886,11 @@
         "FromPort": 6443,
         "ToPort": 6443,
         "IpProtocol": "TCP"
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "63fb8b3c-ade4-4fab-a675-c2a2b30eb4a0"
+        }
       }
     },
     "WorkerSecurityGroup": {
@@ -1248,6 +1270,14 @@
     "ClusterName": {
       "Type": "String",
       "Description": "Name of cluster; resources are tagged with this value"
+    },
+    "ControllerUserData": {
+      "Type": "String",
+      "Description": "Launch Controller EC2 Instances with this UserData"
+    },
+    "WorkerUserData": {
+      "Type": "String",
+      "Description": "Launch Worker EC2 Instances with this UserData"
     }
   },
   "Outputs": {

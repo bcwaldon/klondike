@@ -3,6 +3,10 @@
 # Use the CloudFormation template available at this S3 location
 export TEMPLATE_URL=""
 
+# Deploy all instances using this user-data (CoreOS cloud-config)
+# Location is relative to root of the repo
+export USER_DATA_FILE="./contrib/user-data"
+
 # Logical name of the cluster (used for resource tagging)
 export CLUSTER_NAME=""
 
