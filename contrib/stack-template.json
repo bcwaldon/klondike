@@ -1241,9 +1241,9 @@
         "HealthCheck": {
           "Target": "TCP:6443",
           "HealthyThreshold": "2",
-          "Interval": "2",
+          "Interval": "6",
           "Timeout": "5",
-          "UnhealthyThreshold": "5"
+          "UnhealthyThreshold": "2"
         }
       },
       "Metadata": {
