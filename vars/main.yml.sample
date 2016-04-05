@@ -23,11 +23,11 @@ cluster_service_network_cidr: 10.255.0.0/16
 # IP in the network defined by cluster_service_network_cidr.
 cluster_service_kubernetes_ip: 10.255.0.1
 
-# cluster_dns_service_ip is the service network IP address used by
+# cluster_service_dns_ip is the service network IP address used by
 # the DNS addon. This must be within the cluster_service_ip_range.
 cluster_service_dns_ip: 10.255.0.10
 
-# cluster_servicedns_zone is the DNS zone used by the DNS addon. For
+# cluster_service_dns_zone is the DNS zone used by the DNS addon. For
 # example, if "cluster.local" is used here, the default Kubernetes
 # service will be available at "kubernetes.default.svc.cluster.local".
 cluster_service_dns_zone: cluster.local
