@@ -6,3 +6,6 @@
   service: name=kubelet.service state=restarted
   sudo: true
 
+- name: restart docker.service
+  service: name=docker.service state=restarted
+  sudo: true

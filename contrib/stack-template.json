@@ -582,7 +582,7 @@
         ],
         "Tags": [
           {
-            "Key": "cluster",
+            "Key": "KubernetesCluster",
             "Value": {
               "Ref": "ClusterName"
             },
@@ -627,7 +627,7 @@
         ],
         "Tags": [
           {
-            "Key": "cluster",
+            "Key": "KubernetesCluster",
             "Value": {
               "Ref": "ClusterName"
             },
@@ -932,6 +932,14 @@
             "FromPort": 22,
             "ToPort": 22,
             "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol": "TCP",
+            "FromPort": 0,
+            "ToPort": 65535,
+            "CidrIp": {
+              "Ref": "PodNetwork"
+            }
           }
         ]
       },
@@ -1035,7 +1043,15 @@
         "CidrBlock": "10.0.0.0/16",
         "EnableDnsSupport": true,
         "EnableDnsHostnames": true,
-        "InstanceTenancy": "default"
+        "InstanceTenancy": "default",
+        "Tags": [
+          {
+            "Key": "KubernetesCluster",
+            "Value": {
+              "Ref": "ClusterName"
+            }
+          }
+        ]
       },
       "Metadata": {
         "AWS::CloudFormation::Designer": {
@@ -1141,7 +1157,15 @@
       "Properties": {
         "VpcId": {
           "Ref": "ClusterVPC"
-        }
+        },
+        "Tags": [
+          {
+            "Key": "KubernetesCluster",
+            "Value": {
+              "Ref": "ClusterName"
+            }
+          }
+        ]
       },
       "Metadata": {
         "AWS::CloudFormation::Designer": {
@@ -1213,7 +1237,14 @@
             "LoadBalancerPort": 443,
             "Protocol": "TCP"
           }
-        ]
+        ],
+        "HealthCheck": {
+          "Target": "TCP:6443",
+          "HealthyThreshold": "2",
+          "Interval": "2",
+          "Timeout": "5",
+          "UnhealthyThreshold": "5"
+        }
       },
       "Metadata": {
         "AWS::CloudFormation::Designer": {
@@ -1278,6 +1309,10 @@
     "WorkerUserData": {
       "Type": "String",
       "Description": "Launch Worker EC2 Instances with this UserData"
+    },
+    "PodNetwork": {
+      "Type": "String",
+      "Description": "Network that Kubernetes will use for inter-pod communication in CIDR notation"
     }
   },
   "Outputs": {

@@ -1,4 +1,5 @@
 kubelet_schedulable: true
+kubelet_enable_pod_networking: true
 
 apiserver_client_endpoint: "{{ control_plane_endpoint }}"
 apiserver_client_tls_enabled: true

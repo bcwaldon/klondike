@@ -3,6 +3,8 @@
   gather_facts: False
   roles:
   - pki
+  vars_files:
+  - "{{ playbook_dir }}/vars/main.yml"
   vars:
     ca_dir: "{{playbook_dir}}/files/ca-{{ ca_name }}"
     workspace: "{{ playbook_dir }}/tmp"
@@ -13,7 +15,7 @@
       profile: server
       hosts:
       - "{{ control_plane_host }}"
-      - 10.200.20.1
+      - "{{ cluster_service_kubernetes_ip }}"
     - name: admin
       profile: client
       hosts: []

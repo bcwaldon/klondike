@@ -5,6 +5,6 @@ hostname: "{{ internal_ip }}"
 proxy_bind: "{{ internal_ip }}"
 kubelet_bind: "{{ internal_ip }}"
 
-control_plane_endpoint: "https://{{ control_plane_host }}:6443"
+control_plane_endpoint: "https://{{ control_plane_host }}"
 
 ca_name: kubernetes

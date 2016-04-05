@@ -1,17 +1,33 @@
+# cluster_name defines the name used to identify the resources
+# that make up a given cluster. This name must be unique within
+# the scope of an AWS VPC.
+cluster_name:
+
 # control_plane_host represents the IP or DNS name that will route
 # traffic to the controllers. This is typically an ELB DNS name.
 control_plane_host:
 
-# cluster_service_ip_range defines the range of IPs to use for
+# cluster_pod_network_cidr defines the range of IPs to use for
+# the kubernetes pod network. These IPs must not conflict with
+# the host- or service-level networking.
+cluster_pod_network_cidr: 10.1.0.0/16
+
+# cluster_service_network_cidr defines the range of IPs to use for
 # the kubernetes service network. These IPs must not conflict
-# with the host-level networking.
-cluster_service_ip_range: 10.200.20.0/24
+# with the host- or pod-level networking.
+cluster_service_network_cidr: 10.255.0.0/16
+
+# cluster_service_kubernetes_ip is the service network IP that will
+# automatically be assigned to the "kubernetes" service created by
+# the cluster in the "default" namespace. This IP must be the first
+# IP in the network defined by cluster_service_network_cidr.
+cluster_service_kubernetes_ip: 10.255.0.1
 
 # cluster_dns_service_ip is the service network IP address used by
 # the DNS addon. This must be within the cluster_service_ip_range.
-cluster_dns_service_ip: 10.200.20.10
+cluster_service_dns_ip: 10.255.0.10
 
-# cluster_dns_zone is the DNS zone used by the DNS addon. For example,
-# if "cluster.local" is used here, the default Kubernetes service
-# will be available at "kubernetes.default.svc.cluster.local".
-cluster_dns_zone: cluster.local
+# cluster_servicedns_zone is the DNS zone used by the DNS addon. For
+# example, if "cluster.local" is used here, the default Kubernetes
+# service will be available at "kubernetes.default.svc.cluster.local".
+cluster_service_dns_zone: cluster.local

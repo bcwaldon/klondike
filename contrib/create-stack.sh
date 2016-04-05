@@ -12,6 +12,7 @@ vars=(
 	"SSH_KEYNAME"
 	"IMAGE_ID"
 	"USER_DATA_FILE"
+	"POD_NETWORK"
 )
 
 for var in "${vars[@]}"; do
@@ -33,6 +34,7 @@ PARAMETERS=(
 	"ParameterKey=ClusterName,ParameterValue=$CLUSTER_NAME"
 	"ParameterKey=ControllerUserData,ParameterValue=$USER_DATA"
 	"ParameterKey=WorkerUserData,ParameterValue=$USER_DATA"
+	"ParameterKey=PodNetwork,ParameterValue=$POD_NETWORK"
 )
 
 function join { local IFS="$1"; shift; echo "$*"; }

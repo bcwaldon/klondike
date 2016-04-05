@@ -14,7 +14,7 @@ spec:
     - "--allow-privileged=true"
     - "--etcd-servers={{ etcd_client_endpoint }}"
     - "--advertise-address={{ hostname }}"
-    - "--service-cluster-ip-range={{ cluster_service_ip_range }}"
+    - "--service-cluster-ip-range={{ clsuter_service_network_cidr }}"
     - "--v=2"
     - "--client-ca-file=/etc/kubernetes/ca.pem"
     - "--tls-cert-file=/etc/kubernetes/apiserver.pem"
@@ -22,6 +22,7 @@ spec:
     - "--service-account-key-file=/etc/kubernetes/apiserver-key.pem"
     - "--admission-control=NamespaceLifecycle,LimitRanger,SecurityContextDeny,ServiceAccount,ResourceQuota"
     - "--runtime-config=extensions/v1beta1/deployments=true,extensions/v1beta1/daemonsets=true"
+    - "--cloud-provider=aws"
     ports: 
     - containerPort: "{{ apiserver_insecure_port }}"
       hostPort: "{{ apiserver_insecure_port }}"
