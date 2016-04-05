@@ -31,3 +31,11 @@ cluster_service_dns_ip: 10.255.0.10
 # example, if "cluster.local" is used here, the default Kubernetes
 # service will be available at "kubernetes.default.svc.cluster.local".
 cluster_service_dns_zone: cluster.local
+
+# datadog_enabled controls whether or not the DataDog agent should be
+# deployed across the cluster. If true, datadog_api_key must be set.
+datadog_enabled: false
+
+# datadog_api_key is the API key that the DataDog agent will use to
+# push metrics about the Kubernetes cluster to the DataDog service.
+#datadog_api_key:

@@ -1,16 +1,15 @@
 - name: create addons directory
   file: path={{ playbook_dir }}/cluster/addons state=directory
 
-- name: render addons
-  template: src={{ item }}.j2 dest={{ playbook_dir }}/cluster/addons/{{ item }}
+- name: deploy core addons
+  include: deploy.yml
   with_items:
   - kube-system.yml
   - dns.yml
   - dashboard.yml
 
-- name: create addons
-  command: kubectl --kubeconfig={{ playbook_dir }}/cluster/kubeconfig create -f {{ playbook_dir }}/cluster/addons/{{ item }}
+- name: deploy DataDog addon
+  include: deploy.yml
+  when: datadog_enabled == true
   with_items:
-  - kube-system.yml
-  - dns.yml
-  - dashboard.yml
+  - datadog.yml
