@@ -1005,7 +1005,7 @@
         }
       }
     },
-    "WorkerSecurityGroupIngressKubelet": {
+    "WorkerSecurityGroupIngressControllerToKubelet": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
@@ -1024,7 +1024,7 @@
         }
       }
     },
-    "WorkerSecurityGroupIngressCAdvisor": {
+    "WorkerSecurityGroupIngressControllerToCAdvisor": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
@@ -1043,7 +1043,7 @@
         }
       }
     },
-    "WorkerSecurityGroupInternalKubelet": {
+    "WorkerSecurityGroupIngressSelfTCP": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
@@ -1052,9 +1052,23 @@
         "SourceSecurityGroupId": {
           "Ref": "WorkerSecurityGroup"
         },
-        "FromPort": 10255,
-        "ToPort": 10255,
+        "FromPort": 0,
+        "ToPort": 65535,
         "IpProtocol": "TCP"
+      }
+    },
+    "WorkerSecurityGroupIngressSelfUDP": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "WorkerSecurityGroup"
+        },
+        "SourceSecurityGroupId": {
+          "Ref": "WorkerSecurityGroup"
+        },
+        "FromPort": 0,
+        "ToPort": 65535,
+        "IpProtocol": "UDP"
       }
     },
     "WorkerSubnet": {
