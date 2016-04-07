@@ -402,7 +402,8 @@
         "parent": "f591c362-5976-4efe-aca1-f1c0cb9f31af",
         "embeds": [],
         "dependson": [
-          "dd7a601c-41ee-40e3-90a8-a9edd1ea4e55"
+          "dd7a601c-41ee-40e3-90a8-a9edd1ea4e55",
+          "a487cf69-e5ce-4956-85df-761e6427deef"
         ],
         "isrelatedto": [
           "7b1d4d3c-5b8f-4e75-b58f-824172bbf1cc"
@@ -533,6 +534,15 @@
       "e3b29f12-ac4c-44b2-aaae-abbfa7b9be82": {
         "source": {
           "id": "dd7a601c-41ee-40e3-90a8-a9edd1ea4e55"
+        },
+        "target": {
+          "id": "a487cf69-e5ce-4956-85df-761e6427deef"
+        },
+        "z": 11
+      },
+      "3a4ade40-765a-4019-a7e0-1d24b0643488": {
+        "source": {
+          "id": "dd161430-6440-4ef3-856b-99c6e8a6bbc5"
         },
         "target": {
           "id": "a487cf69-e5ce-4956-85df-761e6427deef"
@@ -1145,7 +1155,8 @@
         }
       },
       "DependsOn": [
-        "ClusterInternetGateway"
+        "ClusterInternetGateway",
+        "ClusterVPC"
       ]
     },
     "ControllerRouteTable": {
@@ -1325,12 +1336,12 @@
     "ControllerInstanceType": {
       "Type": "String",
       "Description": "Launch EC2 Instances in the Controller AutoScaling Group using this Instance type",
-      "Default": "m3.medium"
+      "Default": "m3.large"
     },
     "WorkerInstanceType": {
       "Type": "String",
       "Description": "Launch EC2 Instances in the Worker AutoScaling Group using this Instance type",
-      "Default": "m3.medium"
+      "Default": "m3.large"
     },
     "SSHKeyName": {
       "Type": "AWS::EC2::KeyPair::KeyName",
