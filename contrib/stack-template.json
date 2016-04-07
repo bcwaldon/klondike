@@ -996,14 +996,6 @@
             "FromPort": 22,
             "ToPort": 22,
             "CidrIp": "0.0.0.0/0"
-          },
-          {
-            "IpProtocol": "TCP",
-            "FromPort": 0,
-            "ToPort": 65535,
-            "CidrIp": {
-              "Ref": "PodNetwork"
-            }
           }
         ]
       },
@@ -1424,10 +1416,6 @@
     "WorkerUserData": {
       "Type": "String",
       "Description": "Launch Worker EC2 Instances with this UserData"
-    },
-    "PodNetwork": {
-      "Type": "String",
-      "Description": "Network that Kubernetes will use for inter-pod communication in CIDR notation"
     },
     "ControllerInstanceCount": {
       "Type": "Number",

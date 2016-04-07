@@ -14,7 +14,6 @@ vars=(
 	"SSH_KEYNAME"
 	"IMAGE_ID"
 	"USER_DATA_FILE"
-	"POD_NETWORK"
 	"HOSTED_ZONE"
 )
 
@@ -39,7 +38,6 @@ PARAMETERS=(
 	"ParameterKey=ClusterName,ParameterValue=$CLUSTER_NAME"
 	"ParameterKey=ControllerUserData,ParameterValue=$USER_DATA"
 	"ParameterKey=WorkerUserData,ParameterValue=$USER_DATA"
-	"ParameterKey=PodNetwork,ParameterValue=$POD_NETWORK"
 	"ParameterKey=HostedZone,ParameterValue=$HOSTED_ZONE"
 )
 
