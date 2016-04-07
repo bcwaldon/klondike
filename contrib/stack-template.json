@@ -313,7 +313,10 @@
           "y": 750
         },
         "z": 1,
-        "embeds": []
+        "embeds": [],
+        "dependson": [
+          "a487cf69-e5ce-4956-85df-761e6427deef"
+        ]
       },
       "529bca45-b10b-47ef-81ab-6a55c9a5488c": {
         "source": {
@@ -526,6 +529,15 @@
           "id": "317ab59f-2379-451a-9fbc-c397fd31dd5c"
         },
         "z": 2
+      },
+      "e3b29f12-ac4c-44b2-aaae-abbfa7b9be82": {
+        "source": {
+          "id": "dd7a601c-41ee-40e3-90a8-a9edd1ea4e55"
+        },
+        "target": {
+          "id": "a487cf69-e5ce-4956-85df-761e6427deef"
+        },
+        "z": 11
       }
     }
   },
@@ -564,9 +576,15 @@
     "ControllerASG": {
       "Type": "AWS::AutoScaling::AutoScalingGroup",
       "Properties": {
-        "MinSize": 3,
-        "MaxSize": 3,
-        "DesiredCapacity": 3,
+        "MinSize": {
+          "Ref": "ControllerInstanceCount"
+        },
+        "MaxSize": {
+          "Ref": "ControllerInstanceCount"
+        },
+        "DesiredCapacity": {
+          "Ref": "ControllerInstanceCount"
+        },
         "LaunchConfigurationName": {
           "Ref": "ControllerLC"
         },
@@ -611,7 +629,9 @@
       "Properties": {
         "MinSize": 1,
         "MaxSize": 100,
-        "DesiredCapacity": 3,
+        "DesiredCapacity": {
+          "Ref": "WorkerInstanceCount"
+        },
         "LaunchConfigurationName": {
           "Ref": "WorkerLC"
         },
@@ -837,7 +857,7 @@
         "SecurityGroupIngress": [
           {
             "IpProtocol": "ICMP",
-            "FromPort": 3,
+            "FromPort": -1,
             "ToPort": -1,
             "CidrIp": "0.0.0.0/0"
           },
@@ -855,7 +875,7 @@
         }
       }
     },
-    "ControllerSecurityGroupIngressKubelet": {
+    "ControllerSecurityGroupIngressEtcd": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
@@ -874,7 +894,7 @@
         }
       }
     },
-    "ControllerSecurityGroupIngressLoadBalancer": {
+    "ControllerSecurityGroupIngressLoadBalancerToAPI": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
@@ -882,6 +902,25 @@
         },
         "SourceSecurityGroupId": {
           "Ref": "ControllerLoadBalancerSecurityGroup"
+        },
+        "FromPort": 6443,
+        "ToPort": 6443,
+        "IpProtocol": "TCP"
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "63fb8b3c-ade4-4fab-a675-c2a2b30eb4a0"
+        }
+      }
+    },
+    "ControllerSecurityGroupIngressWorkerToAPI": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "ControllerSecurityGroup"
+        },
+        "SourceSecurityGroupId": {
+          "Ref": "WorkerSecurityGroup"
         },
         "FromPort": 6443,
         "ToPort": 6443,
@@ -923,7 +962,7 @@
         "SecurityGroupIngress": [
           {
             "IpProtocol": "ICMP",
-            "FromPort": 3,
+            "FromPort": -1,
             "ToPort": -1,
             "CidrIp": "0.0.0.0/0"
           },
@@ -1007,7 +1046,7 @@
         "VpcId": {
           "Ref": "ClusterVPC"
         },
-        "CidrBlock": "10.0.0.0/24",
+        "CidrBlock": "10.0.99.0/24",
         "MapPublicIpOnLaunch": false,
         "AvailabilityZone": {
           "Ref": "AvailabilityZone"
@@ -1066,7 +1105,10 @@
         "AWS::CloudFormation::Designer": {
           "id": "dd7a601c-41ee-40e3-90a8-a9edd1ea4e55"
         }
-      }
+      },
+      "DependsOn": [
+        "ClusterVPC"
+      ]
     },
     "ClusterVPCGatewayAttachment": {
       "Type": "AWS::EC2::VPCGatewayAttachment",
@@ -1313,6 +1355,14 @@
     "PodNetwork": {
       "Type": "String",
       "Description": "Network that Kubernetes will use for inter-pod communication in CIDR notation"
+    },
+    "ControllerInstanceCount": {
+      "Type": "Number",
+      "Description": "Number of EC2 Instances to provision as Controllers."
+    },
+    "WorkerInstanceCount": {
+      "Type": "Number",
+      "Description": "Number of EC2 Instances to provision as Workers"
     }
   },
   "Outputs": {

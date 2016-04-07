@@ -2,6 +2,11 @@
   file: path=/etc/systemd/system/docker.service.d state=directory
   sudo: true
 
+- name: set iptables pod networking rule
+  iptables: table=nat chain=POSTROUTING jump=MASQUERADE source={{ cluster_pod_network_cidr }}
+  when: kubelet_enable_pod_networking
+  sudo: true
+
 - name: set DOCKER_OPTS
   copy: src=10-kubernetes-pod-networking.conf dest=/etc/systemd/system/docker.service.d/10-kubernetes-pod-networking.conf mode=0644
   when: kubelet_enable_pod_networking

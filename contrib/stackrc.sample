@@ -23,5 +23,13 @@ export IMAGE_ID="ami-07252c6d"  # CoreOS Alpha v1000.0.0
 export CONTROLLER_INSTANCE_TYPE="m3.medium"
 export WORKER_INSTANCE_TYPE="m3.medium"
 
+# Indicate how large the controller cluster should be. This is difficult
+# to change after cluster deployment.
+export CONTROLLER_INSTANCE_COUNT=3
+
+# Indicate how many workers should be provisioned. This may be changed
+# via the AutoScaling Group after initial deployment.
+export WORKER_INSTANCE_COUNT=3
+
 # Logical name of the CloudFormation stack
 export STACK_NAME="konduct-cluster-${CLUSTER_NAME}"
