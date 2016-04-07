@@ -2,3 +2,35 @@
 coreos:
   update:
     reboot-strategy: "off"
+
+  units:
+    - name: format-xvdb.service
+      command: start
+      content: |
+        [Unit]
+        Description=Format /dev/xvdb as ext4
+        After=dev-xvdb.device
+        Requires=dev-xvdb.device
+        [Service]
+        Type=oneshot
+        RemainAfterExit=yes
+        ExecStart=/usr/sbin/wipefs -f /dev/xvdb
+        ExecStart=/usr/sbin/mkfs.ext4 -F /dev/xvdb
+    - name: var-lib-docker.mount
+      command: start
+      content: |
+        [Unit]
+        Description=Mount /dev/xvdb to /var/lib/docker
+        Requires=format-xvdb.service
+        After=format-xvdb.service
+        [Mount]
+        What=/dev/xvdb
+        Where=/var/lib/docker
+        Type=ext4
+    - name: docker.service
+      drop-ins:
+        - name: 10-mount-var-lib-docker.conf
+          content: |
+            [Unit]
+            After=var-lib-docker.mount
+            Requires=var-lib-docker.mount
