@@ -14,7 +14,7 @@
     - name: apiserver
       profile: server
       hosts:
-      - "{{ control_plane_host }}"
+      - "{{ external_fqdn }}"
       - "{{ cluster_service_kubernetes_ip }}"
     - name: admin
       profile: client

@@ -15,6 +15,7 @@ vars=(
 	"IMAGE_ID"
 	"USER_DATA_FILE"
 	"POD_NETWORK"
+	"HOSTED_ZONE"
 )
 
 for var in "${vars[@]}"; do
@@ -39,6 +40,7 @@ PARAMETERS=(
 	"ParameterKey=ControllerUserData,ParameterValue=$USER_DATA"
 	"ParameterKey=WorkerUserData,ParameterValue=$USER_DATA"
 	"ParameterKey=PodNetwork,ParameterValue=$POD_NETWORK"
+	"ParameterKey=HostedZone,ParameterValue=$HOSTED_ZONE"
 )
 
 function join { local IFS="$1"; shift; echo "$*"; }

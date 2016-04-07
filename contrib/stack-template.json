@@ -548,6 +548,21 @@
           "id": "a487cf69-e5ce-4956-85df-761e6427deef"
         },
         "z": 11
+      },
+      "0374cc4d-4484-4e1e-bc01-7817a99d2f72": {
+        "size": {
+          "width": 60,
+          "height": 60
+        },
+        "position": {
+          "x": -120,
+          "y": 620
+        },
+        "z": 0,
+        "embeds": [],
+        "isrelatedto": [
+          "81ac2c65-7edd-45b6-a300-2e0f5576cd84"
+        ]
       }
     }
   },
@@ -1326,6 +1341,53 @@
           "id": "317ab59f-2379-451a-9fbc-c397fd31dd5c"
         }
       }
+    },
+    "ControllerLoadBalancerDNSRecord": {
+      "Type": "AWS::Route53::RecordSet",
+      "Properties": {
+        "HostedZoneName": {
+          "Fn::Join": [
+            "",
+            [
+              {
+                "Ref": "HostedZone"
+              },
+              "."
+            ]
+          ]
+        },
+        "Name": {
+          "Fn::Join": [
+            "",
+            [
+              {
+                "Ref": "ClusterName"
+              },
+              ".",
+              "kubernetes.",
+              {
+                "Ref": "HostedZone"
+              },
+              "."
+            ]
+          ]
+        },
+        "Type": "CNAME",
+        "TTL": "300",
+        "ResourceRecords": [
+          {
+            "Fn::GetAtt": [
+              "ControllerLoadBalancer",
+              "DNSName"
+            ]
+          }
+        ]
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "0374cc4d-4484-4e1e-bc01-7817a99d2f72"
+        }
+      }
     }
   },
   "Parameters": {
@@ -1374,16 +1436,17 @@
     "WorkerInstanceCount": {
       "Type": "Number",
       "Description": "Number of EC2 Instances to provision as Workers"
+    },
+    "HostedZone": {
+      "Type": "String",
+      "Description": "DNS zone hosted in Route 53 that will be used to provide DNS resolution for the cluster API server to external clients"
     }
   },
   "Outputs": {
-    "ControllerLoadBalancer": {
-      "Description": "DNS name of ControllerLoadBalancer",
+    "ExternalFQDN": {
+      "Description": "DNS record for control plane ELB",
       "Value": {
-        "Fn::GetAtt": [
-          "ControllerLoadBalancer",
-          "DNSName"
-        ]
+        "Ref": "ControllerLoadBalancerDNSRecord"
       }
     }
   }

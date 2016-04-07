@@ -7,6 +7,11 @@ cluster_name:
 # traffic to the controllers. This is typically an ELB DNS name.
 control_plane_host:
 
+# control_plane_host_alt_name defines a hostname that the deployer
+# will make routable to the control plane. Providing the name here
+# ensures that the generated API server certificate is valid.
+control_plane_host_alt_name:
+
 # cluster_pod_network_cidr defines the range of IPs to use for
 # the kubernetes pod network. These IPs must not conflict with
 # the host- or service-level networking.
