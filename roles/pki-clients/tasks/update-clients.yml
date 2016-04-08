@@ -1,9 +1,9 @@
 - name: write CA files
   copy: content={{ item.content }} dest={{ item.dest }} mode=0644
   with_items:
-  - content: "{{ pki_ca.cert }}"
+  - content: "{{ pki_ca_cert }}"
     dest: "{{ ca_cert_file }}"
-  - content: "{{ pki_ca.key }}"
+  - content: "{{ pki_ca_key }}"
     dest: "{{ ca_key_file }}"
 
 - name: check for clients existence
@@ -17,7 +17,7 @@
 - name: create missing clients
   include: create-client.yml 
   with_items: "{{ clients }}"
-  when: client_{{ item.name }}_cert is not defined
+  when: pki_client_{{ item.name }}_cert is not defined
 
 - name: write client vars file
   template: src=clients.yml.j2 dest={{ client_vars_file }}

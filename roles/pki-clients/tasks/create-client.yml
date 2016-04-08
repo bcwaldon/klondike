@@ -22,5 +22,5 @@
   register: key_shell
 
 - set_fact:
-    client_{{ cert_name }}_cert: "{{ cert_shell.stdout }}"
-    client_{{ cert_name }}_key: "{{ key_shell.stdout }}"
+    pki_client_{{ cert_name }}_cert: "{{ cert_shell.stdout }}"
+    pki_client_{{ cert_name }}_key: "{{ key_shell.stdout }}"

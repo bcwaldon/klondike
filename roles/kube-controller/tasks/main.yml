@@ -1,12 +1,13 @@
-- name: upload apiserver TLS certificate
-  copy: content={{ pki_clients.apiserver.cert }} dest=/etc/kubernetes/apiserver.pem mode=0644
+- name: upload apiserver TLS assets
+  copy: content={{ item.content }} dest={{ item.dest }} mode=0644
   sudo: true
+  with_items:
+  - content: "{{ pki_client_apiserver_cert }}"
+    dest: "/etc/kubernetes/apiserver.pem"
+  - content: "{{ pki_client_apiserver_key }}"
+    dest: "/etc/kubernetes/apiserver-key.pem"
 
-- name: upload apiserver private key
-  copy: content={{ pki_clients.apiserver.key }} dest=/etc/kubernetes/apiserver-key.pem mode=0644
-  sudo: true
-
-- name: upload active pods
+- name: upload static pods
   template: src={{ item }}.j2 dest=/etc/kubernetes/manifests/{{ item }} mode=0644
   sudo: true
   with_items:
@@ -14,11 +15,11 @@
   - kube-apiserver.yml
   - podmaster.yml
 
-- name: create inactive pods directory
+- name: create master-elected pods directory
   file: path=/srv/kubernetes/manifests state=directory
   sudo: true
 
-- name: upload inactive pods
+- name: upload master-elected pods
   template: src={{ item }}.j2 dest=/srv/kubernetes/manifests/{{ item }} mode=0644
   sudo: true
   with_items:

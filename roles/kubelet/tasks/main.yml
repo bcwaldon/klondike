@@ -30,7 +30,7 @@
   - restart kubelet.service
 
 - name: upload cluster CA certificate
-  copy: content={{ pki_ca.cert }} dest=/etc/kubernetes/ca.pem mode=0644
+  copy: content={{ pki_ca_cert }} dest=/etc/kubernetes/ca.pem mode=0644
   sudo: true
   notify:
   - restart kubelet.service

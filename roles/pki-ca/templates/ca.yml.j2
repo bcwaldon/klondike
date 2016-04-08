@@ -1,6 +1,5 @@
-pki_ca:
-  key: |
-{{ ca_key|indent(4,True) }}
+pki_ca_key: |
+{{ ca_key|indent(2,True) }}
 
-  cert: |
-{{ ca_cert|indent(4,True) }}
+pki_ca_cert: |
+{{ ca_cert|indent(2,True) }}
