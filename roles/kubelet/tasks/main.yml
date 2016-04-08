@@ -83,3 +83,11 @@
     dest: "/etc/kubernetes/manifests"
   - src: "logstash.conf"
     dest: "/etc/logstash"
+
+- name: deploy datadog
+  when: datadog_enabled
+  template: src={{ item.src }}.j2 dest={{ item.dest }}/{{ item.src }} mode=0644
+  sudo: true
+  with_items:
+  - src: "datadog.yml"
+    dest: "/etc/kubernetes/manifests"

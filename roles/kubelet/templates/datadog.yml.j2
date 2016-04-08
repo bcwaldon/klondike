@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: datadog-agent
+  namespace: kube-system
+spec:
+  containers:
+  - image: datadog/docker-dd-agent:kubernetes
+    name: datadog-agent
+    imagePullPolicy: Always
+    ports:
+      - containerPort: 8125
+        name: dogstatsdport
+    env:
+      - name: API_KEY
+        value: "{{ datadog_api_key }}"
+      - name: TAGS
+        value: "KubernetesCluster:{{ cluster_name }}"
+    volumeMounts:
+      - name: dockersocket
+        mountPath: /var/run/docker.sock
+      - name: procdir
+        mountPath: /host/proc
+        readOnly: true
+      - name: cgroups
+        mountPath: /host/sys/fs/cgroup
+        readOnly: true
+  volumes:
+    - hostPath:
+        path: /var/run/docker.sock
+      name: dockersocket
+    - hostPath:
+        path: /proc
+      name: procdir
+    - hostPath:
+        path: /sys/fs/cgroup
+      name: cgroups
