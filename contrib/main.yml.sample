@@ -80,3 +80,11 @@ datadog_enabled: false
 # datadog_api_key is the API key that the DataDog agent will use to
 # push metrics about the Kubernetes cluster to the DataDog service.
 #datadog_api_key:
+
+# logstash_enabled
+logstash_enabled: false
+
+# logstash_elasticsearch_host is the host:port representing an
+# elasticsearch cluster where logstash should send its logs.
+# Only used if logstash_enabled is true.
+#logstash_elasticsearch_host:
