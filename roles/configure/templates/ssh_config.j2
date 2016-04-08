@@ -1,5 +1,5 @@
 Host 10.*
-	ProxyCommand ssh -A -i {{ cluster_dir }}/id_rsa core@<REPLACE> -W %h:%p
+	ProxyCommand ssh -A -i {{ cluster_dir }}/id_rsa core@{{ ssh_bastion }} -W %h:%p
 	ForwardAgent yes
 	StrictHostKeyChecking no
 	UserKnownHostsFile /dev/null

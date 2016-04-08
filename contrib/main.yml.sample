@@ -1,3 +1,7 @@
+# ssh_bastion is an SSH host that may be used to establish
+# SSH connections to all cluster instances.
+ssh_bastion:
+
 # cluster_name defines the name used to identify the resources
 # that make up a given cluster. This name must be unique within
 # the scope of an AWS VPC.
