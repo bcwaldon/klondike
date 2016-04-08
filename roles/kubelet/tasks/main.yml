@@ -1,6 +1,10 @@
-- name: create /etc/systemd/system/docker.service.d
-  file: path=/etc/systemd/system/docker.service.d state=directory
+- name: create directories
+  file: path={{ item }} state=directory
   sudo: true
+  with_items:
+  - /etc/systemd/system/docker.service.d
+  - /etc/kubernetes/manifests
+  - /opt/bin
 
 - name: set iptables pod networking rule
   iptables: table=nat chain=POSTROUTING jump=MASQUERADE source={{ cluster_pod_network_cidr }}
@@ -14,10 +18,6 @@
   notify:
   - daemon-reload
   - restart docker.service
-
-- name: create manifests directory
-  file: path=/etc/kubernetes/manifests state=directory
-  sudo: true
 
 - name: upload kube-proxy pod
   template: src=kube-proxy.yml.j2 dest=/etc/kubernetes/manifests/kube-proxy.yml mode=0644
@@ -44,21 +44,17 @@
 
 - name: upload kubelet TLS certificate
   when: apiserver_client_tls_enabled
-  copy: content={{ apiserver_client_tls_cert }} dest=/etc/kubernetes/kubelet.pem mode=0644
+  copy: content={{ vars["pki_client_" + apiserver_client_tls_client_name + "_cert"] }} dest=/etc/kubernetes/kubelet.pem mode=0644
   sudo: true
   notify:
   - restart kubelet.service
 
 - name: upload kubelet key
   when: apiserver_client_tls_enabled
-  copy: content={{ apiserver_client_tls_key }} dest=/etc/kubernetes/kubelet-key.pem mode=0644
+  copy: content={{ vars["pki_client_" + apiserver_client_tls_client_name + "_key"] }} dest=/etc/kubernetes/kubelet-key.pem mode=0644
   sudo: true
   notify:
   - restart kubelet.service
-
-- name: create /opt/bin
-  file: path=/opt/bin state=directory
-  sudo: true
 
 - name: upload kubelet
   copy: src=kubelet dest=/opt/bin/kubelet mode=0755

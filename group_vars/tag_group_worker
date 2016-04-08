@@ -3,5 +3,4 @@ kubelet_enable_pod_networking: true
 
 apiserver_client_endpoint: "{{ control_plane_endpoint }}"
 apiserver_client_tls_enabled: true
-apiserver_client_tls_cert: "{{ pki_client_admin_cert }}"
-apiserver_client_tls_key: "{{ pki_client_admin_key }}"
+apiserver_client_tls_client_name: admin
