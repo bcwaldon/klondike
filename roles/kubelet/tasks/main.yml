@@ -5,6 +5,7 @@
   - /etc/systemd/system/docker.service.d
   - /etc/kubernetes/manifests
   - /opt/bin
+  - /etc/logstash
 
 - name: set iptables pod networking rule
   iptables: table=nat chain=POSTROUTING jump=MASQUERADE source={{ cluster_pod_network_cidr }}
@@ -72,3 +73,13 @@
 - name: kubelet.service started
   service: name=kubelet.service state=started
   sudo: true
+
+- name: deploy logstash
+  when: logstash_enabled
+  template: src={{ item.src }}.j2 dest={{ item.dest }}/{{ item.src }} mode=0644
+  sudo: true
+  with_items:
+  - src: "logstash.yml"
+    dest: "/etc/kubernetes/manifests"
+  - src: "logstash.conf"
+    dest: "/etc/logstash"
