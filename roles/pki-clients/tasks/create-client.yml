@@ -1,7 +1,7 @@
 - set_fact:
     cert_name: "{{ item.name }}"
     cert_profile: "{{ item.profile }}"
-    cfssl_cert_csr_dest: "{{ ca_dir }}/cert-{{ item.name }}-csr.json"
+    cfssl_cert_csr_dest: "{{ workspace }}/cert-{{ item.name }}-csr.json"
 
 - name: CERT | generate CSR
   template: src=csr.json.j2 dest={{ cfssl_cert_csr_dest }} mode=0644
