@@ -1,5 +1,5 @@
-- name: create addons directory
-  file: path={{ playbook_dir }}/cluster/addons state=directory
+- name: create workspace
+  file: path={{ workspace }} state=directory
 
 - name: deploy core addons
   include: deploy.yml
@@ -13,3 +13,8 @@
   when: datadog_enabled == true
   with_items:
   - datadog.yml
+
+- name: clean up workspace
+  file: path={{ item }} state=absent
+  with_fileglob:
+  - "{{ workspace }}/*"

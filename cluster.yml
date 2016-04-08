@@ -1,5 +1,10 @@
 - hosts: 127.0.0.1
   connection: local
   gather_facts: False
+  vars:
+    cluster_dir: "{{ playbook_dir }}/clusters/{{ cluster }}"
+    workspace: "{{ cluster_dir }}/tmp"
+  vars_files:
+  - "{{ cluster_dir }}/main.yml"
   roles:
   - kube-addons

@@ -1,5 +1,5 @@
 - name: render addon
-  template: src={{ item }}.j2 dest={{ playbook_dir }}/cluster/addons/{{ item }}
+  template: src={{ item }}.j2 dest={{ workspace }}/{{ item }}
 
 - name: create addon
-  command: kubectl --kubeconfig={{ playbook_dir }}/cluster/kubeconfig create -f {{ playbook_dir }}/cluster/addons/{{ item }}
+  command: kubectl --kubeconfig={{ cluster_dir }}/kubeconfig create -f {{ workspace }}/{{ item }}
