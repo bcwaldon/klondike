@@ -1,9 +1,4 @@
 /clusters
-/inventory
-/tmp
 /roles/kubelet/files/kubelet
-/files
 /*.retry
-/contrib/stackrc
-/vars/main.yml
-/vars/pki-*
+/*.pyc
