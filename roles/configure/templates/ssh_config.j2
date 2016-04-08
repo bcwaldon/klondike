@@ -1,7 +1,6 @@
-ForwardAgent yes
-StrictHostKeyChecking no
-UserKnownHostsFile /dev/null
-IdentityFile {{ cluster_dir }}/id_rsa
-
 Host 10.*
-	ProxyCommand ssh -A core@<REPLACE> -W %h:%p
+	ProxyCommand ssh -A -i {{ cluster_dir }}/id_rsa core@<REPLACE> -W %h:%p
+	ForwardAgent yes
+	StrictHostKeyChecking no
+	UserKnownHostsFile /dev/null
+	IdentityFile {{ cluster_dir }}/id_rsa

@@ -10,14 +10,19 @@
   stat: path={{ client_vars_file }}
   register: cmd
 
+- name: write client vars file
+  template: src=clients.yml.j2 dest={{ client_vars_file }} mode=0644
+  vars:
+    pki_clients: {}
+  when: not cmd.stat.exists
+
 - name: read clients file
   include_vars: "{{ client_vars_file }}"
-  when: cmd.stat.exists
 
 - name: create missing clients
   include: create-client.yml 
   with_items: "{{ clients }}"
-  when: pki_client_{{ item.name }}_cert is not defined
+  when: pki_clients.{{ item.name }} is not defined
 
 - name: write client vars file
-  template: src=clients.yml.j2 dest={{ client_vars_file }}
+  template: src=clients.yml.j2 dest={{ client_vars_file }} mode=0644

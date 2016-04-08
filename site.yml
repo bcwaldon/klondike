@@ -3,21 +3,19 @@
   gather_facts: False
   roles:
   - pki-clients
-  vars_files:
-  - "{{ playbook_dir }}/vars/main.yml"
   vars:
-    workspace: "{{ playbook_dir }}/tmp"
-    ca_vars_file: "{{ playbook_dir }}/vars/pki-{{ ca_name }}-ca.yml"
-    client_vars_file: "{{ playbook_dir }}/vars/pki-{{ ca_name }}-clients.yml"
+    cluster_dir: "{{ playbook_dir }}/clusters/{{ cluster }}"
+    workspace: "{{ cluster_dir }}/tmp"
+    ca_vars_file: "{{ cluster_dir }}/pki-{{ ca_name }}-ca.yml"
+    client_vars_file: "{{ cluster_dir }}/pki-{{ ca_name }}-clients.yml"
     clients:
     - name: apiserver
       profile: server
       hosts:
       - "{{ external_fqdn }}"
       - "{{ cluster_service_kubernetes_ip }}"
-    - name: admin
-      profile: client
-      hosts: []
+  vars_files:
+  - "{{ cluster_dir }}/main.yml"
 
 - hosts: all
   gather_facts: False
@@ -29,16 +27,20 @@
   roles:
   - kubelet
   - kube-controller
+  vars:
+    cluster_dir: "{{ playbook_dir }}/clusters/{{ cluster }}"
   vars_files:
-  - "{{ playbook_dir }}/vars/main.yml"
-  - "{{ playbook_dir }}/vars/pki-{{ ca_name }}-ca.yml"
-  - "{{ playbook_dir }}/vars/pki-{{ ca_name }}-clients.yml"
+  - "{{ cluster_dir }}/main.yml"
+  - "{{ cluster_dir }}/pki-{{ ca_name }}-ca.yml"
+  - "{{ cluster_dir }}/pki-{{ ca_name }}-clients.yml"
     
 - hosts: tag_group_worker
   gather_facts: False
   roles:
   - kubelet
+  vars:
+    cluster_dir: "{{ playbook_dir }}/clusters/{{ cluster }}"
   vars_files:
-  - "{{ playbook_dir }}/vars/main.yml"
-  - "{{ playbook_dir }}/vars/pki-{{ ca_name }}-ca.yml"
-  - "{{ playbook_dir }}/vars/pki-{{ ca_name }}-clients.yml"
+  - "{{ cluster_dir }}/main.yml"
+  - "{{ cluster_dir }}/pki-{{ ca_name }}-ca.yml"
+  - "{{ cluster_dir }}/pki-{{ ca_name }}-clients.yml"

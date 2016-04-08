@@ -2,9 +2,9 @@
   copy: content={{ item.content }} dest={{ item.dest }} mode=0644
   sudo: true
   with_items:
-  - content: "{{ pki_client_apiserver_cert }}"
+  - content: "{{ pki_clients.apiserver.cert }}"
     dest: "/etc/kubernetes/apiserver.pem"
-  - content: "{{ pki_client_apiserver_key }}"
+  - content: "{{ pki_clients.apiserver.key }}"
     dest: "/etc/kubernetes/apiserver-key.pem"
 
 - name: upload static pods

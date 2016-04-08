@@ -1,8 +1,10 @@
-{% for item in clients %}
-pki_client_{{ item.name }}_cert: |
-{{ vars["pki_client_"+ item.name +"_cert"]|indent(2,True) }}
+pki_clients:
+{% for key, val in pki_clients.iteritems() %}
+  {{ key }}:
+    cert: |
+{{ val.cert|indent(6,True) }}
 
-pki_client_{{ item.name }}_key: |
-{{ vars["pki_client_"+ item.name +"_key"]|indent(2,True) }}
+    key: |
+{{ val.key|indent(6,True) }}
 
 {% endfor %}
