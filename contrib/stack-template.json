@@ -580,9 +580,6 @@
         "InstanceType": {
           "Ref": "ControllerInstanceType"
         },
-        "KeyName": {
-          "Ref": "SSHKeyName"
-        },
         "SecurityGroups": [
           {
             "Ref": "ControllerSecurityGroup"
@@ -703,9 +700,6 @@
         },
         "InstanceType": {
           "Ref": "WorkerInstanceType"
-        },
-        "KeyName": {
-          "Ref": "SSHKeyName"
         },
         "SecurityGroups": [
           {
@@ -1410,10 +1404,6 @@
       "Type": "String",
       "Description": "Launch EC2 Instances in the Worker AutoScaling Group using this Instance type",
       "Default": "m3.large"
-    },
-    "SSHKeyName": {
-      "Type": "AWS::EC2::KeyPair::KeyName",
-      "Description": "Authorize this SSH key on all launched EC2 Instances"
     },
     "AvailabilityZone": {
       "Type": "AWS::EC2::AvailabilityZone::Name",

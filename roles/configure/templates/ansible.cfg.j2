@@ -1,0 +1,6 @@
+[defaults]
+remote_user=core
+inventory={{ cluster_dir }}/inventory
+
+[ssh_connection]
+ssh_args= -F {{ cluster_dir }}/ssh_config -o ControlMaster=auto -o ControlPersist=30m

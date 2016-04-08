@@ -2,11 +2,8 @@
     ca_cert_file: "{{ workspace }}/ca.pem"
     ca_key_file: "{{ workspace }}/ca-key.pem"
 
-- name: create directories
-  file: path={{ item }} state=directory
-  with_items:
-  - "{{ workspace }}"
-  - "{{ ca_vars_file | dirname }}"
+- name: create workspace
+  file: path={{ workspace }} state=directory
 
 - name: check for CA existence
   stat: path={{ ca_vars_file }}

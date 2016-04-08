@@ -1,0 +1,33 @@
+- set_fact:
+    deploy_key_file: "{{ cluster_dir}}/id_rsa"
+
+- name: check for SSH key
+  stat: path={{ deploy_key_file }}
+  register: cmd
+
+- name: generate SSH key
+  shell: "ssh-keygen -b 2048 -t rsa  -f {{ deploy_key_file }}  -N \"\" -C \"konduct deploy key for cluster {{ cluster }}\""
+  when: not cmd.stat.exists
+
+- name: read SSH key
+  command: "cat {{ deploy_key_file }}.pub"
+  register: shell
+
+- set_fact:
+    deploy_key: "{{ shell.stdout }}"
+
+- name: render templated files
+  template: src={{ item.src }} dest={{ cluster_dir }}/{{ item.dest }} mode={{ item.mode }}
+  with_items:
+  - { src: "ssh_config.j2", dest: "ssh_config", mode: "0644" }
+  - { src: "ansible.cfg.j2", dest: "ansible.cfg", mode: "0644"}
+  - { src: "ec2.ini.j2", dest: "ec2.ini", mode: "0644"}
+  - { src: "cloud-config.yml.j2", dest: "cloud-config.yml", mode: "0644"}
+  - { src: "create-stack.sh.j2", dest: "create-stack.sh", mode: "0755"}
+  - { src: "stackrc.j2", dest: "stackrc", mode: "0644"}
+
+- name: copy static files
+  copy: src={{ item.src }} dest={{ cluster_dir }}/{{ item.dest }} mode={{ item.mode }}
+  with_items:
+  - { src: "ec2-inventory.py", dest: "inventory", mode: "0755"}
+

@@ -1,0 +1,14 @@
+#!/bin/bash -ex
+
+export CLUSTER_NAME="{{ cluster }}"
+
+export AZ="{{ aws_availability_zone }}"
+export HOSTED_ZONE="{{ aws_hosted_zone }}"
+
+export IMAGE_ID="{{ instance_image_id }}"
+
+export CONTROLLER_INSTANCE_TYPE="{{ controller_instance_type }}"
+export CONTROLLER_INSTANCE_COUNT="{{ controller_instance_count }}"
+
+export WORKER_INSTANCE_TYPE="{{ worker_instance_type }}"
+export WORKER_INSTANCE_COUNT="{{ worker_instance_count }}"
