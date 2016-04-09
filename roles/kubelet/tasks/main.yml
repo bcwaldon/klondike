@@ -13,8 +13,7 @@
   sudo: true
 
 - name: set DOCKER_OPTS
-  copy: src=10-kubernetes-pod-networking.conf dest=/etc/systemd/system/docker.service.d/10-kubernetes-pod-networking.conf mode=0644
-  when: kubelet_enable_pod_networking
+  template: src=10-docker-opts.conf dest=/etc/systemd/system/docker.service.d/10-docker-opts.conf mode=0644
   sudo: true
   notify:
   - daemon-reload
