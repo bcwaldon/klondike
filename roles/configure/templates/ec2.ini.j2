@@ -97,7 +97,7 @@ all_elasticache_nodes = False
 # will be written to this directory:
 #   - ansible-ec2.cache
 #   - ansible-ec2.index
-cache_path = ~/.ansible/tmp
+cache_path = {{ cluster_dir }}/cache
 
 # The number of seconds a cache file is considered valid. After this many
 # seconds, a new API call will be made, and the cache file will be updated.
