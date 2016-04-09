@@ -2,7 +2,7 @@
 
 source {{ cluster_dir }}/stackrc
 
-TEMPLATE_URL="https://s3-us-west-2.amazonaws.com/cf-templates-tc2ntv6firam-us-west-2/2016099TA6-KubernetesClusterna3sq7buqp9s1qmswic545cdi"
+TEMPLATE_URL="{{ aws_template_url }}"
 
 USER_DATA=$(cat {{ cluster_dir }}/cloud-config.yml | base64)
 STACK_NAME="konduct-cluster-${CLUSTER_NAME}"
