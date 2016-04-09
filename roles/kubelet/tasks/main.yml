@@ -63,7 +63,7 @@
   - restart kubelet.service
 
 - name: kubelet.service started
-  service: name=kubelet.service state=started
+  service: name=kubelet.service state=started enabled=yes
   sudo: true
 
 - name: deploy logstash
