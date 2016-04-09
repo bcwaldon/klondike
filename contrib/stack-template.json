@@ -821,6 +821,27 @@
                 }
               ]
             }
+          },
+          {
+            "PolicyName": "ecr-readonly",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Action": [
+                    "ecr:BatchCheckLayerAvailability",
+                    "ecr:BatchGetImage",
+                    "ecr:DescribeRepositories",
+                    "ecr:GetAuthorizationToken",
+                    "ecr:GetDownloadUrlForLayer",
+                    "ecr:GetManifest",
+                    "ecr:ListImages"
+                  ],
+                  "Effect": "Allow",
+                  "Resource": "*"
+                }
+              ]
+            }
           }
         ],
         "AssumeRolePolicyDocument": {
