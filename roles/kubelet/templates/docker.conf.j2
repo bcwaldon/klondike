@@ -1,2 +1,5 @@
 [Service]
+Restart=on-failure
+RestartSec=5
+
 Environment= "DOCKER_OPTS=--log-driver=journald{% if kubelet_enable_pod_networking %} --bridge=cbr0 --iptables=false --ip-masq=false{% endif %}"

@@ -12,7 +12,7 @@
   sudo: true
 
 - name: set DOCKER_OPTS
-  template: src=10-docker-opts.conf dest=/etc/systemd/system/docker.service.d/10-docker-opts.conf mode=0644
+  template: src=docker.conf.j2 dest=/etc/systemd/system/docker.service.d/10-kubernetes.conf mode=0644
   sudo: true
   notify:
   - daemon-reload
