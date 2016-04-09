@@ -7,21 +7,11 @@
   - content: "{{ pki_clients.apiserver.key }}"
     dest: "/etc/kubernetes/apiserver-key.pem"
 
-- name: upload static pods
+- name: upload pod manifests
   template: src={{ item }}.j2 dest=/etc/kubernetes/manifests/{{ item }} mode=0644
   sudo: true
   with_items:
   - etcd.yml
   - kube-apiserver.yml
-  - podmaster.yml
-
-- name: create master-elected pods directory
-  file: path=/srv/kubernetes/manifests state=directory
-  sudo: true
-
-- name: upload master-elected pods
-  template: src={{ item }}.j2 dest=/srv/kubernetes/manifests/{{ item }} mode=0644
-  sudo: true
-  with_items:
   - kube-scheduler.yml
   - kube-controller-manager.yml
