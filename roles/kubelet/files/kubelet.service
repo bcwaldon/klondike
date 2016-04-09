@@ -3,7 +3,7 @@ Description=Kubernetes Kubelet
 
 [Service]
 EnvironmentFile=/etc/kubernetes/kubelet.env
-ExecStart=/opt/bin/kubelet $KUBELET_OPTS
+ExecStart=/usr/lib/coreos/kubelet-wrapper $KUBELET_OPTS
 Restart=on-failure
 RestartSec=5
 

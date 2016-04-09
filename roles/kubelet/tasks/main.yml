@@ -4,7 +4,6 @@
   with_items:
   - /etc/systemd/system/docker.service.d
   - /etc/kubernetes/manifests
-  - /opt/bin
   - /etc/logstash
 
 - name: set iptables pod networking rule
@@ -52,12 +51,6 @@
 - name: upload kubelet key
   when: apiserver_client_tls_enabled
   copy: content={{ pki_clients[apiserver_client_tls_client_name].key }} dest=/etc/kubernetes/kubelet-key.pem mode=0644
-  sudo: true
-  notify:
-  - restart kubelet.service
-
-- name: upload kubelet
-  copy: src=kubelet dest=/opt/bin/kubelet mode=0755
   sudo: true
   notify:
   - restart kubelet.service

@@ -1,4 +1,3 @@
 /clusters
-/roles/kubelet/files/kubelet
 /*.retry
 *.pyc
