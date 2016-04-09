@@ -66,6 +66,10 @@
   service: name=kubelet.service state=started enabled=yes
   sudo: true
 
+- name: docker.socket started
+  service: name=docker.socket state=started enabled=yes
+  sudo: true
+
 - name: deploy logstash
   when: logstash_enabled
   template: src={{ item.src }}.j2 dest={{ item.dest }}/{{ item.src }} mode=0644
