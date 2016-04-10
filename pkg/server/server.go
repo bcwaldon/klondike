@@ -10,6 +10,7 @@ type Config struct {
 	DogStatsDHost string
 	Period        time.Duration
 	Tags          []string
+	NoPublish     bool
 }
 
 type Server struct {
@@ -38,10 +39,17 @@ func (s *Server) attempt() error {
 }
 
 func New(cfg Config) (*Server, error) {
-	publisher, err := NewDogstatsdPublisher(cfg.DogStatsDHost, cfg.Tags)
-	if err != nil {
-		return nil, err
+	var publisher Publisher
+	if cfg.NoPublish {
+		publisher = NewLogPublisher()
+	} else {
+		var err error
+		publisher, err = NewDogstatsdPublisher(cfg.DogStatsDHost, cfg.Tags)
+		if err != nil {
+			return nil, err
+		}
 	}
+
 	emitter := NewKubeletEmitter(cfg.KubeletHost)
 	srv := &Server{
 		cfg:       cfg,

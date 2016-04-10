@@ -12,13 +12,15 @@ import (
 )
 
 func main() {
-	var cfg server.Config
-	var tags StringSliceFlag
-
 	fs := flag.NewFlagSet("kube-datadog", flag.ExitOnError)
+
+	var cfg server.Config
 	fs.StringVar(&cfg.KubeletHost, "kubelet", "127.0.0.1:10255", "Address of kubelet stats API")
 	fs.DurationVar(&cfg.Period, "period", 10*time.Second, "Amount of time to wait between metric collection attempts")
 	fs.StringVar(&cfg.DogStatsDHost, "dogstatsd", "127.0.0.1:8125", "Address of DogStatsD endpoint (UDP)")
+	fs.BoolVar(&cfg.NoPublish, "no-publish", false, "Log metrics instead of publishing them to DogStatsD")
+
+	var tags StringSliceFlag
 	fs.Var(&tags, "tags", "Set of tags to attach to all metrics (i.e. cloud:aws,cluster:prod)")
 
 	fs.Parse(os.Args[1:])
