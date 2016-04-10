@@ -4,4 +4,4 @@ control_plane_endpoint: "https://{{ external_fqdn }}"
 
 ca_name: kubernetes
 
-kube_datadog_image: quay.io/bcwaldon/kube-datadog:9b0bb0693877618f1906347c674f1c9421ad952d
+kube_datadog_image: quay.io/bcwaldon/kube-datadog:b1f79401d38bb46c82bb6c0ff8f2160cad4043ff
