@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/bcwaldon/kube-datadog/pkg/server"
@@ -21,6 +22,10 @@ func main() {
 	fs.Var(&tags, "tags", "Set of tags to attach to all metrics (i.e. cloud:aws,cluster:prod)")
 
 	fs.Parse(os.Args[1:])
+
+	if err := SetFlagsFromEnv(fs, "KUBE_DATADOG"); err != nil {
+		log.Fatalf("Failed setting flags from env: %v", err)
+	}
 
 	cfg.Tags = []string(tags)
 
@@ -41,6 +46,20 @@ func (f *StringSliceFlag) String() string {
 }
 
 func (f *StringSliceFlag) Set(value string) error {
-	*f = append(*f, value)
+	vals := strings.Split(value, ",")
+	*f = append(*f, vals...)
 	return nil
+}
+
+func SetFlagsFromEnv(fs *flag.FlagSet, prefix string) error {
+	var err error
+	fs.VisitAll(func(f *flag.Flag) {
+		key := prefix + "_" + strings.ToUpper(strings.Replace(f.Name, "-", "_", -1))
+		if val := os.Getenv(key); val != "" {
+			if serr := fs.Set(f.Name, val); serr != nil {
+				err = fmt.Errorf("invalid value %q for %s: %v", val, key, serr)
+			}
+		}
+	})
+	return err
 }
