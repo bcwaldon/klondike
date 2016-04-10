@@ -24,7 +24,7 @@ spec:
       value: "{{ etcd_peer_endpoint }}"
     - name: ETCD_INITIAL_CLUSTER
       value: {% for host in groups['tag_group_controller'] %}
-{{ hostvars[host]['inventory_hostname'] }}=http://{{ hostvars[host]['internal_ip'] }}:2380{% if not loop.last %},{% endif %}
+{{ hostvars[host]['ec2_id'] }}=http://{{ hostvars[host]['ec2_private_ip_address'] }}:2380{% if not loop.last %},{% endif %}
 {% endfor %}
 
     ports: 

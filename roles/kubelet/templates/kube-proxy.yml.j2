@@ -13,8 +13,8 @@ spec:
     - "proxy"
     - "--v=2"
     - "--proxy-mode=iptables"
-    - "--bind-address={{ proxy_bind }}"
-    - "--hostname-override={{ hostname }}"
+    - "--bind-address={{ ec2_private_ip_address }}"
+    - "--hostname-override={{ ec2_id }}"
     - "--master={{ apiserver_client_endpoint }}"
 {% if apiserver_client_tls_enabled %}
     - "--kubeconfig=/etc/kubernetes/kubeconfig"

@@ -1,9 +1,5 @@
 ansible_python_interpreter: PATH=/home/core/bin:$PATH python
 
-internal_ip: "{{ ec2_private_ip_address }}"
-hostname: "{{ internal_ip }}"
-proxy_bind: "{{ internal_ip }}"
-
 control_plane_endpoint: "https://{{ external_fqdn }}"
 
 ca_name: kubernetes

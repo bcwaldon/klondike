@@ -32,7 +32,7 @@ spec:
       - name: KUBE_DATADOG_TAGS
         value: "KubernetesCluster:{{ cluster_name }},host:{{ ec2_id }}"
       - name: KUBE_DATADOG_KUBELET
-        value: "{{hostname}}:10255"
+        value: "{{ec2_private_ip_address}}:10255"
     volumeMounts:
       - name: dockersocket
         mountPath: /var/run/docker.sock
