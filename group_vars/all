@@ -3,4 +3,5 @@ ansible_python_interpreter: PATH=/home/core/bin:$PATH python
 control_plane_endpoint: "https://{{ external_fqdn }}"
 
 ca_name: kubernetes
-kube_datadog_image: quay.io/bcwaldon/kube-datadog:0bd3916e916b66c6dd148254016f74f056b65f5c
+
+kube_datadog_image: quay.io/bcwaldon/kube-datadog:9b0bb0693877618f1906347c674f1c9421ad952d
