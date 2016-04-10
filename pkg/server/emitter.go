@@ -9,6 +9,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"time"
 )
 
 var (
@@ -43,6 +44,7 @@ func parseComputeResourceMemory(value string) (int, error) {
 func NewKubeletEmitter(source string) Emitter {
 	return &kubeletEmitter{
 		source: &url.URL{Scheme: "http", Host: source},
+		client: &http.Client{Timeout: 5 * time.Second},
 	}
 }
 
@@ -52,6 +54,7 @@ type Emitter interface {
 
 type kubeletEmitter struct {
 	source *url.URL
+	client *http.Client
 }
 
 func (c *kubeletEmitter) Emit() (MetricsBundle, error) {
@@ -59,7 +62,7 @@ func (c *kubeletEmitter) Emit() (MetricsBundle, error) {
 	if err != nil {
 		return MetricsBundle{}, fmt.Errorf("failed fetching pods: %v", err)
 	}
-	resp, err := http.Get(endpoint.String())
+	resp, err := c.client.Get(endpoint.String())
 	if err != nil {
 		return MetricsBundle{}, fmt.Errorf("failed fetching pods: %v", err)
 	}
