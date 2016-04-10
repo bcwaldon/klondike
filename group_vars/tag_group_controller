@@ -1,3 +1,5 @@
+cluster_role: controller
+
 kubelet_schedulable: false
 kubelet_enable_pod_networking: false
 

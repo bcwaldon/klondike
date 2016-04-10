@@ -1,3 +1,5 @@
+cluster_role: worker
+
 kubelet_schedulable: true
 kubelet_enable_pod_networking: true
 
