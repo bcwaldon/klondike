@@ -5,6 +5,10 @@ build:
         package-dir: github.com/bcwaldon/kube-datadog
 
     - script:
+        name: go test
+        code: ./test
+
+    - script:
         name: go build
         code: ./build
 
