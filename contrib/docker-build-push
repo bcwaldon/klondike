@@ -1,7 +1,0 @@
-#!/bin/bash
-
-VER=$(contrib/git-version)
-docker build --tag kube-datadog:$VER --file contrib/Dockerfile .
-docker tag kube-datadog:$VER quay.io/bcwaldon/kube-datadog:$VER
-docker push quay.io/bcwaldon/kube-datadog:$VER
-
