@@ -39,3 +39,7 @@ coreos:
             [Unit]
             After=var-lib-docker.mount
             Requires=var-lib-docker.mount
+    - name: iptables-store.service
+      enable: true
+    - name: iptables-restore.service
+      enable: true
