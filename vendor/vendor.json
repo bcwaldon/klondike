@@ -1,0 +1,11 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"path": "github.com/DataDog/datadog-go/statsd",
+			"revision": "cc2f4770f4d61871e19bfee967bc767fe730b0d9",
+			"revisionTime": "2016-03-29T09:52:53-04:00"
+		}
+	]
+}
