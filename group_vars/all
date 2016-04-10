@@ -7,3 +7,4 @@ proxy_bind: "{{ internal_ip }}"
 control_plane_endpoint: "https://{{ external_fqdn }}"
 
 ca_name: kubernetes
+kube_datadog_image: quay.io/bcwaldon/kube-datadog:0bd3916e916b66c6dd148254016f74f056b65f5c

@@ -5,7 +5,7 @@ metadata:
   namespace: kube-system
 spec:
   containers:
-  - image: datadog/docker-dd-agent:kubernetes
+  - image: datadog/docker-dd-agent:latest
     name: datadog-agent
     imagePullPolicy: Always
     ports:
@@ -25,6 +25,24 @@ spec:
       - name: cgroups
         mountPath: /host/sys/fs/cgroup
         readOnly: true
+  - image: {{ kube_datadog_image }}
+    name: kube-datadog
+    imagePullPolicy: Always
+    env:
+      - name: KUBE_DATADOG_TAGS
+        value: "KubernetesCluster:{{ cluster_name }},host:{{ ec2_id }}"
+      - name: KUBE_DATADOG_KUBELET
+        value: "{{hostname}}:10255"
+    volumeMounts:
+      - name: dockersocket
+        mountPath: /var/run/docker.sock
+      - name: procdir
+        mountPath: /host/proc
+        readOnly: true
+      - name: cgroups
+        mountPath: /host/sys/fs/cgroup
+        readOnly: true
+
   volumes:
     - hostPath:
         path: /var/run/docker.sock
