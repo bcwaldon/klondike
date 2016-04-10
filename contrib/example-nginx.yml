@@ -16,6 +16,10 @@ spec:
     spec:
       containers:
       - image: nginx
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "100m"
         name: nginx
         ports:
         - containerPort: 80
