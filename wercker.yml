@@ -1,18 +1,23 @@
-box: google/golang
+box: golang
 build:
   steps:
-    # Sets the go workspace and places you package
-    # at the right place in the workspace tree
-    - setup-go-workspace
+    - wercker/setup-go-workspace:
+        package-dir: github.com/bcwaldon/kube-datadog
 
-    # Build the project
     - script:
         name: go build
-        code: |
-          ./build
+        code: ./build
 
-    # Test the project
     - script:
-        name: go test
-        code: |
-          go test ./...
+        name: copy binary
+        code: cp bin/linux_amd64/kube-datadog "$WERCKER_OUTPUT_DIR"
+
+deploy:
+    steps:
+    - internal/docker-scratch-push:
+        username: $QUAY_USERNAME
+        password: $QUAY_PASSWORD
+        cmd: /kube-datadog
+        tag: $WERCKER_GIT_COMMIT
+        repository: quay.io/bcwaldon/kube-datadog
+        registry: https://quay.io
