@@ -378,6 +378,9 @@
         "embeds": [],
         "references": [
           "dd7a601c-41ee-40e3-90a8-a9edd1ea4e55"
+        ],
+        "dependson": [
+          "dd7a601c-41ee-40e3-90a8-a9edd1ea4e55"
         ]
       },
       "c7870f0c-c5cc-4ebc-b3af-f40b1c50b95c": {
@@ -563,6 +566,26 @@
         "isrelatedto": [
           "81ac2c65-7edd-45b6-a300-2e0f5576cd84"
         ]
+      },
+      "deae6483-5670-458c-8b8a-436bce09d4b2": {
+        "source": {
+          "id": "3ecb5892-f24a-4c85-aa24-e275f34308a1"
+        },
+        "target": {
+          "id": "dd7a601c-41ee-40e3-90a8-a9edd1ea4e55"
+        },
+        "z": 11
+      },
+      "4f7be02b-961c-4b46-9bb9-9fdf6b78ce1a": {
+        "source": {
+          "id": "dd7a601c-41ee-40e3-90a8-a9edd1ea4e55",
+          "selector": "g:nth-child(1) g:nth-child(4) g:nth-child(2) circle:nth-child(1)     ",
+          "port": "AWS::DependencyLink-*"
+        },
+        "target": {
+          "id": "a487cf69-e5ce-4956-85df-761e6427deef"
+        },
+        "z": 13
       }
     }
   },
@@ -1239,7 +1262,10 @@
         "AWS::CloudFormation::Designer": {
           "id": "3ecb5892-f24a-4c85-aa24-e275f34308a1"
         }
-      }
+      },
+      "DependsOn": [
+        "ClusterInternetGateway"
+      ]
     },
     "WorkerRouteTable": {
       "Type": "AWS::EC2::RouteTable",
