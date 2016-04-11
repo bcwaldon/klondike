@@ -34,23 +34,17 @@
   notify:
   - restart kubelet.service
 
+- name: check for TLS cert
+  stat: path=/etc/kubernetes/kubelet.pem
+  register: cmd
+
+- name: generate TLS cert
+  include: tls.yml
+  when: apiserver_client_tls_enabled and not cmd.stat.exists
+
 - name: upload kubeconfig
   when: apiserver_client_tls_enabled
   template: src=kubeconfig.j2 dest=/etc/kubernetes/kubeconfig mode=0644
-  sudo: true
-  notify:
-  - restart kubelet.service
-
-- name: upload kubelet TLS certificate
-  when: apiserver_client_tls_enabled
-  copy: content={{ pki_clients[apiserver_client_tls_client_name].cert }} dest=/etc/kubernetes/kubelet.pem mode=0644
-  sudo: true
-  notify:
-  - restart kubelet.service
-
-- name: upload kubelet key
-  when: apiserver_client_tls_enabled
-  copy: content={{ pki_clients[apiserver_client_tls_client_name].key }} dest=/etc/kubernetes/kubelet-key.pem mode=0644
   sudo: true
   notify:
   - restart kubelet.service

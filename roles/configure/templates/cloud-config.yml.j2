@@ -43,3 +43,27 @@ coreos:
       enable: true
     - name: iptables-restore.service
       enable: true
+
+    - name: generate-kubelet-key-and-csr.service
+      command: start
+      content: |
+        [Unit]
+        ConditionPathExists=!/etc/kubernetes/kubelet-csr.pem
+        [Service]
+        Type=oneshot
+        ExecStart=/bin/bash -c 'openssl genrsa -out /etc/kubernetes/kubelet-key.pem 2048'
+        ExecStart=/bin/bash -c 'IP=$(curl http://169.254.169.254/latest/meta-data/local-ipv4) openssl req -new -key /etc/kubernetes/kubelet-key.pem -out /etc/kubernetes/kubelet-csr.pem -subj "/CN=kubelet" -config /etc/kubernetes/openssl.cnf'
+
+write_files:
+- path: /etc/kubernetes/openssl.cnf
+  content: |
+    [req]
+    req_extensions = v3_req
+    distinguished_name = req_distinguished_name
+    [req_distinguished_name]
+    [ v3_req ]
+    basicConstraints = CA:FALSE
+    keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+    subjectAltName = @alt_names
+    [alt_names]
+    IP.1 = $ENV::IP

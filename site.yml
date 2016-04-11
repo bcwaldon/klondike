@@ -40,6 +40,7 @@
   - kubelet
   vars:
     cluster_dir: "{{ playbook_dir }}/clusters/{{ cluster }}"
+    workspace: "{{ cluster_dir }}/tmp"
   vars_files:
   - "{{ cluster_dir }}/main.yml"
   - "{{ cluster_dir }}/pki-{{ ca_name }}-ca.yml"
