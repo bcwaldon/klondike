@@ -2,8 +2,6 @@
 
 source {{ cluster_dir }}/stackrc
 
-TEMPLATE_URL="{{ aws_template_url }}"
-
 USER_DATA=$(cat {{ cluster_dir }}/cloud-config.yml | base64)
 STACK_NAME="konduct-cluster-${CLUSTER_NAME}"
 
@@ -45,5 +43,5 @@ aws cloudformation create-stack \
 	--stack-name $STACK_NAME \
 	--capabilities CAPABILITY_IAM \
 	--parameters $(join " " "${PARAMETERS[@]}") \
-	--template-url $TEMPLATE_URL \
-	--disable-rollback
+	--disable-rollback \
+	--template-url {{ cluster_dir }}/stack-template.json

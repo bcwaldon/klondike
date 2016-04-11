@@ -7,10 +7,6 @@ ssh_bastion:
 # the scope of an AWS VPC.
 cluster_name:
 
-# aws_template_url is a URL to the CloudFormation stack template
-# to use for cluster deployment.
-aws_template_url:
-
 # aws_region is the AWS region in which the cluster will be deployed.
 aws_region:
 
