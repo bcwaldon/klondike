@@ -1,6 +1,11 @@
-Host 10.*
-	ProxyCommand ssh -A -i {{ cluster_dir }}/id_rsa core@{{ ssh_bastion }} -W %h:%p
+Host {{ ssh_bastion }}
 	ForwardAgent yes
+	StrictHostKeyChecking no
+	UserKnownHostsFile /dev/null
+	IdentityFile {{ cluster_dir }}/id_rsa
+
+Host 10.*
+	ProxyCommand ssh -F {{ cluster_dir }}/ssh_config core@{{ ssh_bastion }} -W %h:%p
 	StrictHostKeyChecking no
 	UserKnownHostsFile /dev/null
 	IdentityFile {{ cluster_dir }}/id_rsa
