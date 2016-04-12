@@ -1,31 +1,25 @@
 #!/bin/bash -e
 
-source {{ cluster_dir }}/stackrc
-
+CLUSTER_NAME="{{ cluster }}"
 STACK_NAME="konduct-cluster-${CLUSTER_NAME}"
 
+AZ="{{ aws_availability_zone }}"
+HOSTED_ZONE="{{ aws_hosted_zone }}"
+
 USER_DATA=$(cat {{ cluster_dir }}/cloud-config.yml | base64)
+IMAGE_ID="{{ instance_image_id }}"
+
+CONTROLLER_INSTANCE_TYPE="{{ controller_instance_type }}"
+CONTROLLER_INSTANCE_COUNT="{{ controller_instance_count }}"
+
+WORKER_INSTANCE_TYPE="{{ worker_instance_type }}"
+WORKER_INSTANCE_COUNT="{{ worker_instance_count }}"
+
 BASTION_USER_DATA=$(cat {{ cluster_dir }}/bastion-cloud-config.yml | base64)
+BASTION_INSTANCE_TYPE="m3.medium"
 
-vars=(
-	"CLUSTER_NAME"
-	"AZ"
-	"CONTROLLER_INSTANCE_TYPE"
-	"CONTROLLER_INSTANCE_COUNT"
-	"WORKER_INSTANCE_TYPE"
-	"WORKER_INSTANCE_COUNT"
-	"BASTION_INSTANCE_TYPE"
-	"IMAGE_ID"
-	"HOSTED_ZONE"
-)
+S3_CONFIG_BUCKET="konduct"
 
-for var in "${vars[@]}"; do
-	eval val=\$$var
-	if [ -z "$val" ]; then
-		echo "Must set $var"
-		exit 1;
-	fi
-done
 
 PARAMETERS=( 
 	"ParameterKey=AvailabilityZone,ParameterValue=$AZ"
