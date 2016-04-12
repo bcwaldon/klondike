@@ -2,8 +2,10 @@
 
 source {{ cluster_dir }}/stackrc
 
-USER_DATA=$(cat {{ cluster_dir }}/cloud-config.yml | base64)
 STACK_NAME="konduct-cluster-${CLUSTER_NAME}"
+
+USER_DATA=$(cat {{ cluster_dir }}/cloud-config.yml | base64)
+BASTION_USER_DATA=$(cat {{ cluster_dir }}/bastion-cloud-config.yml | base64)
 
 vars=(
 	"CLUSTER_NAME"
@@ -12,6 +14,7 @@ vars=(
 	"CONTROLLER_INSTANCE_COUNT"
 	"WORKER_INSTANCE_TYPE"
 	"WORKER_INSTANCE_COUNT"
+	"BASTION_INSTANCE_TYPE"
 	"IMAGE_ID"
 	"HOSTED_ZONE"
 )
@@ -30,11 +33,14 @@ PARAMETERS=(
 	"ParameterKey=ControllerInstanceCount,ParameterValue=$CONTROLLER_INSTANCE_COUNT"
 	"ParameterKey=WorkerInstanceType,ParameterValue=$WORKER_INSTANCE_TYPE"
 	"ParameterKey=WorkerInstanceCount,ParameterValue=$WORKER_INSTANCE_COUNT"
+	"ParameterKey=WorkerInstanceType,ParameterValue=$BASTION_INSTANCE_TYPE"
 	"ParameterKey=CoreOSImageID,ParameterValue=$IMAGE_ID"
 	"ParameterKey=ClusterName,ParameterValue=$CLUSTER_NAME"
 	"ParameterKey=ControllerUserData,ParameterValue=$USER_DATA"
 	"ParameterKey=WorkerUserData,ParameterValue=$USER_DATA"
+	"ParameterKey=BastionUserData,ParameterValue=$BASTION_USER_DATA"
 	"ParameterKey=HostedZone,ParameterValue=$HOSTED_ZONE"
+	"ParameterKey=S3ConfigBucket,ParameterValue=$S3_CONFIG_BUCKET"
 )
 
 function join { local IFS="$1"; shift; echo "$*"; }
@@ -44,4 +50,4 @@ aws cloudformation create-stack \
 	--capabilities CAPABILITY_IAM \
 	--parameters $(join " " "${PARAMETERS[@]}") \
 	--disable-rollback \
-	--template-url {{ cluster_dir }}/stack-template.json
+	--template-body file://{{ cluster_dir }}/stack-template.json

@@ -9,13 +9,13 @@
         },
         "position": {
           "x": -810,
-          "y": 710
+          "y": 900
         },
         "z": 0,
         "embeds": [],
         "isconnectedto": [
-          "f591c362-5976-4efe-aca1-f1c0cb9f31af",
-          "81ac2c65-7edd-45b6-a300-2e0f5576cd84"
+          "81ac2c65-7edd-45b6-a300-2e0f5576cd84",
+          "f591c362-5976-4efe-aca1-f1c0cb9f31af"
         ],
         "isassociatedwith": [
           "d0fb5fdb-de68-459c-ab39-a326ea5abdf3"
@@ -28,7 +28,7 @@
         },
         "position": {
           "x": -810,
-          "y": 1070
+          "y": 1110
         },
         "z": 0,
         "embeds": [],
@@ -46,7 +46,7 @@
         },
         "position": {
           "x": -910,
-          "y": 710
+          "y": 900
         },
         "z": 0,
         "embeds": [],
@@ -64,7 +64,7 @@
         },
         "position": {
           "x": -910,
-          "y": 1070
+          "y": 1110
         },
         "z": 0,
         "embeds": [],
@@ -118,8 +118,8 @@
           "height": 60
         },
         "position": {
-          "x": -1010,
-          "y": 710
+          "x": -910,
+          "y": 800
         },
         "z": 0,
         "embeds": [],
@@ -133,8 +133,8 @@
           "height": 60
         },
         "position": {
-          "x": -1110,
-          "y": 710
+          "x": -1010,
+          "y": 800
         },
         "z": 0,
         "embeds": []
@@ -154,8 +154,8 @@
           "height": 60
         },
         "position": {
-          "x": -1010,
-          "y": 1070
+          "x": -910,
+          "y": 1210
         },
         "z": 0,
         "embeds": [],
@@ -169,8 +169,8 @@
           "height": 60
         },
         "position": {
-          "x": -1110,
-          "y": 1070
+          "x": -1010,
+          "y": 1210
         },
         "z": 0,
         "embeds": []
@@ -190,10 +190,10 @@
           "height": 60
         },
         "position": {
-          "x": -630,
-          "y": 810
+          "x": -1010,
+          "y": 900
         },
-        "z": 2,
+        "z": 0,
         "parent": "a487cf69-e5ce-4956-85df-761e6427deef",
         "embeds": []
       },
@@ -212,10 +212,10 @@
           "height": 60
         },
         "position": {
-          "x": -630,
-          "y": 930
+          "x": -1010,
+          "y": 1110
         },
-        "z": 2,
+        "z": 0,
         "parent": "a487cf69-e5ce-4956-85df-761e6427deef",
         "embeds": []
       },
@@ -235,7 +235,7 @@
         "target": {
           "id": "4cd01314-51ae-4fac-9c95-36004183543b"
         },
-        "z": 2
+        "z": 0
       },
       "e541f9e6-602c-4226-9421-bf5178777cac": {
         "source": {
@@ -244,7 +244,7 @@
         "target": {
           "id": "4cd01314-51ae-4fac-9c95-36004183543b"
         },
-        "z": 2
+        "z": 0
       },
       "aa967c67-739d-45e8-baba-7c782f487c96": {
         "source": {
@@ -262,7 +262,7 @@
         },
         "position": {
           "x": -670,
-          "y": 1030
+          "y": 1050
         },
         "z": 2,
         "parent": "a487cf69-e5ce-4956-85df-761e6427deef",
@@ -274,14 +274,12 @@
           "height": 160
         },
         "position": {
-          "x": -660,
-          "y": 610
+          "x": -670,
+          "y": 870
         },
         "z": 2,
         "parent": "a487cf69-e5ce-4956-85df-761e6427deef",
-        "embeds": [
-          "dd161430-6440-4ef3-856b-99c6e8a6bbc5"
-        ]
+        "embeds": []
       },
       "a487cf69-e5ce-4956-85df-761e6427deef": {
         "size": {
@@ -294,6 +292,7 @@
         },
         "z": 1,
         "embeds": [
+          "314120e5-87bf-4791-80ae-cd443fad4186",
           "317ab59f-2379-451a-9fbc-c397fd31dd5c",
           "873403fc-c264-4f6b-86ae-092abee2a1d0",
           "37fc6d23-1902-4172-ab24-1c0cd8eab5b7",
@@ -309,8 +308,8 @@
           "height": 60
         },
         "position": {
-          "x": -120,
-          "y": 750
+          "x": 30,
+          "y": 590
         },
         "z": 1,
         "embeds": [],
@@ -347,7 +346,7 @@
         },
         "position": {
           "x": -370,
-          "y": 630
+          "y": 670
         },
         "z": 2,
         "parent": "a487cf69-e5ce-4956-85df-761e6427deef",
@@ -357,7 +356,7 @@
       },
       "3ea679dd-6851-4f71-b9da-063ff1955416": {
         "source": {
-          "id": "37fc6d23-1902-4172-ab24-1c0cd8eab5b7"
+          "id": "873403fc-c264-4f6b-86ae-092abee2a1d0"
         },
         "target": {
           "id": "f591c362-5976-4efe-aca1-f1c0cb9f31af"
@@ -371,7 +370,7 @@
         },
         "position": {
           "x": -340,
-          "y": 660
+          "y": 700
         },
         "z": 3,
         "parent": "37fc6d23-1902-4172-ab24-1c0cd8eab5b7",
@@ -398,11 +397,11 @@
           "height": 60
         },
         "position": {
-          "x": -520,
-          "y": 660
+          "x": -500,
+          "y": 740
         },
         "z": 3,
-        "parent": "f591c362-5976-4efe-aca1-f1c0cb9f31af",
+        "parent": "314120e5-87bf-4791-80ae-cd443fad4186",
         "embeds": [],
         "dependson": [
           "dd7a601c-41ee-40e3-90a8-a9edd1ea4e55",
@@ -418,8 +417,8 @@
           "height": 120
         },
         "position": {
-          "x": -370,
-          "y": 1030
+          "x": -360,
+          "y": 980
         },
         "z": 2,
         "parent": "a487cf69-e5ce-4956-85df-761e6427deef",
@@ -433,8 +432,8 @@
           "height": 60
         },
         "position": {
-          "x": -340,
-          "y": 1060
+          "x": -330,
+          "y": 1010
         },
         "z": 3,
         "parent": "873403fc-c264-4f6b-86ae-092abee2a1d0",
@@ -461,8 +460,8 @@
           "height": 60
         },
         "position": {
-          "x": -120,
-          "y": 900
+          "x": 30,
+          "y": 730
         },
         "z": 0,
         "embeds": []
@@ -482,13 +481,14 @@
           "height": 60
         },
         "position": {
-          "x": -560,
-          "y": 450
+          "x": -430,
+          "y": 510
         },
         "z": 0,
         "embeds": [],
         "isconnectedto": [
-          "f591c362-5976-4efe-aca1-f1c0cb9f31af"
+          "f591c362-5976-4efe-aca1-f1c0cb9f31af",
+          "314120e5-87bf-4791-80ae-cd443fad4186"
         ],
         "ismemberof": [
           "317ab59f-2379-451a-9fbc-c397fd31dd5c"
@@ -509,8 +509,8 @@
           "height": 60
         },
         "position": {
-          "x": -460,
-          "y": 450
+          "x": -430,
+          "y": 410
         },
         "z": 0,
         "parent": "a487cf69-e5ce-4956-85df-761e6427deef",
@@ -532,7 +532,7 @@
         "target": {
           "id": "317ab59f-2379-451a-9fbc-c397fd31dd5c"
         },
-        "z": 2
+        "z": 0
       },
       "e3b29f12-ac4c-44b2-aaae-abbfa7b9be82": {
         "source": {
@@ -558,8 +558,8 @@
           "height": 60
         },
         "position": {
-          "x": -120,
-          "y": 620
+          "x": 30,
+          "y": 820
         },
         "z": 0,
         "embeds": [],
@@ -586,6 +586,170 @@
           "id": "a487cf69-e5ce-4956-85df-761e6427deef"
         },
         "z": 13
+      },
+      "c1dcc697-c876-4d7d-b222-18013870cef9": {
+        "size": {
+          "width": 60,
+          "height": 60
+        },
+        "position": {
+          "x": -900,
+          "y": 690
+        },
+        "z": 0,
+        "embeds": [],
+        "ismemberof": [
+          "4719e386-5f75-42ec-9fb2-91f8386f9f87"
+        ],
+        "isrelatedto": [
+          "f77c932d-e2ff-48ee-b941-decf296031a5",
+          "13349f45-7e38-4fcc-a295-fe5b69a132ca"
+        ]
+      },
+      "8735ffc7-d4fb-4cdd-befa-8af9fd19f031": {
+        "size": {
+          "width": 60,
+          "height": 60
+        },
+        "position": {
+          "x": -800,
+          "y": 690
+        },
+        "z": 0,
+        "embeds": [],
+        "isconnectedto": [
+          "81ac2c65-7edd-45b6-a300-2e0f5576cd84",
+          "314120e5-87bf-4791-80ae-cd443fad4186"
+        ],
+        "isassociatedwith": [
+          "c1dcc697-c876-4d7d-b222-18013870cef9"
+        ]
+      },
+      "3cbbc1a8-3558-410c-9ba2-4be91920e29a": {
+        "source": {
+          "id": "8735ffc7-d4fb-4cdd-befa-8af9fd19f031"
+        },
+        "target": {
+          "id": "c1dcc697-c876-4d7d-b222-18013870cef9"
+        },
+        "z": 11
+      },
+      "4719e386-5f75-42ec-9fb2-91f8386f9f87": {
+        "size": {
+          "width": 60,
+          "height": 60
+        },
+        "position": {
+          "x": -1000,
+          "y": 690
+        },
+        "z": 0,
+        "embeds": []
+      },
+      "3541fdd2-09f7-40f4-bbd1-df7ed407ddca": {
+        "source": {
+          "id": "c1dcc697-c876-4d7d-b222-18013870cef9"
+        },
+        "target": {
+          "id": "4719e386-5f75-42ec-9fb2-91f8386f9f87"
+        },
+        "z": 12
+      },
+      "a94ef956-e01a-4abe-9d0d-d6d0eb1bce02": {
+        "source": {
+          "id": "1746deb0-5dd0-429b-8bc4-7b0ccfbdc0ef"
+        },
+        "target": {
+          "id": "4719e386-5f75-42ec-9fb2-91f8386f9f87"
+        },
+        "z": 11
+      },
+      "3e8a7351-bf88-4241-8fe3-81604ee88e97": {
+        "source": {
+          "id": "c1dcc697-c876-4d7d-b222-18013870cef9"
+        },
+        "target": {
+          "id": "4719e386-5f75-42ec-9fb2-91f8386f9f87"
+        },
+        "z": 11
+      },
+      "13349f45-7e38-4fcc-a295-fe5b69a132ca": {
+        "size": {
+          "width": 60,
+          "height": 60
+        },
+        "position": {
+          "x": -900,
+          "y": 590
+        },
+        "z": 0,
+        "embeds": [],
+        "isassociatedwith": [
+          "d3385b05-b7cc-42cb-a04d-4f49389dfc3d"
+        ]
+      },
+      "d3385b05-b7cc-42cb-a04d-4f49389dfc3d": {
+        "size": {
+          "width": 60,
+          "height": 60
+        },
+        "position": {
+          "x": -1000,
+          "y": 590
+        },
+        "z": 0,
+        "embeds": []
+      },
+      "8b8c8711-1ce4-4936-ae30-f5de4564fa38": {
+        "source": {
+          "id": "13349f45-7e38-4fcc-a295-fe5b69a132ca"
+        },
+        "target": {
+          "id": "d3385b05-b7cc-42cb-a04d-4f49389dfc3d"
+        },
+        "z": 11
+      },
+      "314120e5-87bf-4791-80ae-cd443fad4186": {
+        "size": {
+          "width": 250,
+          "height": 160
+        },
+        "position": {
+          "x": -670,
+          "y": 660
+        },
+        "z": 2,
+        "parent": "a487cf69-e5ce-4956-85df-761e6427deef",
+        "embeds": [
+          "dd161430-6440-4ef3-856b-99c6e8a6bbc5"
+        ]
+      },
+      "2e2c5361-9705-4e82-b4bc-8386b58f9f87": {
+        "source": {
+          "id": "8735ffc7-d4fb-4cdd-befa-8af9fd19f031"
+        },
+        "target": {
+          "id": "314120e5-87bf-4791-80ae-cd443fad4186"
+        },
+        "z": 11
+      },
+      "c3e68280-8668-40f1-ac64-0e5afe3f08d1": {
+        "source": {
+          "id": "46c5f359-b0f8-400a-924a-7416577bb1e4"
+        },
+        "target": {
+          "id": "f591c362-5976-4efe-aca1-f1c0cb9f31af"
+        },
+        "z": 12
+      },
+      "505c2107-b4cb-466c-a646-6caadb889c56": {
+        "source": {
+          "id": "37fc6d23-1902-4172-ab24-1c0cd8eab5b7"
+        },
+        "target": {
+          "id": "314120e5-87bf-4791-80ae-cd443fad4186"
+        },
+        "z": 2
       }
     }
   },
@@ -593,7 +757,7 @@
     "ControllerLC": {
       "Type": "AWS::AutoScaling::LaunchConfiguration",
       "Properties": {
-        "AssociatePublicIpAddress": true,
+        "AssociatePublicIpAddress": false,
         "IamInstanceProfile": {
           "Ref": "ControllerIAMInstanceProfile"
         },
@@ -638,11 +802,6 @@
             "Ref": "AvailabilityZone"
           }
         ],
-        "VPCZoneIdentifier": [
-          {
-            "Ref": "ControllerSubnet"
-          }
-        ],
         "Tags": [
           {
             "Key": "KubernetesCluster",
@@ -660,6 +819,11 @@
         "LoadBalancerNames": [
           {
             "Ref": "ControllerLoadBalancer"
+          }
+        ],
+        "VPCZoneIdentifier": [
+          {
+            "Ref": "ControllerSubnet"
           }
         ]
       },
@@ -923,12 +1087,6 @@
             "FromPort": -1,
             "ToPort": -1,
             "CidrIp": "0.0.0.0/0"
-          },
-          {
-            "IpProtocol": "TCP",
-            "FromPort": 22,
-            "ToPort": 22,
-            "CidrIp": "0.0.0.0/0"
           }
         ]
       },
@@ -995,6 +1153,20 @@
         }
       }
     },
+    "ControllerSecurityGroupIngressBastionSSH": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "ControllerSecurityGroup"
+        },
+        "SourceSecurityGroupId": {
+          "Ref": "BastionSecurityGroup"
+        },
+        "FromPort": 22,
+        "ToPort": 22,
+        "IpProtocol": "TCP"
+      }
+    },
     "WorkerSecurityGroup": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
@@ -1041,6 +1213,20 @@
         "AWS::CloudFormation::Designer": {
           "id": "251f6d10-84e4-44a1-b93e-67bbe9078fba"
         }
+      }
+    },
+    "WorkerSecurityGroupIngressBastionSSH": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "WorkerSecurityGroup"
+        },
+        "SourceSecurityGroupId": {
+          "Ref": "BastionSecurityGroup"
+        },
+        "FromPort": 22,
+        "ToPort": 22,
+        "IpProtocol": "TCP"
       }
     },
     "WorkerSecurityGroupIngressControllerToKubelet": {
@@ -1133,8 +1319,8 @@
         "VpcId": {
           "Ref": "ClusterVPC"
         },
-        "CidrBlock": "10.0.255.0/24",
-        "MapPublicIpOnLaunch": true,
+        "CidrBlock": "10.0.255.0/26",
+        "MapPublicIpOnLaunch": false,
         "AvailabilityZone": {
           "Ref": "AvailabilityZone"
         }
@@ -1195,15 +1381,15 @@
         }
       }
     },
-    "ControllerNATGateway": {
+    "PublicNATGateway": {
       "Type": "AWS::EC2::NatGateway",
       "Properties": {
         "SubnetId": {
-          "Ref": "ControllerSubnet"
+          "Ref": "PublicSubnet"
         },
         "AllocationId": {
           "Fn::GetAtt": [
-            "ControllerNATGatewayIP",
+            "PublicNATGatewayIP",
             "AllocationId"
           ]
         }
@@ -1218,7 +1404,7 @@
         "ClusterVPC"
       ]
     },
-    "ControllerRouteTable": {
+    "PublicRouteTable": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
         "VpcId": {
@@ -1235,7 +1421,7 @@
       "Type": "AWS::EC2::SubnetRouteTableAssociation",
       "Properties": {
         "RouteTableId": {
-          "Ref": "ControllerRouteTable"
+          "Ref": "PrivateRouteTable"
         },
         "SubnetId": {
           "Ref": "ControllerSubnet"
@@ -1247,11 +1433,11 @@
         }
       }
     },
-    "ControllerRouteToInternet": {
+    "PublicRouteToInternet": {
       "Type": "AWS::EC2::Route",
       "Properties": {
         "RouteTableId": {
-          "Ref": "ControllerRouteTable"
+          "Ref": "PublicRouteTable"
         },
         "GatewayId": {
           "Ref": "ClusterInternetGateway"
@@ -1267,7 +1453,7 @@
         "ClusterInternetGateway"
       ]
     },
-    "WorkerRouteTable": {
+    "PrivateRouteTable": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
         "VpcId": {
@@ -1288,14 +1474,14 @@
         }
       }
     },
-    "WorkerRouteToInternet": {
+    "PrivateRouteToInternet": {
       "Type": "AWS::EC2::Route",
       "Properties": {
         "RouteTableId": {
-          "Ref": "WorkerRouteTable"
+          "Ref": "PrivateRouteTable"
         },
         "NatGatewayId": {
-          "Ref": "ControllerNATGateway"
+          "Ref": "PublicNATGateway"
         },
         "DestinationCidrBlock": "0.0.0.0/0"
       },
@@ -1305,11 +1491,27 @@
         }
       }
     },
+    "PublicSubnetRouteTableAssociation": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "PublicRouteTable"
+        },
+        "SubnetId": {
+          "Ref": "PublicSubnet"
+        }
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "505c2107-b4cb-466c-a646-6caadb889c56"
+        }
+      }
+    },
     "WorkerSubnetRouteTableAssociation": {
       "Type": "AWS::EC2::SubnetRouteTableAssociation",
       "Properties": {
         "RouteTableId": {
-          "Ref": "WorkerRouteTable"
+          "Ref": "PrivateRouteTable"
         },
         "SubnetId": {
           "Ref": "WorkerSubnet"
@@ -1321,7 +1523,7 @@
         }
       }
     },
-    "ControllerNATGatewayIP": {
+    "PublicNATGatewayIP": {
       "Type": "AWS::EC2::EIP",
       "Properties": {
         "Domain": "vpc"
@@ -1337,7 +1539,7 @@
       "Properties": {
         "Subnets": [
           {
-            "Ref": "ControllerSubnet"
+            "Ref": "PublicSubnet"
           }
         ],
         "SecurityGroups": [
@@ -1435,6 +1637,220 @@
           "id": "0374cc4d-4484-4e1e-bc01-7817a99d2f72"
         }
       }
+    },
+    "BastionLC": {
+      "Type": "AWS::AutoScaling::LaunchConfiguration",
+      "Properties": {
+        "SecurityGroups": [
+          {
+            "Ref": "BastionSecurityGroup"
+          }
+        ],
+        "AssociatePublicIpAddress": true,
+        "IamInstanceProfile": {
+          "Ref": "BastionIAMInstanceProfile"
+        },
+        "ImageId": {
+          "Ref": "CoreOSImageID"
+        },
+        "InstanceType": {
+          "Ref": "BastionInstanceType"
+        },
+        "UserData": {
+          "Ref": "BastionUserData"
+        }
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "c1dcc697-c876-4d7d-b222-18013870cef9"
+        }
+      }
+    },
+    "BastionSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "BastionSecurityGroup",
+        "VpcId": {
+          "Ref": "ClusterVPC"
+        },
+        "SecurityGroupEgress": [
+          {
+            "IpProtocol": "TCP",
+            "FromPort": 0,
+            "ToPort": 65535,
+            "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol": "UDP",
+            "FromPort": 0,
+            "ToPort": 65535,
+            "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol": "ICMP",
+            "FromPort": -1,
+            "ToPort": -1,
+            "CidrIp": "0.0.0.0/0"
+          }
+        ],
+        "SecurityGroupIngress": [
+          {
+            "IpProtocol": "ICMP",
+            "FromPort": -1,
+            "ToPort": -1,
+            "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol": "TCP",
+            "FromPort": 22,
+            "ToPort": 22,
+            "CidrIp": "0.0.0.0/0"
+          }
+        ]
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "4719e386-5f75-42ec-9fb2-91f8386f9f87"
+        }
+      }
+    },
+    "BastionASG": {
+      "Type": "AWS::AutoScaling::AutoScalingGroup",
+      "Properties": {
+        "LaunchConfigurationName": {
+          "Ref": "BastionLC"
+        },
+        "MinSize": 1,
+        "MaxSize": 1,
+        "DesiredCapacity": 1,
+        "AvailabilityZones": [
+          {
+            "Ref": "AvailabilityZone"
+          }
+        ],
+        "Tags": [
+          {
+            "Key": "KubernetesCluster",
+            "Value": {
+              "Ref": "ClusterName"
+            },
+            "PropagateAtLaunch": true
+          },
+          {
+            "Key": "group",
+            "Value": "bastion",
+            "PropagateAtLaunch": true
+          }
+        ],
+        "LoadBalancerNames": [
+          {
+            "Ref": "ControllerLoadBalancer"
+          }
+        ],
+        "VPCZoneIdentifier": [
+          {
+            "Ref": "PublicSubnet"
+          }
+        ]
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "8735ffc7-d4fb-4cdd-befa-8af9fd19f031"
+        }
+      }
+    },
+    "BastionIAMInstanceProfile": {
+      "Type": "AWS::IAM::InstanceProfile",
+      "Properties": {
+        "Roles": [
+          {
+            "Ref": "BastionIAMRole"
+          }
+        ]
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "13349f45-7e38-4fcc-a295-fe5b69a132ca"
+        }
+      }
+    },
+    "BastionIAMRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "Path": "/",
+        "Policies": [
+          {
+            "PolicyName": "cluster-config-readonly",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Sid": "Stmt1460471074860",
+                  "Action": [
+                    "s3:GetObject"
+                  ],
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:aws:s3:::",
+                        {
+                          "Ref": "S3ConfigBucket"
+                        },
+                        "/",
+                        {
+                          "Ref": "ClusterName"
+                        },
+                        ".tar.gz"
+                      ]
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "s3.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        }
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "d3385b05-b7cc-42cb-a04d-4f49389dfc3d"
+        }
+      }
+    },
+    "PublicSubnet": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "VpcId": {
+          "Ref": "ClusterVPC"
+        },
+        "CidrBlock": "10.0.255.192/26",
+        "MapPublicIpOnLaunch": true,
+        "AvailabilityZone": {
+          "Ref": "AvailabilityZone"
+        }
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "314120e5-87bf-4791-80ae-cd443fad4186"
+        }
+      }
     }
   },
   "Parameters": {
@@ -1452,6 +1868,11 @@
       "Description": "Launch EC2 Instances in the Worker AutoScaling Group using this Instance type",
       "Default": "m3.large"
     },
+    "BastionInstanceType": {
+      "Type": "String",
+      "Description": "Launch EC2 Instances in the Bastion AutoScaling Group using this Instance type",
+      "Default": "m3.medium"
+    },
     "AvailabilityZone": {
       "Type": "AWS::EC2::AvailabilityZone::Name",
       "Description": "Deploy all resources into this AvailabilityZone"
@@ -1468,6 +1889,10 @@
       "Type": "String",
       "Description": "Launch Worker EC2 Instances with this UserData"
     },
+    "BastionUserData": {
+      "Type": "String",
+      "Description": "Launch Bastion EC2 Instances with this UserData"
+    },
     "ControllerInstanceCount": {
       "Type": "Number",
       "Description": "Number of EC2 Instances to provision as Controllers."
@@ -1479,6 +1904,10 @@
     "HostedZone": {
       "Type": "String",
       "Description": "DNS zone hosted in Route 53 that will be used to provide DNS resolution for the cluster API server to external clients"
+    },
+    "S3ConfigBucket": {
+      "Type": "String",
+      "Description": "S3 bucket that hosts the config tarball for this cluster. An object by the name of <ClusterName>.tar.gz must be present in this bucket."
     }
   },
   "Outputs": {
