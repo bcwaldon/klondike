@@ -1,16 +1,16 @@
 - set_fact:
     cert_name: "{{ item.name }}"
     cert_profile: "{{ item.profile }}"
-    cfssl_cert_csr_dest: "{{ workspace }}/cert-{{ item.name }}-csr.json"
+    cfssl_cert_csr: "cert-{{ item.name }}-csr.json"
 
 - name: CERT | generate CSR
-  template: src=csr.json.j2 dest={{ cfssl_cert_csr_dest }} mode=0644
+  template: src=csr.json.j2 dest={{workspace}}/{{ cfssl_cert_csr }} mode=0644
   vars:
     common_name: "{{ cert_name }}"
     hosts: "{{ item.hosts }}"
 
 - name: CERT | {{ cert_name }} | generate private key
-  shell: "cfssl gencert -ca={{ ca_cert_file }} -ca-key={{ ca_key_file }} -config={{ cfssl_ca_config }} -profile={{ cert_profile }} {{ cfssl_cert_csr_dest }} | cfssljson -bare {{ cert_name }}"
+  shell: "cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile={{ cert_profile }} {{ cfssl_cert_csr }} | cfssljson -bare {{ cert_name }}"
   args:
     chdir: "{{ workspace }}"
 

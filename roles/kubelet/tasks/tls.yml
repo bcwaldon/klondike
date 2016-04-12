@@ -1,29 +1,26 @@
 - set_fact:
-    ca_cert_file: "{{ workspace }}/ca.pem"
-    ca_key_file: "{{ workspace }}/ca-key.pem"
-    cfssl_ca_config: "{{ workspace }}/ca-config.json"
     host_workspace: "{{ workspace }}/{{ inventory_hostname }}"
 
 - name: create host workspace
   local_action: file path={{ host_workspace }} state=directory
 
 - name: create CA config file
-  local_action: template src=ca-config.json.j2 dest={{ cfssl_ca_config }} mode=0644
+  local_action: template src=ca-config.json.j2 dest={{workspace}}/ca-config.json mode=0644
 
 - name: write CA files
   local_action: copy content={{ item.content }} dest={{ item.dest }} mode=0644
   with_items:
   - content: "{{ pki_ca_cert }}"
-    dest: "{{ ca_cert_file }}"
+    dest: "{{workspace}}/ca.pem"
   - content: "{{ pki_ca_key }}"
-    dest: "{{ ca_key_file }}"
+    dest: "{{workspace}}/ca-key.pem"
 
 - name: fetch kubelet TLS csr
   fetch: src=/etc/kubernetes/kubelet-csr.pem dest={{host_workspace}}/kubelet-csr.pem flat=yes
   sudo: true
 
 - name: sign kubelet TLS csr
-  local_action: shell cfssl sign -ca={{ ca_cert_file }} -ca-key={{ ca_key_file }} -config={{ cfssl_ca_config }} -profile=client kubelet-csr.pem | cfssljson -bare kubelet
+  local_action: shell cfssl sign -ca=../ca.pem -ca-key=../ca-key.pem -config=../ca-config.json -profile=client kubelet-csr.pem | cfssljson -bare kubelet
   args:
     chdir: "{{ host_workspace }}"
 

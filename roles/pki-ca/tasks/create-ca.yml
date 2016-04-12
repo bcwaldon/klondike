@@ -1,14 +1,11 @@
-- set_fact:
-    cfssl_ca_csr_dest: "{{ workspace }}/ca-csr.json"
-
 - name: generate CA CSR
-  template: src=csr.json.j2 dest={{ cfssl_ca_csr_dest }} mode=0644
+  template: src=csr.json.j2 dest={{workspace}}/ca-csr.json mode=0644
   vars:
     common_name: "{{ ca_name }}"
     hosts: []
 
 - name: generate CA private key
-  shell: "cfssl gencert -initca {{ cfssl_ca_csr_dest }} | cfssljson -bare ca"
+  shell: "cfssl gencert -initca ca-csr.json | cfssljson -bare ca"
   args:
     chdir: "{{ workspace }}"
 

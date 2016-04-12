@@ -2,7 +2,7 @@
   connection: local
   gather_facts: False
   vars:
-    cluster_dir: "{{ playbook_dir }}/clusters/{{ cluster }}"
+    cluster_dir: "clusters/{{ cluster }}"
     workspace: "{{ cluster_dir }}/tmp"
   vars_files:
   - "{{ cluster_dir }}/main.yml"
