@@ -1,0 +1,28 @@
+#!/bin/bash -e
+
+CLUSTER=$1
+S3_LOCATION=s3://$2/authorized_keys.d/
+KEYS_DIR=/home/ubuntu/.ssh/authorized_keys.d/
+AUTHORIZED_KEYS_FILE=/home/ubuntu/.ssh/authorized_keys
+
+function pull {
+	mkdir -p /home/ubuntu/.ssh/authorized_keys.d/
+	mkdir -p $KEYS_DIR
+
+	aws s3 cp --recursive $S3_LOCATION $KEY_DIR
+	echo "Downloaded public keys to $KEY_DIR"
+
+	cat $KEYS_DIR/* > $AUTHORIZED_KEYS_FILE 
+	echo "Updated $AUTHORIZED_KEYS_FILE"
+}
+
+function usage {
+	echo "usage: $0 <cluster> <s3-bucket-name>"
+	exit 2
+}
+
+if [ $# -ne 1 ]; then
+	usage
+fi
+
+pull
