@@ -15,7 +15,7 @@ spec:
       - name: API_KEY
         value: "{{ datadog_api_key }}"
       - name: TAGS
-        value: "KubernetesCluster:{{ cluster_name }},KubernetesClusterRole:{{ cluster_role }}"
+        value: "KubernetesCluster:{{ cluster }},KubernetesClusterRole:{{ cluster_role }}"
     volumeMounts:
       - name: dockersocket
         mountPath: /var/run/docker.sock
@@ -30,7 +30,7 @@ spec:
     imagePullPolicy: Always
     env:
       - name: KUBE_DATADOG_TAGS
-        value: "KubernetesCluster:{{ cluster_name }},KubernetesClusterRole:{{ cluster_role }},host:{{ ec2_id }}"
+        value: "KubernetesCluster:{{ cluster }},KubernetesClusterRole:{{ cluster_role }},host:{{ ec2_id }}"
       - name: KUBE_DATADOG_KUBELET
         value: "{{ec2_private_ip_address}}:10255"
     volumeMounts:

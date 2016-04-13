@@ -1,8 +1,3 @@
-# cluster_name defines the name used to identify the resources
-# that make up a given cluster. This name must be unique within
-# the scope of an AWS VPC.
-cluster_name:
-
 # s3_config_bucket is the S3 bucket that this cluster should use
 # to store its cluster config data. This data contains cluster
 # secrets, so access to this bucket must be restricted to those
@@ -37,7 +32,7 @@ aws_hosted_zone:
 
 # external_fqdn defines a DNS name the the deployer wishes to make
 # routable to the Kubernetes.
-external_fqdn: {{ cluster_name }}.kubernetes.{{ aws_hosted_zone }}
+external_fqdn: {{ cluster }}.kubernetes.{{ aws_hosted_zone }}
 
 # bastion_instance_type is the instance type used when deploying
 # EC2 instances as bastions in your cluster. This instance is an

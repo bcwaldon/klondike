@@ -18,7 +18,7 @@ spec:
     - "--cloud-provider=aws"
     - "--allocate-node-cidrs=true"
     - "--cluster-cidr={{ cluster_pod_network_cidr }}"
-    - "--cluster-name={{ cluster_name }}"
+    - "--cluster-name={{ cluster }}"
     - "--leader-elect=true"
     volumeMounts:
     - mountPath: /etc/kubernetes
