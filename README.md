@@ -96,6 +96,12 @@ dnf install ansible
 
 1. Update your cluster config file, `clusters/$CLUSTER/main.yml`, with all unset fields. It is encouraged to use the default values, when available.
 
+1. If the S3 bucket you chose for your cluster does not yet exist, create it now:
+
+	```
+	aws s3 mb s3://<YOUR-BUCKET>
+	```
+
 1. From the root of the git checkout directory, run the `configure.yml` playbook:
 
 	```
