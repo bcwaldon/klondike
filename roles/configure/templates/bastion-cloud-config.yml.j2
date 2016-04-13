@@ -43,7 +43,7 @@ write_files:
     chmod a+x /tmp/kubectl
     sudo mv /tmp/kubectl /usr/local/bin/kubectl
 
-    git clone -b bastion https://github.com/bcwaldon/konduct /home/ubuntu/konduct
+    git clone https://github.com/bcwaldon/konduct /home/ubuntu/konduct
     cd /home/ubuntu/konduct && contrib/s3-config pull {{ cluster}} {{ s3_config_bucket }}
 
     cat << EOF > /home/ubuntu/.bash_login
