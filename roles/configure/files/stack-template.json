@@ -1843,7 +1843,7 @@
             }
           },
           {
-            "PolicyName": "s3-read-cluster-tarball",
+            "PolicyName": "s3-read-cluster-config",
             "PolicyDocument": {
               "Version": "2012-10-17",
               "Statement": [
@@ -1861,7 +1861,7 @@
                         {
                           "Ref": "S3ConfigBucket"
                         },
-                        "/",
+                        "/konduct-cluster-",
                         {
                           "Ref": "ClusterName"
                         },

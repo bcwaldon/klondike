@@ -2,7 +2,7 @@
 
 ACTION=$1
 CLUSTER=$2
-TARBALL=konduct-stack-$CLUSTER.tar.gz
+TARBALL=konduct-cluster-$CLUSTER.tar.gz
 S3_LOCATION=s3://$3/$TARBALL
 
 function push {
