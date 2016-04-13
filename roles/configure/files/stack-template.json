@@ -919,7 +919,7 @@
         "EbsOptimized": true,
         "BlockDeviceMappings": [
           {
-            "DeviceName": "xvda",
+            "DeviceName": "/dev/xvda",
             "Ebs": {
               "VolumeSize": 32,
               "Iops": 960,
@@ -928,7 +928,7 @@
             }
           },
           {
-            "DeviceName": "xvdb",
+            "DeviceName": "/dev/xvdb",
             "Ebs": {
               "VolumeSize": 128,
               "VolumeType": "gp2",
