@@ -31,6 +31,16 @@ write_files:
   content: |
     #!/bin/bash -ex
 
+    cat << EOF > /home/ubuntu/.bash_login
+    source /home/ubuntu/.konductrc
+    EOF
+
+    cat << EOF > /home/ubuntu/.konductrc
+    export CLUSTER={{ cluster }}
+    export ANSIBLE_CONFIG=/home/ubuntu/konduct/clusters/{{ cluster }}/ansible.cfg
+    export KUBECONFIG=/home/ubuntu/konduct/clusters/{{ cluster }}/kubeconfig
+    EOF
+
     export GOPATH=/home/ubuntu/.gopath
     mkdir $GOPATH
     git clone -b 1.2.0 https://github.com/cloudflare/cfssl $GOPATH/src/github.com/cloudflare/cfssl
@@ -45,13 +55,3 @@ write_files:
 
     git clone https://github.com/bcwaldon/konduct /home/ubuntu/konduct
     cd /home/ubuntu/konduct && contrib/s3-config pull {{ cluster}} {{ s3_config_bucket }}
-
-    cat << EOF > /home/ubuntu/.bash_login
-    source /home/ubuntu/.konductrc
-    EOF
-
-    cat << EOF > /home/ubuntu/.konductrc
-    export CLUSTER={{ cluster }}
-    export ANSIBLE_CONFIG=/home/ubuntu/konduct/clusters/{{ cluster }}/ansible.cfg
-    export KUBECONFIG=/home/ubuntu/konduct/clusters/{{ cluster }}/kubeconfig
-    EOF
