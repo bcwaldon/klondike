@@ -78,7 +78,7 @@ dnf install kubernetes-client
 The Kubernetes project also ships binaries via Google Storage:
 
 ```
-wget https://storage.googleapis.com/kubernetes-release/release/v1.2.1/bin/darwin/amd64/kubectl
+wget https://storage.googleapis.com/kubernetes-release/release/v1.2.1/bin/linux/amd64/kubectl
 ```
 
 ## Quickstart
