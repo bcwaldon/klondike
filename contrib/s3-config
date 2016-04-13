@@ -9,14 +9,14 @@ function push {
 	tar -czf clusters/$TARBALL clusters/$CLUSTER/
 	echo "Packed clusters/$CLUSTER/ into clusters/$TARBALL"
 
-	aws s3 cp --quiet clusters/$TARBALL $S3_LOCATION
+	aws s3 cp clusters/$TARBALL $S3_LOCATION
 	echo "Published clusters/$TARBALL to $S3_LOCATION"
 }
 
 function pull {
 	mkdir -p clusters/
 
-	aws s3 cp --quiet $S3_LOCATION clusters/$TARBALL 
+	aws s3 cp $S3_LOCATION clusters/$TARBALL
 	echo "Pulled clusters/$TARBALL from $S3_LOCATION"
 
 	tar -xzf clusters/$TARBALL clusters/$CLUSTER/
