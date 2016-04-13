@@ -31,6 +31,12 @@ aws_hosted_zone:
 # routable to the Kubernetes.
 external_fqdn: {{ cluster_name }}.kubernetes.{{ aws_hosted_zone }}
 
+# bastion_instance_type is the instance type used when deploying
+# EC2 instances as bastions in your cluster. This instance is an
+# administrative host, so it does not need a large amount of storage
+# or compute resources.
+bastion_instance_type: m3.medium
+
 # controller_instance_type is the instance type used when deploying
 # EC2 instances for the Kubernetes control plane.
 controller_instance_type: m3.large
