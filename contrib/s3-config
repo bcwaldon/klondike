@@ -3,21 +3,26 @@
 ACTION=$1
 CLUSTER=$2
 TARBALL=konduct-cluster-$CLUSTER.tar.gz
-S3_LOCATION=s3://$3/$TARBALL
+S3_LOC_TARBALL=s3://$3/$TARBALL
+TEMPLATE=stack-template.json
+S3_LOC_TEMPLATE=s3://$3/$TEMPLATE
 
 function push {
 	tar -czf clusters/$TARBALL clusters/$CLUSTER/
 	echo "Packed clusters/$CLUSTER/ into clusters/$TARBALL"
 
-	aws s3 cp clusters/$TARBALL $S3_LOCATION
-	echo "Published clusters/$TARBALL to $S3_LOCATION"
+	aws s3 cp clusters/$TARBALL $S3_LOC_TARBALL
+	echo "Published clusters/$TARBALL to $S3_LOC_TARBALL"
+
+	aws s3 cp clusters/$CLUSTER/$TEMPLATE $S3_LOC_TEMPLATE
+	echo "Published clusters/$CLUSTER/$TEMPLATE to $S3_LOC_TEMPLATE"
 }
 
 function pull {
 	mkdir -p clusters/
 
-	aws s3 cp $S3_LOCATION clusters/$TARBALL
-	echo "Pulled clusters/$TARBALL from $S3_LOCATION"
+	aws s3 cp $S3_LOC_TARBALL clusters/$TARBALL
+	echo "Pulled clusters/$TARBALL from $S3_LOC_TARBALL"
 
 	tar -xzf clusters/$TARBALL clusters/$CLUSTER/
 	echo "Unpacked clusters/$CLUSTER/ from clusters/$TARBALL"
