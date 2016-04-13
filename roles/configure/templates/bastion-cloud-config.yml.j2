@@ -23,7 +23,7 @@ runcmd:
   wget https://storage.googleapis.com/kubernetes-release/release/v1.2.1/bin/linux/amd64/kubectl
   chmod a+x kubectl
   sudo mv kubectl /usr/local/bin/kubectl
-  git clone https://github.com/bcwaldon/konduct /home/ubuntu/konduct
+  git clone -b bastion https://github.com/bcwaldon/konduct /home/ubuntu/konduct
   sudo chown ubuntu:ubuntu -R /home/ubuntu/konduct
   cd /home/ubuntu/konduct && contrib/s3-config pull {{ s3_bucket }} {{ cluster }}
   sudo chown ubuntu:ubuntu -R clusters/
