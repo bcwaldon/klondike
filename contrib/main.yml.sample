@@ -3,6 +3,14 @@
 # the scope of an AWS VPC.
 cluster_name:
 
+# s3_config_bucket is the S3 bucket that this cluster should use
+# to store its cluster config data. This data contains cluster
+# secrets, so access to this bucket must be restricted to those
+# that NEED to use konduct to manage this cluster. This bucket
+# does not need to be unique to this cluster, as konduct will
+# use a namespace when placing objects in S3.
+s3_config_bucket:
+
 # aws_region is the AWS region in which the cluster will be deployed.
 aws_region:
 

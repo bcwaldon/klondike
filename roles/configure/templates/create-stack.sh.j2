@@ -14,7 +14,7 @@ PARAMETERS=(
 	"ParameterKey=UbuntuImageID,ParameterValue={{ ubuntu_image_id }}"
 	"ParameterKey=ClusterName,ParameterValue={{ cluster }}"
 	"ParameterKey=HostedZone,ParameterValue={{ aws_hosted_zone }}"
-	"ParameterKey=S3ConfigBucket,ParameterValue=konduct"
+	"ParameterKey=S3ConfigBucket,ParameterValue={{ s3_config_bucket }}"
 	"ParameterKey=ControllerUserData,ParameterValue=$USER_DATA"
 	"ParameterKey=WorkerUserData,ParameterValue=$USER_DATA"
 	"ParameterKey=BastionUserData,ParameterValue=$BASTION_USER_DATA"

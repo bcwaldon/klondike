@@ -1,0 +1,44 @@
+#!/bin/bash -e
+
+ACTION=$1
+CLUSTER=$2
+TARBALL=konduct-stack-$CLUSTER.tar.gz
+S3_LOCATION=s3://$3/$TARBALL
+
+function push {
+	tar -czf clusters/$TARBALL clusters/$CLUSTER/
+	echo "Packed clusters/$CLUSTER/ into clusters/$TARBALL"
+
+	aws s3 cp --quiet clusters/$TARBALL $S3_LOCATION
+	echo "Published clusters/$TARBALL to $S3_LOCATION"
+}
+
+function pull {
+	mkdir -p clusters/
+
+	aws s3 cp --quiet $S3_LOCATION clusters/$TARBALL 
+	echo "Pulled clusters/$TARBALL from $S3_LOCATION"
+
+	tar -xzf clusters/$TARBALL clusters/$CLUSTER/
+	echo "Unpacked clusters/$CLUSTER/ from clusters/$TARBALL"
+}
+
+function usage {
+	echo "usage: $0 [push|pull] <cluster> <s3-bucket-name>"
+	echo "	push: pack the local cluster config into a tarball and publish it to S3"
+	echo "	pull: download the cluster config from S3 and unpack it"
+	exit 2
+}
+
+if [ $# -ne 3 ]; then
+	usage
+fi
+
+case $1 in
+	"push" )
+		push ;;
+	"pull" )
+		pull ;;
+	"*" )
+		usage ;;
+esac
