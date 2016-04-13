@@ -11,7 +11,6 @@ packages:
 
 runcmd:
 - |
-  echo "source /home/ubuntu/.konductrc" >> /home/ubuntu/.bashrc
   export GOPATH=/home/ubuntu/.gopath
   mkdir $GOPATH
   git clone -b 1.2.0 https://github.com/cloudflare/cfssl $GOPATH/src/github.com/cloudflare/cfssl
@@ -35,3 +34,9 @@ write_files:
   content: |
     export CLUSTER={{ cluster }}
     export ANSIBLE_CONFIG=/users/ubuntu/konduct/clusters/$CLUSTER/ansible.cfg
+
+- path: /home/ubuntu/.bash_login
+  owner: ubuntu:ubuntu
+  permissions: "0644"
+  content: |
+    source /home/ubuntu/.konductrc
