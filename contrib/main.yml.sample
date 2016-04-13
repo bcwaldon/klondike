@@ -32,7 +32,7 @@ aws_hosted_zone:
 
 # external_fqdn defines a DNS name the the deployer wishes to make
 # routable to the Kubernetes.
-external_fqdn: {{ cluster }}.kubernetes.{{ aws_hosted_zone }}
+external_fqdn: "{{ cluster }}.kubernetes.{{ aws_hosted_zone }}"
 
 # bastion_instance_type is the instance type used when deploying
 # EC2 instances as bastions in your cluster. This instance is an
