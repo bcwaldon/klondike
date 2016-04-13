@@ -111,7 +111,7 @@ dnf install ansible
 1. Upload the created cluster configuration to the S3 bucket you chose for your cluster (see main.yml):
 
 	```
-	./contrib/s3-config push $CLUSTER <YOUR-BUCKET-HERE>
+	./contrib/s3-config push $CLUSTER <YOUR-BUCKET>
 	```
 
 1. Create the CloudFormation stack and wait for creation to complete. This can take a while!:
@@ -123,7 +123,7 @@ dnf install ansible
 1. Once your CloudFormation stack is ready, identify the public IP of your bastion host and SSH to it as the `ubuntu` user using the cluster's deploy key. The remaining steps should be run from the bastion host:
 
 	```
-	ssh -i clusters/$CLUSTER/id_rsa ubuntu@<YOUR-BASTION-IP-HERE>
+	ssh -i clusters/$CLUSTER/id_rsa ubuntu@<YOUR-BASTION-IP>
 	```
 
 1. Finish deploying your infrastructure:
