@@ -1,46 +1,29 @@
 #!/bin/bash -e
 
-CLUSTER_NAME="{{ cluster }}"
-STACK_NAME="konduct-cluster-${CLUSTER_NAME}"
-
-AZ="{{ aws_availability_zone }}"
-HOSTED_ZONE="{{ aws_hosted_zone }}"
-
 USER_DATA=$(cat {{ cluster_dir }}/cloud-config.yml | base64)
-IMAGE_ID="{{ instance_image_id }}"
-
-CONTROLLER_INSTANCE_TYPE="{{ controller_instance_type }}"
-CONTROLLER_INSTANCE_COUNT="{{ controller_instance_count }}"
-
-WORKER_INSTANCE_TYPE="{{ worker_instance_type }}"
-WORKER_INSTANCE_COUNT="{{ worker_instance_count }}"
-
 BASTION_USER_DATA=$(cat {{ cluster_dir }}/bastion-cloud-config.yml | base64)
-BASTION_INSTANCE_TYPE="m3.medium"
-
-S3_CONFIG_BUCKET="konduct"
-
 
 PARAMETERS=( 
-	"ParameterKey=AvailabilityZone,ParameterValue=$AZ"
-	"ParameterKey=ControllerInstanceType,ParameterValue=$CONTROLLER_INSTANCE_TYPE"
-	"ParameterKey=ControllerInstanceCount,ParameterValue=$CONTROLLER_INSTANCE_COUNT"
-	"ParameterKey=WorkerInstanceType,ParameterValue=$WORKER_INSTANCE_TYPE"
-	"ParameterKey=WorkerInstanceCount,ParameterValue=$WORKER_INSTANCE_COUNT"
-	"ParameterKey=BastionInstanceType,ParameterValue=$BASTION_INSTANCE_TYPE"
-	"ParameterKey=CoreOSImageID,ParameterValue=$IMAGE_ID"
-	"ParameterKey=ClusterName,ParameterValue=$CLUSTER_NAME"
+	"ParameterKey=AvailabilityZone,ParameterValue={{ aws_availability_zone }}"
+	"ParameterKey=ControllerInstanceType,ParameterValue={{ controller_instance_type }}"
+	"ParameterKey=ControllerInstanceCount,ParameterValue={{ controller_instance_count }}"
+	"ParameterKey=WorkerInstanceType,ParameterValue={{ worker_instance_type }}"
+	"ParameterKey=WorkerInstanceCount,ParameterValue={{ worker_instance_count }}"
+	"ParameterKey=BastionInstanceType,ParameterValue=m3.medium"
+	"ParameterKey=CoreOSImageID,ParameterValue={{ coreos_image_id }}"
+	"ParameterKey=UbuntuImageID,ParameterValue={{ ubuntu_image_id }}"
+	"ParameterKey=ClusterName,ParameterValue={{ cluster }}"
+	"ParameterKey=HostedZone,ParameterValue={{ aws_hosted_zone }}"
+	"ParameterKey=S3ConfigBucket,ParameterValue=konduct"
 	"ParameterKey=ControllerUserData,ParameterValue=$USER_DATA"
 	"ParameterKey=WorkerUserData,ParameterValue=$USER_DATA"
 	"ParameterKey=BastionUserData,ParameterValue=$BASTION_USER_DATA"
-	"ParameterKey=HostedZone,ParameterValue=$HOSTED_ZONE"
-	"ParameterKey=S3ConfigBucket,ParameterValue=$S3_CONFIG_BUCKET"
 )
 
 function join { local IFS="$1"; shift; echo "$*"; }
 
 aws cloudformation create-stack \
-	--stack-name $STACK_NAME \
+	--stack-name konduct-cluster-{{ cluster }} \
 	--capabilities CAPABILITY_IAM \
 	--parameters $(join " " "${PARAMETERS[@]}") \
 	--disable-rollback \

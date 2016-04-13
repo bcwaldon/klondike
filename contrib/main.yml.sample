@@ -16,10 +16,14 @@ aws_region:
 # availablility zones include us-west-2a, us-west-2b and us-west-2c.
 aws_availability_zone:
 
-# instance_image_id is the AMI ID used to deploy both controller
+# coreos_image_id is the AMI ID used to deploy both controller
 # and worker EC2 instances. This AMI must be available in the region
 # indicated by aws_region.
-instance_image_id:
+coreos_image_id:
+
+# ubuntu_image_id is the API ID used to deploy bastion EC2 instances.
+# This AMI must be available in the region indicated by aws_region.
+ubuntu_image_id:
 
 # aws_hosted_zone is a DNS zone delegated to AWS Route 53 the
 # to which the deployer has the ability to add records. This

@@ -1701,7 +1701,7 @@
           "Ref": "BastionIAMInstanceProfile"
         },
         "ImageId": {
-          "Ref": "CoreOSImageID"
+          "Ref": "UbuntuImageID"
         },
         "InstanceType": {
           "Ref": "BastionInstanceType"
@@ -1906,7 +1906,11 @@
   "Parameters": {
     "CoreOSImageID": {
       "Type": "AWS::EC2::Image::Id",
-      "Description": "Launch instances using this CoreOS AMI"
+      "Description": "Launch Controller and Worker EC2 Instances using this CoreOS AMI"
+    },
+    "UbuntuImageID": {
+      "Type": "AWS::EC2::Image::Id",
+      "Description": "Launch Bastion EC2 Instances using this Ubuntu AMI"
     },
     "ControllerInstanceType": {
       "Type": "String",
