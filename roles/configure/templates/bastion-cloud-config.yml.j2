@@ -20,7 +20,7 @@ runcmd:
   go get github.com/cloudflare/cfssl/cmd/cfssljson
   sudo mv $GOPATH/bin/cfssljson /usr/local/bin
   wget https://storage.googleapis.com/kubernetes-release/release/v1.2.1/bin/linux/amd64/kubectl
-  chmox +x kubectl
+  chmod a+x kubectl
   sudo mv kubectl /usr/local/bin/kubectl
   git clone https://github.com/bcwaldon/konduct /home/ubuntu/konduct
   sudo chown ubuntu:ubuntu -R /home/ubuntu/konduct
