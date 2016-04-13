@@ -11,6 +11,7 @@ packages:
 
 runcmd:
 - |
+  echo "source /home/ubuntu/.konductrc" >> /home/ubuntu/.bashrc
   export GOPATH=/home/ubuntu/.gopath
   mkdir $GOPATH
   git clone -b 1.2.0 https://github.com/cloudflare/cfssl $GOPATH/src/github.com/cloudflare/cfssl
@@ -24,3 +25,13 @@ runcmd:
   sudo mv kubectl /usr/local/bin/kubectl
   git clone https://github.com/bcwaldon/konduct /home/ubuntu/konduct
   sudo chown ubuntu:ubuntu -R /home/ubuntu/konduct
+  cd /home/ubuntu/konduct && contrib/s3-config pull {{ s3_bucket }} {{ cluster }}
+  sudo chown ubuntu:ubuntu -R clusters/
+
+write_files:
+- path: /home/ubuntu/.konductrc
+  owner: ubuntu:ubuntu
+  permissions: "0644"
+  content: |
+    export CLUSTER={{ cluster }}
+    export ANSIBLE_CONFIG=/users/ubuntu/konduct/clusters/$CLUSTER/ansible.cfg
