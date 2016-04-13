@@ -1,11 +1,7 @@
-- hosts: all
-  gather_facts: False
-  roles:
-  - defunctzombie.coreos-bootstrap
-
 - hosts: tag_group_controller
   gather_facts: False
   roles:
+  - defunctzombie.coreos-bootstrap
   - kubelet
   - kube-controller
   vars:
@@ -18,6 +14,7 @@
 - hosts: tag_group_worker
   gather_facts: False
   roles:
+  - defunctzombie.coreos-bootstrap
   - kubelet
   vars:
     cluster_dir: "clusters/{{ cluster }}"
