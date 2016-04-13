@@ -10,33 +10,47 @@ packages:
 - golang
 
 runcmd:
-- |
-  export GOPATH=/home/ubuntu/.gopath
-  mkdir $GOPATH
-  git clone -b 1.2.0 https://github.com/cloudflare/cfssl $GOPATH/src/github.com/cloudflare/cfssl
-  sudo chown ubuntu:ubuntu -R $GOPATH/src/github.com/cloudflare/cfssl
-  go get github.com/cloudflare/cfssl/cmd/cfssl
-  sudo mv $GOPATH/bin/cfssl /usr/local/bin
-  go get github.com/cloudflare/cfssl/cmd/cfssljson
-  sudo mv $GOPATH/bin/cfssljson /usr/local/bin
-  wget https://storage.googleapis.com/kubernetes-release/release/v1.2.1/bin/linux/amd64/kubectl
-  chmod a+x kubectl
-  sudo mv kubectl /usr/local/bin/kubectl
-  git clone -b bastion https://github.com/bcwaldon/konduct /home/ubuntu/konduct
-  sudo chown ubuntu:ubuntu -R /home/ubuntu/konduct
-  cd /home/ubuntu/konduct && contrib/s3-config pull {{ s3_config_bucket }} {{ cluster }}
-  sudo chown ubuntu:ubuntu -R clusters/
+- systemctl start --no-block konduct-bootstrap.service
 
 write_files:
-- path: /home/ubuntu/.konductrc
-  owner: ubuntu:ubuntu
+- path: /etc/systemd/system/konduct-bootstrap.service
+  owner: root:root
   permissions: "0644"
   content: |
+    [Unit]
+    After=multi-user.target
+    Requires=multi-user.target
+    [Service]
+    Type=oneshot
+    ExecStart=/var/lib/konduct/bootstrap
+    User=ubuntu
+
+- path: /var/lib/konduct/bootstrap
+  owner: root:root
+  permissions: "0777"
+  content: |
+    #!/bin/bash -ex
+
+    export GOPATH=/home/ubuntu/.gopath
+    mkdir $GOPATH
+    git clone -b 1.2.0 https://github.com/cloudflare/cfssl $GOPATH/src/github.com/cloudflare/cfssl
+    go get github.com/cloudflare/cfssl/cmd/cfssl
+    sudo mv $GOPATH/bin/cfssl /usr/local/bin
+    go get github.com/cloudflare/cfssl/cmd/cfssljson
+    sudo mv $GOPATH/bin/cfssljson /usr/local/bin
+
+    wget https://storage.googleapis.com/kubernetes-release/release/v1.2.1/bin/linux/amd64/kubectl -O /tmp/kubectl
+    chmod a+x /tmp/kubectl
+    sudo mv /tmp/kubectl /usr/local/bin/kubectl
+
+    git clone -b bastion https://github.com/bcwaldon/konduct /home/ubuntu/konduct
+    cd /home/ubuntu/konduct && contrib/s3-config pull {{ cluster}} {{ s3_config_bucket }}
+
+    cat << EOF > /home/ubuntu/.bash_login
+    source /home/ubuntu/.konductrc
+    EOF
+
+    cat << EOF > /home/ubuntu/.konductrc
     export CLUSTER={{ cluster }}
     export ANSIBLE_CONFIG=/users/ubuntu/konduct/clusters/$CLUSTER/ansible.cfg
-
-- path: /home/ubuntu/.bash_login
-  owner: ubuntu:ubuntu
-  permissions: "0644"
-  content: |
-    source /home/ubuntu/.konductrc
+    EOF
