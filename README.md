@@ -1,32 +1,44 @@
 # konduct
 
-konduct enables the deploy and manage a Kubernetes cluster using AWS CloudFormation and Ansible.
+konduct will deploy and manage a Kubernetes cluster using AWS CloudFormation and Ansible.
 konduct can send metrics to Datadog, aggregate logs via Logstash, and securely manage secrets using Ansible Vault.
 
-This project is opinionated in how it deploys Kubernetes.
+This project is opinionated in how it deploys Kubernetes and the related services.
 All feedback and code contributions are welcome, but the scope of this project is only intended to reflect one method of deployment.
 konduct will not grow to encompass other deployment methodologies.
 
 konduct is licensed under Apache 2.0.
 See [LICENSE](LICENSE) for more details.
 
-## Prerequisites
+## Overview
 
-The following tools must be installed locally to use konduct:
+konduct deploys three types of hosts: controllers, workers and a bastion.
+The controllers operate the Kubernetes control plane, while the workers run pods scheduled to them via the Kubernetes API.
+
+The bastion is an administrative host that facilitates the management of the konduct cluster.
+An operator uses the bastion for initial cluster deployment, as well as on-going cluster management tasks.
+
+## Deploy a New Cluster
+
+The creation of a new cluster depends on having installed a few tools locally.
+Start off by getting these installed, then continue on with cluster bootstrapping.
+
+### Install Tools
+
+These tools are used to generate the configuration for a new konduct cluster:
 
 - [cfssl](https://github.com/cloudflare/cfssl)
 - [awscli](https://aws.amazon.com/cli/)
 - [ansible](https://www.ansible.com/) 2.0+
-- [kubectl](http://kubernetes.io/docs/user-guide/kubectl-overview/) 1.2+
 
 You must have locally-configured credentials for your AWS account working with the `aws` CLI tool.
-Ensure you've chosed the appropriate profile before deploying anything!
+Ensure you've chosen the appropriate profile before deploying anything!
 
 ```
 export AWS_PROFILE=<YOUR-PROFILE-NAME>
 ```
 
-### Installing cfssl
+#### Install cfssl
 
 For OS X users, this is available via homebrew:
 
@@ -37,7 +49,7 @@ brew install cfssl
 On other operating systems, `cfssl` must be installed manually.
 Follow the [instructions on GitHub](https://github.com/cloudflare/cfssl#installation).
 
-### Installing awscli
+#### Install awscli
 
 This tool is installed using `pip`:
 
@@ -45,7 +57,7 @@ This tool is installed using `pip`:
 pip install awscli
 ```
 
-### Installing ansible
+#### Install ansible
 
 For OS X users, this is available via homebrew:
 
@@ -60,91 +72,69 @@ For example, on Fedora 23:
 dnf install ansible
 ```
 
-### Installing kubectl
+### Bootstrap & Deploy
 
-For OS X users, this is available via homebrew:
-
-```
-brew install kubernetes-cli
-```
-
-Linux users can rely on packaging.
-For example, on Fedora 23:
-
-```
-dnf install kubernetes-client
-```
-
-The Kubernetes project also ships binaries via Google Storage:
-
-```
-wget https://storage.googleapis.com/kubernetes-release/release/v1.2.1/bin/linux/amd64/kubectl
-```
-
-## Quickstart
-
-Follow these steps only after meeting the prerequisites documented above.
-
-1. Check out the project
+1. Check out the project and `cd` into the directory:
 
 	```
 	git clone git@github.com:bcwaldon/konduct.git
+	cd konduct/
 	```
 
-2. Choose a name for your cluster, and set it in an environment variable:
+1. Choose a name for your cluster, and set it in an environment variable:
 
 	```
 	export CLUSTER=<YOUR-CLUSTER-NAME>
 	```
 
-3. Create a workspace for your cluster in the git checkout directory and copy the sample config file:
+1. Create a workspace for your cluster in the git checkout directory and copy the sample config file:
 
 	```
-	cd konduct/
 	mkdir -p clusters/$CLUSTER/
 	cp contrib/main.yml.sample clusters/$CLUSTER/main.yml
 	```
 
-4. Update your cluster config file, `clusters/$CLUSTER/main.yml`, with all unset fields. At this time, do not set `ssh_bastion`. We will do this later.
+1. Update your cluster config file, `clusters/$CLUSTER/main.yml`, with all unset fields. It is encouraged to use the default values, when available.
 
-5. From the root of the git checkout diretory, run the `configure.yml` playbook:
+1. From the root of the git checkout directory, run the `configure.yml` playbook:
 
 	```
 	ansible-playbook -e cluster=$CLUSTER configure.yml
 	```
 
-6. Create the CloudFormation stack and wait for creation to complete:
+1. Upload the created cluster configuration to the S3 bucket you chose for your cluster (see main.yml):
+
+	```
+	./contrib/s3-config push $CLUSTER <YOUR-BUCKET-HERE>
+	```
+
+1. Create the CloudFormation stack and wait for creation to complete. This can take a while!:
 
 	```
 	./clusters/$CLUSTER/create-stack.sh
 	```
 
-7. Once your CloudFormation stack is ready, identify a public IP of one of the controller instances (identified by the resource tags `tag:KubernetesCluster : $CLUSTER` and `tag:group : controller`). Set the value of `ssh_bastion` in your cluster config and re-run the configure.yml playbook.
-
-	**NOTE:** This is clearly an unfortunate hack. This will improve.
+1. Once your CloudFormation stack is ready, identify the public IP of your bastion host and SSH to it as the `ubuntu` user using the cluster's deploy key. The remaining steps should be run from the bastion host:
 
 	```
-	export SSH_BASTION=<YOUR-CONTROLLER-IP>
-	sed -i "" "s/^ssh_bastion:.*$/ssh_bastion: $SSH_BASTION/g" clusters/porter/main.yml
-	ansible-playbook -e cluster=$CLUSTER configure.yml
+	ssh -i clusters/$CLUSTER/id_rsa ubuntu@<YOUR-BASTION-IP-HERE>
 	```
 
-8. Deploy Kubernetes to the cluster using the cluster's `ansible.cfg`. This will take a while!
+1. Finish deploying your infrastructure:
 
 	```
-	ANSIBLE_CONFIG=clusters/$CLUSTER/ansible.cfg ansible-playbook -e cluster=$CLUSTER site.yml
+	ansible-playbook -e cluster=$CLUSTER site.yml
 	```
 
-9. Deploy the cluster-level components onto Kubernetes
+1. Finally, deploy the cluster-level components onto Kubernetes:
 
 	```
-	ANSIBLE_CONFIG=clusters/$CLUSTER/ansible.cfg ansible-playbook -e cluster=$CLUSTER cluster.yml
+	ansible-playbook -e cluster=$CLUSTER cluster.yml
 	```
 
 Now your cluster is ready to go.
-A kubeconfig will be available at `clusters/$CLUSTER/kubeconfig` that provides you admin access.
 Validate everything is working by querying the cluster for all nodes:
 
 ```
-kubectl --kubeconfig=clusters/$CLUSTER/kubeconfig get nodes
+kubectl get nodes
 ```
