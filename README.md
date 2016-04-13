@@ -129,10 +129,11 @@ dnf install ansible
 1. Finish deploying your infrastructure:
 
 	```
+	cd /home/ubuntu/konduct/
 	ansible-playbook -e cluster=$CLUSTER site.yml
 	```
 
-1. Finally, deploy the cluster-level components onto Kubernetes:
+1. Finally, deploy the cluster-level components onto Kubernetes. This may take a few attempts as we must wait for the Kubernetes API to become available:
 
 	```
 	ansible-playbook -e cluster=$CLUSTER cluster.yml
