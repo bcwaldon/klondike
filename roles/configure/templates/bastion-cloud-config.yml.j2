@@ -52,5 +52,5 @@ write_files:
 
     cat << EOF > /home/ubuntu/.konductrc
     export CLUSTER={{ cluster }}
-    export ANSIBLE_CONFIG=/users/ubuntu/konduct/clusters/$CLUSTER/ansible.cfg
+    export ANSIBLE_CONFIG=/home/ubuntu/konduct/clusters/{{ cluster }}/ansible.cfg
     EOF
