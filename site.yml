@@ -1,22 +1,3 @@
-- hosts: 127.0.0.1
-  connection: local
-  gather_facts: False
-  roles:
-  - pki-clients
-  vars:
-    cluster_dir: "clusters/{{ cluster }}"
-    workspace: "{{ cluster_dir }}/tmp"
-    ca_vars_file: "{{ cluster_dir }}/pki-{{ ca_name }}-ca.yml"
-    client_vars_file: "{{ cluster_dir }}/pki-{{ ca_name }}-clients.yml"
-    clients:
-    - name: apiserver
-      profile: server
-      hosts:
-      - "{{ external_fqdn }}"
-      - "{{ cluster_service_kubernetes_ip }}"
-  vars_files:
-  - "{{ cluster_dir }}/main.yml"
-
 - hosts: all
   gather_facts: False
   roles:
