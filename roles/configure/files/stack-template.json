@@ -1907,7 +1907,15 @@
         "MapPublicIpOnLaunch": true,
         "AvailabilityZone": {
           "Ref": "AvailabilityZone"
-        }
+        },
+        "Tags": [
+          {
+            "Key": "KubernetesCluster",
+            "Value": {
+              "Ref": "ClusterName"
+            }
+          }
+        ]
       },
       "Metadata": {
         "AWS::CloudFormation::Designer": {
