@@ -2,3 +2,23 @@
 
 ssh_authorized_keys:
 - "{{ deploy_key }}"
+
+packages:
+- ansible
+- awscli
+- python-boto
+- golang
+
+runcmd:
+- |
+  export GOPATH=/home/ubuntu/.gopath
+  mkdir $GOPATH
+  git clone -b 1.2.0 https://github.com/cloudflare/cfssl $GOPATH/src/github.com/cloudflare/cfssl
+  go get github.com/cloudflare/cfssl/cmd/cfssl
+  sudo mv $GOPATH/bin/cfssl /usr/local/bin
+  go get github.com/cloudflare/cfssl/cmd/cfssljson
+  sudo mv $GOPATH/bin/cfssljson /usr/local/bin
+  wget https://storage.googleapis.com/kubernetes-release/release/v1.2.1/bin/linux/amd64/kubectl
+  chmox +x kubectl
+  sudo mv kubectl /usr/local/bin/kubectl
+  git clone https://github.com/bcwaldon/konduct /home/ubuntu/konduct
