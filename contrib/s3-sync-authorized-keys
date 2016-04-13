@@ -9,8 +9,8 @@ function pull {
 	mkdir -p /home/ubuntu/.ssh/authorized_keys.d/
 	mkdir -p $KEYS_DIR
 
-	aws s3 cp --recursive $S3_LOCATION $KEY_DIR
-	echo "Downloaded public keys to $KEY_DIR"
+	aws s3 cp --recursive $S3_LOCATION $KEYS_DIR
+	echo "Downloaded public keys to $KEYS_DIR"
 
 	cat $KEYS_DIR/* > $AUTHORIZED_KEYS_FILE 
 	echo "Updated $AUTHORIZED_KEYS_FILE"
