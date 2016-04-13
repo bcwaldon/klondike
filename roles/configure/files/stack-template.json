@@ -1830,7 +1830,20 @@
         "Path": "/",
         "Policies": [
           {
-            "PolicyName": "cluster-config-readonly",
+            "PolicyName": "ec2-describe-instances",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": "ec2:DescribeInstances",
+                  "Resource": "*"
+                }
+              ]
+            }
+          },
+          {
+            "PolicyName": "s3-read-cluster-tarball",
             "PolicyDocument": {
               "Version": "2012-10-17",
               "Statement": [
