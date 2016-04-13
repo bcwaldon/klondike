@@ -14,6 +14,7 @@ runcmd:
   export GOPATH=/home/ubuntu/.gopath
   mkdir $GOPATH
   git clone -b 1.2.0 https://github.com/cloudflare/cfssl $GOPATH/src/github.com/cloudflare/cfssl
+  sudo chown ubuntu:ubuntu -R $GOPATH/src/github.com/cloudflare/cfssl
   go get github.com/cloudflare/cfssl/cmd/cfssl
   sudo mv $GOPATH/bin/cfssl /usr/local/bin
   go get github.com/cloudflare/cfssl/cmd/cfssljson
@@ -22,3 +23,4 @@ runcmd:
   chmox +x kubectl
   sudo mv kubectl /usr/local/bin/kubectl
   git clone https://github.com/bcwaldon/konduct /home/ubuntu/konduct
+  sudo chown ubuntu:ubuntu -R /home/ubuntu/konduct
