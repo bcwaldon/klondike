@@ -1881,7 +1881,7 @@
               "Effect": "Allow",
               "Principal": {
                 "Service": [
-                  "s3.amazonaws.com"
+                  "ec2.amazonaws.com"
                 ]
               },
               "Action": [
