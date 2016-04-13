@@ -25,7 +25,7 @@ runcmd:
   sudo mv kubectl /usr/local/bin/kubectl
   git clone -b bastion https://github.com/bcwaldon/konduct /home/ubuntu/konduct
   sudo chown ubuntu:ubuntu -R /home/ubuntu/konduct
-  cd /home/ubuntu/konduct && contrib/s3-config pull {{ s3_bucket }} {{ cluster }}
+  cd /home/ubuntu/konduct && contrib/s3-config pull {{ s3_config_bucket }} {{ cluster }}
   sudo chown ubuntu:ubuntu -R clusters/
 
 write_files:
