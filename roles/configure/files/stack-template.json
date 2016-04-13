@@ -1851,7 +1851,41 @@
               "Version": "2012-10-17",
               "Statement": [
                 {
-                  "Sid": "Stmt1460471074860",
+                  "Action": [
+                    "s3:ListBucket"
+                  ],
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:aws:s3:::",
+                        {
+                          "Ref": "S3ConfigBucket"
+                        }
+                      ]
+                    ]
+                  }
+                },
+                {
+                  "Action": [
+                    "s3:GetObject"
+                  ],
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:aws:s3:::",
+                        {
+                          "Ref": "S3ConfigBucket"
+                        },
+                        "/authorized_keys.d/*"
+                      ]
+                    ]
+                  }
+                },
+                {
                   "Action": [
                     "s3:GetObject"
                   ],
