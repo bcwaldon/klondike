@@ -293,6 +293,7 @@
         "z": 1,
         "embeds": [
           "314120e5-87bf-4791-80ae-cd443fad4186",
+          "4719e386-5f75-42ec-9fb2-91f8386f9f87",
           "317ab59f-2379-451a-9fbc-c397fd31dd5c",
           "873403fc-c264-4f6b-86ae-092abee2a1d0",
           "37fc6d23-1902-4172-ab24-1c0cd8eab5b7",
@@ -644,6 +645,7 @@
           "y": 690
         },
         "z": 0,
+        "parent": "a487cf69-e5ce-4956-85df-761e6427deef",
         "embeds": []
       },
       "3541fdd2-09f7-40f4-bbd1-df7ed407ddca": {
@@ -750,6 +752,24 @@
           "id": "314120e5-87bf-4791-80ae-cd443fad4186"
         },
         "z": 2
+      },
+      "c43e1ade-963e-4a64-91a6-2071205264f5": {
+        "source": {
+          "id": "251f6d10-84e4-44a1-b93e-67bbe9078fba"
+        },
+        "target": {
+          "id": "4719e386-5f75-42ec-9fb2-91f8386f9f87"
+        },
+        "z": 0
+      },
+      "11c76f59-2ebe-409b-9a55-e5f1e92b0ab9": {
+        "source": {
+          "id": "4cd01314-51ae-4fac-9c95-36004183543b"
+        },
+        "target": {
+          "id": "4719e386-5f75-42ec-9fb2-91f8386f9f87"
+        },
+        "z": 0
       }
     }
   },
@@ -895,7 +915,27 @@
         ],
         "UserData": {
           "Ref": "WorkerUserData"
-        }
+        },
+        "EbsOptimized": true,
+        "BlockDeviceMappings": [
+          {
+            "DeviceName": "xvda",
+            "Ebs": {
+              "VolumeSize": 32,
+              "Iops": 960,
+              "VolumeType": "io1",
+              "DeleteOnTermination": true
+            }
+          },
+          {
+            "DeviceName": "xvdb",
+            "Ebs": {
+              "VolumeSize": 128,
+              "VolumeType": "gp2",
+              "DeleteOnTermination": true
+            }
+          }
+        ]
       },
       "Metadata": {
         "AWS::CloudFormation::Designer": {
@@ -1165,6 +1205,11 @@
         "FromPort": 22,
         "ToPort": 22,
         "IpProtocol": "TCP"
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "11c76f59-2ebe-409b-9a55-e5f1e92b0ab9"
+        }
       }
     },
     "WorkerSecurityGroup": {
@@ -1227,6 +1272,11 @@
         "FromPort": 22,
         "ToPort": 22,
         "IpProtocol": "TCP"
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "c43e1ade-963e-4a64-91a6-2071205264f5"
+        }
       }
     },
     "WorkerSecurityGroupIngressControllerToKubelet": {
