@@ -1666,12 +1666,7 @@
             "",
             [
               {
-                "Ref": "ClusterName"
-              },
-              ".",
-              "kubernetes.",
-              {
-                "Ref": "HostedZone"
+                "Ref": "ExternalFQDN"
               },
               "."
             ]
@@ -2018,19 +2013,15 @@
     },
     "HostedZone": {
       "Type": "String",
-      "Description": "DNS zone hosted in Route 53 that will be used to provide DNS resolution for the cluster API server to external clients"
+      "Description": "DNS zone hosted in Route 53 that will be used to provide DNS resolution for the Kubernetes API to external clients"
+    },
+    "ExternalFQDN": {
+      "Type": "String",
+      "Description": "DNS name in the indicated HostedZone to make routable to the Kubernetes API via the Controller ELB"
     },
     "S3ConfigBucket": {
       "Type": "String",
       "Description": "S3 bucket that hosts the config tarball for this cluster. An object by the name of <ClusterName>.tar.gz must be present in this bucket."
-    }
-  },
-  "Outputs": {
-    "ExternalFQDN": {
-      "Description": "DNS record for control plane ELB",
-      "Value": {
-        "Ref": "ControllerLoadBalancerDNSRecord"
-      }
     }
   }
 }
