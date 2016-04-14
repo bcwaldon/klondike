@@ -17,11 +17,17 @@ aws_availability_zone:
 
 # coreos_image_id is the AMI ID used to deploy both controller
 # and worker EC2 instances. This AMI must be available in the region
-# indicated by aws_region.
+# indicated by aws_region. Use the public manifest of CoreOS AMIs
+# at https://coreos.com/os/docs/latest/booting-on-ec2.html. Select
+# the "Alpha Channel" tab in the image selector, identify the image
+# available in your region, then copy the AMI ID for the HVM AMI type
+# pasting it below.
 coreos_image_id:
 
-# ubuntu_image_id is the API ID used to deploy bastion EC2 instances.
-# This AMI must be available in the region indicated by aws_region.
+# ubuntu_image_id is the AMI ID used to deploy bastion EC2 instances.
+# Navigate to https://cloud-images.ubuntu.com/locator/ec2/ and search
+# for "16.04 hvm:instance-store". Identify the AMI available in your
+# region, copy the AMI ID and paste it below.
 ubuntu_image_id:
 
 # aws_hosted_zone is a DNS zone delegated to AWS Route 53 the
