@@ -120,10 +120,10 @@ dnf install ansible
 	./clusters/$CLUSTER/create-stack.sh
 	```
 
-1. Once your CloudFormation stack is ready, identify the public IP of your bastion host and SSH to it as the `ubuntu` user using the cluster's deploy key. The remaining steps should be run from the bastion host. To identify the IP of your bastion, open the AWS web console, navigate to the Bastion AutoScaling Group, and find the public IP of the group's single EC2 instance:
+1. Once your CloudFormation stack is ready, SSH to your bastion host as `ubuntu` with the cluster's deploy key. Identify the bastion's public IP using `contrib/ec2-get-bastion-ip`:
 
 	```
-	ssh -i clusters/$CLUSTER/id_rsa ubuntu@<YOUR-BASTION-IP>
+	ssh -i clusters/$CLUSTER/id_rsa ubuntu@$(contrib/ec2-get-bastion-ip $CLUSTER)
 	```
 
 1. Finish deploying your infrastructure:
