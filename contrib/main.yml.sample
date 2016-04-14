@@ -55,8 +55,9 @@ controller_instance_type: m3.large
 controller_instance_count: 3
 
 # worker_instance_type is the instance type used when deploying
-# EC2 instances for the Kubernetes worker pool.
-worker_instance_type: m3.large
+# EC2 instances for the Kubernetes worker pool. These instances
+# must support the EBS-optimized boot flag (e.g. c4-level instances).
+worker_instance_type: c4.large
 
 # worker_instance_count is the number of instances to deploy
 # for the initial Kubernetes worker pool. Increasing this number
