@@ -25,7 +25,8 @@
     clients:
     - name: admin
       profile: client
-      hosts: []
+      hosts:
+      - "admin"
     - name: apiserver
       profile: server
       hosts:
