@@ -1,8 +1,8 @@
 # s3_config_bucket is the S3 bucket that this cluster should use
 # to store its cluster config data. This data contains cluster
 # secrets, so access to this bucket must be restricted to those
-# that NEED to use konduct to manage this cluster. This bucket
-# does not need to be unique to this cluster, as konduct will
+# that NEED to use klondike to manage this cluster. This bucket
+# does not need to be unique to this cluster, as klondike will
 # use a namespace when placing objects in S3.
 s3_config_bucket:
 

@@ -24,7 +24,7 @@ PARAMETERS=(
 function join { local IFS="$1"; shift; echo "$*"; }
 
 aws cloudformation create-stack \
-	--stack-name konduct-cluster-{{ cluster }} \
+	--stack-name klondike-cluster-{{ cluster }} \
 	--capabilities CAPABILITY_IAM \
 	--parameters $(join " " "${PARAMETERS[@]}") \
 	--disable-rollback \

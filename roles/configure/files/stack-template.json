@@ -1896,7 +1896,7 @@
                         {
                           "Ref": "S3ConfigBucket"
                         },
-                        "/konduct-cluster-",
+                        "/klondike-cluster-",
                         {
                           "Ref": "ClusterName"
                         },

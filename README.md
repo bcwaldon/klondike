@@ -1,21 +1,21 @@
-# konduct
+# klondike
 
-konduct will deploy and manage a Kubernetes cluster using AWS CloudFormation and Ansible.
-konduct can send metrics to Datadog, aggregate logs via Logstash, and securely manage secrets using Ansible Vault.
+klondike will deploy and manage a Kubernetes cluster using AWS CloudFormation and Ansible.
+klondike can send metrics to Datadog, aggregate logs via Logstash, and securely manage secrets using Ansible Vault.
 
 This project is opinionated in how it deploys Kubernetes and the related services.
 All feedback and code contributions are welcome, but the scope of this project is only intended to reflect one method of deployment.
-konduct will not grow to encompass other deployment methodologies.
+klondike will not grow to encompass other deployment methodologies.
 
-konduct is licensed under Apache 2.0.
+klondike is licensed under Apache 2.0.
 See [LICENSE](LICENSE) for more details.
 
 ## Overview
 
-konduct deploys three types of hosts: controllers, workers and a bastion.
+klondike deploys three types of hosts: controllers, workers and a bastion.
 The controllers operate the Kubernetes control plane, while the workers run pods scheduled to them via the Kubernetes API.
 
-The bastion is an administrative host that facilitates the management of the konduct cluster.
+The bastion is an administrative host that facilitates the management of the klondike cluster.
 An operator uses the bastion for initial cluster deployment, as well as on-going cluster management tasks.
 
 ## Deploy a New Cluster
@@ -25,7 +25,7 @@ Start off by getting these installed, then continue on with cluster bootstrappin
 
 ### Install Tools
 
-These tools are used to generate the configuration for a new konduct cluster:
+These tools are used to generate the configuration for a new klondike cluster:
 
 - [cfssl](https://github.com/cloudflare/cfssl)
 - [awscli](https://aws.amazon.com/cli/)
@@ -77,8 +77,8 @@ dnf install ansible
 1. Check out the project and `cd` into the directory:
 
 	```
-	git clone git@github.com:bcwaldon/konduct.git
-	cd konduct/
+	git clone git@github.com:bcwaldon/klondike.git
+	cd klondike/
 	```
 
 1. Choose a name for your cluster, and set it in an environment variable:
@@ -129,7 +129,7 @@ dnf install ansible
 1. Finish deploying your infrastructure:
 
 	```
-	cd /home/ubuntu/konduct/
+	cd /home/ubuntu/klondike/
 	ansible-playbook -e cluster=$CLUSTER site.yml
 	```
 

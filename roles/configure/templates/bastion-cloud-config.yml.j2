@@ -10,10 +10,10 @@ packages:
 - golang
 
 runcmd:
-- systemctl start --no-block konduct-bootstrap.service
+- systemctl start --no-block klondike-bootstrap.service
 
 write_files:
-- path: /etc/systemd/system/konduct-bootstrap.service
+- path: /etc/systemd/system/klondike-bootstrap.service
   owner: root:root
   permissions: "0644"
   content: |
@@ -22,23 +22,23 @@ write_files:
     Requires=multi-user.target
     [Service]
     Type=oneshot
-    ExecStart=/var/lib/konduct/bootstrap
+    ExecStart=/var/lib/klondike/bootstrap
     User=ubuntu
 
-- path: /var/lib/konduct/bootstrap
+- path: /var/lib/klondike/bootstrap
   owner: root:root
   permissions: "0777"
   content: |
     #!/bin/bash -ex
 
     cat << EOF > /home/ubuntu/.bash_login
-    source /home/ubuntu/.konductrc
+    source /home/ubuntu/.klondikerc
     EOF
 
-    cat << EOF > /home/ubuntu/.konductrc
+    cat << EOF > /home/ubuntu/.klondikerc
     export CLUSTER={{ cluster }}
-    export ANSIBLE_CONFIG=/home/ubuntu/konduct/clusters/{{ cluster }}/ansible.cfg
-    export KUBECONFIG=/home/ubuntu/konduct/clusters/{{ cluster }}/kubeconfig
+    export ANSIBLE_CONFIG=/home/ubuntu/klondike/clusters/{{ cluster }}/ansible.cfg
+    export KUBECONFIG=/home/ubuntu/klondike/clusters/{{ cluster }}/kubeconfig
     EOF
 
     export GOPATH=/home/ubuntu/.gopath
@@ -53,5 +53,5 @@ write_files:
     chmod a+x /tmp/kubectl
     sudo mv /tmp/kubectl /usr/local/bin/kubectl
 
-    git clone https://github.com/bcwaldon/konduct /home/ubuntu/konduct
-    cd /home/ubuntu/konduct && contrib/s3-config pull {{ cluster}} {{ s3_config_bucket }}
+    git clone https://github.com/bcwaldon/klondike /home/ubuntu/klondike
+    cd /home/ubuntu/klondike && contrib/s3-config pull {{ cluster}} {{ s3_config_bucket }}

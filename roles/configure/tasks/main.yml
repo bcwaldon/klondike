@@ -6,7 +6,7 @@
   register: cmd
 
 - name: generate SSH key
-  shell: "ssh-keygen -b 2048 -t rsa  -f {{ deploy_key_file }}  -N \"\" -C \"konduct deploy key for cluster {{ cluster }}\""
+  shell: "ssh-keygen -b 2048 -t rsa  -f {{ deploy_key_file }}  -N \"\" -C \"klondike deploy key for cluster {{ cluster }}\""
   when: not cmd.stat.exists
 
 - name: read SSH key
