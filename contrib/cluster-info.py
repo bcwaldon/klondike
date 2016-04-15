@@ -26,7 +26,6 @@ def get_bastion_info(asg_client, ec2_client, cluster):
               if tag_dict(g['Tags']).get('KubernetesCluster') == cluster]
 
     info = {
-        'bastion_group_name': '',
         'bastion_public_ip': '',
     }
 
@@ -41,14 +40,46 @@ def get_bastion_info(asg_client, ec2_client, cluster):
     if bastion_group is None:
         return info
 
-    info['bastion_group_name'] = bastion_group['AutoScalingGroupName']
     instance_id = bastion_group['Instances'][0]['InstanceId']
-
     ec2_resp = ec2_client.describe_instances(InstanceIds=[instance_id])
     instance = ec2_resp['Reservations'][0]['Instances'][0]
     info['bastion_public_ip'] = instance['PublicIpAddress']
 
     return info
+
+def get_worker_info(asg_client, cluster):
+    asg_resp = asg_client.describe_auto_scaling_groups()
+
+    groups = [g for g in asg_resp['AutoScalingGroups']
+              if tag_dict(g['Tags']).get('KubernetesCluster') == cluster]
+
+    info = {
+        'worker_asg_name': '',
+        'worker_count': '',
+        'worker_asg_capacity': '',
+    }
+
+    worker_group = None
+    for g in groups:
+        tags = tag_dict(g['Tags'])
+        tag_group = tags.get('group')
+        if tag_group == 'worker':
+            worker_group = g
+            break
+
+    if worker_group is None:
+        return info
+
+    info['worker_asg_name'] = worker_group['AutoScalingGroupName']
+
+    count = len(worker_group['Instances'])
+    info['worker_count'] = count
+    desired = worker_group['DesiredCapacity']
+    info['worker_asg_capacity'] = desired
+
+    return info
+
+
 
 
 def get_cluster_info(cluster):
@@ -66,6 +97,7 @@ def get_cluster_info(cluster):
         return info
 
     info.extend(get_bastion_info(asg_client, ec2_client, cluster).items())
+    info.extend(get_worker_info(asg_client, cluster).items())
 
     return info
 
@@ -81,4 +113,4 @@ if __name__ == '__main__':
 
     # print in order (for readability) as YAML
     for item in info:
-        print ": ".join(item)
+        print "{}: {}".format(*item)
