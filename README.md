@@ -120,10 +120,16 @@ dnf install ansible
 	./clusters/$CLUSTER/create-stack.sh
 	```
 
-1. Once your CloudFormation stack is ready, SSH to your bastion host as `ubuntu` with the cluster's deploy key. Identify the bastion's public IP using `contrib/ec2-get-bastion-ip`:
+1. Track the progress of your cluster using `contrib/cluster-info.py`. Continue to the next step once your stack reports `CREATE_COMPLETE`:
 
 	```
-	ssh -i clusters/$CLUSTER/id_rsa ubuntu@$(contrib/ec2-get-bastion-ip $CLUSTER)
+	python contrib/cluster-info.py $CLUSTER
+	```
+
+1. SSH to your bastion host as `ubuntu` with the cluster's deploy key. The IP of your bastion is available via the `contrib/cluster-info.py` script:
+
+	```
+	ssh -i clusters/$CLUSTER/id_rsa ubuntu@<YOUR-BASTION-IP>
 	```
 
 1. Finish deploying your infrastructure:
