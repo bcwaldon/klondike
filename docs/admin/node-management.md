@@ -47,7 +47,7 @@ Start by fetching the current cluster state, identifying the fields `worker_asg_
 python contrib/cluster-info.py $CLUSTER
 ```
 
-Use the `aws` CLI tool to set the desired capacity to a higher value than was reported via `worker_asg_capacity`.
+Use the `aws` CLI tool to set the desired capacity to a lower value than was reported via `worker_asg_capacity`.
 This can also be done via the AWS Web Console:
 
 ```
