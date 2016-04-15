@@ -13,6 +13,6 @@ TODO
 
 The admin guide targets those handling administrative tasks within an existing cluster.
 
-- [Node Management](node-management.md)
+- [Node Management](admin/node-management.md)
 
 ## Architecture
