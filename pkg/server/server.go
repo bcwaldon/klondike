@@ -6,7 +6,7 @@ import (
 )
 
 type Config struct {
-	KubeletHost   string
+	Emitter       Emitter
 	DogStatsDHost string
 	Period        time.Duration
 	Tags          []string
@@ -15,7 +15,6 @@ type Config struct {
 
 type Server struct {
 	cfg       Config
-	emitter   Emitter
 	publisher Publisher
 }
 
@@ -30,7 +29,7 @@ func (s *Server) Run() {
 }
 
 func (s *Server) attempt() error {
-	metrics, err := s.emitter.Emit()
+	metrics, err := s.cfg.Emitter.Emit()
 	if err != nil {
 		return err
 	}
@@ -50,11 +49,9 @@ func New(cfg Config) (*Server, error) {
 		}
 	}
 
-	emitter := NewKubeletEmitter(cfg.KubeletHost)
 	srv := &Server{
 		cfg:       cfg,
 		publisher: publisher,
-		emitter:   emitter,
 	}
 	return srv, nil
 }

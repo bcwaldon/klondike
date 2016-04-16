@@ -15,10 +15,13 @@ func main() {
 	fs := flag.NewFlagSet("kube-datadog", flag.ExitOnError)
 
 	var cfg server.Config
-	fs.StringVar(&cfg.KubeletHost, "kubelet", "127.0.0.1:10255", "Address of kubelet stats API")
 	fs.DurationVar(&cfg.Period, "period", 10*time.Second, "Amount of time to wait between metric collection attempts")
 	fs.StringVar(&cfg.DogStatsDHost, "dogstatsd", "127.0.0.1:8125", "Address of DogStatsD endpoint (UDP)")
 	fs.BoolVar(&cfg.NoPublish, "no-publish", false, "Log metrics instead of publishing them to DogStatsD")
+
+	source := fs.String("source", "", "Pull metrics from one of two sources: kubelet or api")
+	kubelet := fs.String("kubelet", "127.0.0.1:10255", "If --mode=kubelet, address of kubelet stats API")
+	kubeconfig := fs.String("kubeconfig", "127.0.0.1:10255", "If --mode=api, set this to provide an explicit path to a kubeconfig, otherwise the in-cluster config will be used.")
 
 	var tags StringSliceFlag
 	fs.Var(&tags, "tags", "Set of tags to attach to all metrics (i.e. cloud:aws,cluster:prod)")
@@ -27,6 +30,18 @@ func main() {
 
 	if err := SetFlagsFromEnv(fs, "KUBE_DATADOG"); err != nil {
 		log.Fatalf("Failed setting flags from env: %v", err)
+	}
+
+	var err error
+	if *source == "kubelet" {
+		cfg.Emitter = server.NewKubeletEmitter(*kubelet)
+	} else if *source == "api" {
+		cfg.Emitter, err = server.NewAPIEmitter(*kubeconfig)
+	} else {
+		err = fmt.Errorf("invalid source %q", *source)
+	}
+	if err != nil {
+		log.Fatalf("Failed constructing emitter: %v", err)
 	}
 
 	cfg.Tags = []string(tags)
