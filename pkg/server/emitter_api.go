@@ -4,21 +4,31 @@ import (
 	"log"
 
 	"k8s.io/kubernetes/pkg/api"
+	"k8s.io/kubernetes/pkg/client/restclient"
 	client "k8s.io/kubernetes/pkg/client/unversioned"
 	clientcmd "k8s.io/kubernetes/pkg/client/unversioned/clientcmd"
 	clientcmdapi "k8s.io/kubernetes/pkg/client/unversioned/clientcmd/api"
 )
 
+func getKubernetesClientConfig(kubeconfig string) (*restclient.Config, error) {
+	if kubeconfig == "" {
+		return restclient.InClusterConfig()
+	} else {
+
+		//NOTE(bcwaldon): must set this or the host will be
+		// overridden later when the kubeconfig is loaded
+		clientcmd.DefaultCluster = clientcmdapi.Cluster{}
+
+		rules := &clientcmd.ClientConfigLoadingRules{ExplicitPath: kubeconfig}
+		overrides := &clientcmd.ConfigOverrides{}
+		loader := clientcmd.NewNonInteractiveDeferredLoadingClientConfig(rules, overrides)
+
+		return loader.ClientConfig()
+	}
+}
+
 func NewAPIEmitter(kubeconfig string) (Emitter, error) {
-	//NOTE(bcwaldon): must set this or the host will be
-	// overridden later when the kubeconfig is loaded
-	clientcmd.DefaultCluster = clientcmdapi.Cluster{}
-
-	rules := &clientcmd.ClientConfigLoadingRules{ExplicitPath: kubeconfig}
-	overrides := &clientcmd.ConfigOverrides{}
-	loader := clientcmd.NewNonInteractiveDeferredLoadingClientConfig(rules, overrides)
-
-	cfg, err := loader.ClientConfig()
+	cfg, err := getKubernetesClientConfig(kubeconfig)
 	if err != nil {
 		return nil, err
 	}
