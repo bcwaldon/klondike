@@ -8,6 +8,11 @@
 			"revisionTime": "2016-03-29T09:52:53-04:00"
 		},
 		{
+			"path": "github.com/Sirupsen/logrus",
+			"revision": "081307d9bc1364753142d5962fc1d795c742baaf",
+			"revisionTime": "2016-04-16T13:51:37+05:30"
+		},
+		{
 			"path": "github.com/beorn7/perks/quantile",
 			"revision": "3ac7bf7a47d159a033b107610db8a1b6575507a4",
 			"revisionTime": "2016-02-29T22:34:45+01:00"
@@ -93,12 +98,27 @@
 			"revisionTime": "2015-10-11T12:25:29+02:00"
 		},
 		{
+			"path": "github.com/opencontainers/runc/libcontainer/cgroups",
+			"revision": "c6db82f9219b2ea4c98f80560205ed6c65aeea19",
+			"revisionTime": "2016-04-15T09:30:30+08:00"
+		},
+		{
 			"path": "github.com/opencontainers/runc/libcontainer/cgroups/fs",
 			"revision": "c6db82f9219b2ea4c98f80560205ed6c65aeea19",
 			"revisionTime": "2016-04-15T09:30:30+08:00"
 		},
 		{
 			"path": "github.com/opencontainers/runc/libcontainer/configs",
+			"revision": "c6db82f9219b2ea4c98f80560205ed6c65aeea19",
+			"revisionTime": "2016-04-15T09:30:30+08:00"
+		},
+		{
+			"path": "github.com/opencontainers/runc/libcontainer/system",
+			"revision": "c6db82f9219b2ea4c98f80560205ed6c65aeea19",
+			"revisionTime": "2016-04-15T09:30:30+08:00"
+		},
+		{
+			"path": "github.com/opencontainers/runc/libcontainer/utils",
 			"revision": "c6db82f9219b2ea4c98f80560205ed6c65aeea19",
 			"revisionTime": "2016-04-15T09:30:30+08:00"
 		},
