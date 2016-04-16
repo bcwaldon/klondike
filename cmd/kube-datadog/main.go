@@ -21,7 +21,7 @@ func main() {
 
 	source := fs.String("source", "", "Pull metrics from one of two sources: kubelet or api")
 	kubelet := fs.String("kubelet", "127.0.0.1:10255", "If --mode=kubelet, address of kubelet stats API")
-	kubeconfig := fs.String("kubeconfig", "127.0.0.1:10255", "If --mode=api, set this to provide an explicit path to a kubeconfig, otherwise the in-cluster config will be used.")
+	kubeconfig := fs.String("kubeconfig", "", "If --mode=api, set this to provide an explicit path to a kubeconfig, otherwise the in-cluster config will be used.")
 
 	var tags StringSliceFlag
 	fs.Var(&tags, "tags", "Set of tags to attach to all metrics (i.e. cloud:aws,cluster:prod)")
