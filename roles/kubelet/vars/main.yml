@@ -1,2 +1,2 @@
-hyperkube_image: gcr.io/google_containers/hyperkube:v1.2.1
-kubelet_version: v1.2.0_coreos.1  # from https://quay.io/repository/coreos/hyperkube?tab=tags
+hyperkube_image: gcr.io/google_containers/hyperkube:v1.2.2
+kubelet_version: v1.2.2_coreos.0  # from https://quay.io/repository/coreos/hyperkube?tab=tags
