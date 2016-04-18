@@ -13,10 +13,21 @@ See [LICENSE](LICENSE) for more details.
 
 ## metrics
 
+When run with `--source=kubelet`:
+
 | metric name | metric value |
 |-------------|--------------|
 | kubelet.pod.all | number of all pods the kubelet is attempting to run |
-| kubelet.pod.running | number of pods the kubelet is successfully running |
-| kubelet.pod.pending | number of pods the kubelet is not yet running |
-| kubelet.pod.memory.reserved | amount of memory in bytes the kubelet has reserved for its pods |
-| kubelet.pod.cpu.reserved | amount of CPU in shares the kubelet has reserved for its pods |
+| kubelet.container.all | number of all containers the kubelet is attempting to run |
+
+When run with `--source=api`:
+
+| metric name | metric value |
+|-------------|--------------|
+| kubernetes.namespace.all | number of namespaces in cluster |
+| kubernetes.resource.cpu.capacity | amount of CPU in cluster |
+| kubernetes.resource.cpu.allocatable | amount of CPU in cluster minus that reserved for the system components |
+| kubernetes.resource.cpu.scheduled | amount of CPU claimed by pod resource requests |
+| kubernetes.resource.memory.capacity | amount of memory in cluster |
+| kubernetes.resource.memory.allocatable | amount of memory in cluster minus that reserved for the system components |
+| kubernetes.resource.memory.scheduled | amount of memory claimed by pod resource requests |
