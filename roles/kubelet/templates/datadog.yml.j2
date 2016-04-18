@@ -33,16 +33,8 @@ spec:
         value: "KubernetesCluster:{{ cluster }},KubernetesClusterRole:{{ cluster_role }},host:{{ ec2_id }}"
       - name: KUBE_DATADOG_KUBELET
         value: "{{ec2_private_ip_address}}:10255"
-    volumeMounts:
-      - name: dockersocket
-        mountPath: /var/run/docker.sock
-      - name: procdir
-        mountPath: /host/proc
-        readOnly: true
-      - name: cgroups
-        mountPath: /host/sys/fs/cgroup
-        readOnly: true
-
+      - name: KUBE_DATADOG_SOURCE
+        value: kubelet
   volumes:
     - hostPath:
         path: /var/run/docker.sock
