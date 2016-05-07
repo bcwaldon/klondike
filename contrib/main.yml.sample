@@ -64,14 +64,37 @@ worker_instance_type: c4.large
 # increases the amount of resources available for pods.
 worker_instance_count: 3
 
+# cluster_instance_network_cidr defines the range of IPs to use
+# for the VPC, which contains all EC2 instances. These IPs must
+# not conflict with the pod- or service-level networking.
+cluster_instance_network_cidr: 10.0.0.0/16
+
+# public_instance_subnet_cidr defines the range of IPs to use
+# for internet-facing EC2 instances. This must be a subnet within
+# the cluster_instance_network_cidr, not conflicting with any
+# other *_instance_network_cidr values.
+public_instance_subnet_cidr: 10.0.255.0/26
+
+# controller_instance_subnet_cidr defines the range of IPs to use
+# for controller EC2 instances. This must be a subnet within
+# the cluster_instance_network_cidr, not conflicting with any
+# other *_instance_network_cidr values.
+controller_instance_subnet_cidr: 10.0.255.192/26
+
+# worker_instance_subnet_cidr defines the range of IPs to use
+# for worker EC2 instances. This must be a subnet within
+# the cluster_instance_network_cidr, not conflicting with any
+# other *_instance_network_cidr values.
+worker_instance_subnet_cidr: 10.0.99.0/24
+
 # cluster_pod_network_cidr defines the range of IPs to use for
 # the kubernetes pod network. These IPs must not conflict with
-# the host- or service-level networking.
+# the instance- or service-level networking.
 cluster_pod_network_cidr: 10.1.0.0/16
 
 # cluster_service_network_cidr defines the range of IPs to use for
 # the kubernetes service network. These IPs must not conflict
-# with the host- or pod-level networking.
+# with the instance- or pod-level networking.
 cluster_service_network_cidr: 10.255.0.0/16
 
 # cluster_service_kubernetes_ip is the service network IP that will
