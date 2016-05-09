@@ -1351,7 +1351,7 @@
         "VpcId": {
           "Ref": "ClusterVPC"
         },
-        "CidrBlock": "10.0.99.0/24",
+        "CidrBlock": { "Ref": "WorkerSubnetCIDR" },
         "MapPublicIpOnLaunch": false,
         "AvailabilityZone": {
           "Ref": "AvailabilityZone"
@@ -1369,7 +1369,7 @@
         "VpcId": {
           "Ref": "ClusterVPC"
         },
-        "CidrBlock": "10.0.255.0/26",
+        "CidrBlock": { "Ref": "ControllerSubnetCIDR" },
         "MapPublicIpOnLaunch": false,
         "AvailabilityZone": {
           "Ref": "AvailabilityZone"
@@ -1384,7 +1384,7 @@
     "ClusterVPC": {
       "Type": "AWS::EC2::VPC",
       "Properties": {
-        "CidrBlock": "10.0.0.0/16",
+        "CidrBlock": { "Ref": "ClusterNetworkCIDR" },
         "EnableDnsSupport": true,
         "EnableDnsHostnames": true,
         "InstanceTenancy": "default",
@@ -1938,7 +1938,7 @@
         "VpcId": {
           "Ref": "ClusterVPC"
         },
-        "CidrBlock": "10.0.255.192/26",
+        "CidrBlock": { "Ref": "PublicSubnetCIDR" },
         "MapPublicIpOnLaunch": true,
         "AvailabilityZone": {
           "Ref": "AvailabilityZone"
@@ -1990,6 +1990,22 @@
     "ClusterName": {
       "Type": "String",
       "Description": "Name of cluster; resources are tagged with this value"
+    },
+    "ClusterNetworkCIDR": {
+      "Type": "String",
+      "Description": "Network used for the cluster VPC"
+    },
+    "PublicSubnetCIDR": {
+      "Type": "String",
+      "Description": "Subnet used for the bastion EC2 instances; must be contained within ClusterNetworkCIDR"
+    },
+    "ControllerSubnetCIDR": {
+      "Type": "String",
+      "Description": "Subnet used for the controller EC2 instances; must be contained within ClusterNetworkCIDR"
+    },
+    "WorkerSubnetCIDR": {
+      "Type": "String",
+      "Description": "Subnet used for the worker EC2 instances; must be contained within ClusterNetworkCIDR"
     },
     "ControllerUserData": {
       "Type": "String",
