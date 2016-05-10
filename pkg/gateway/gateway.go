@@ -1,6 +1,12 @@
 package gateway
 
-import "log"
+import (
+	"fmt"
+	"log"
+	"net/http"
+)
+
+const HealthPort = 7333
 
 func New(kubeconfig string) (*Gateway, error) {
 	kc, err := newKubernetesClient(kubeconfig)
@@ -16,12 +22,17 @@ func New(kubeconfig string) (*Gateway, error) {
 		nm: nm,
 	}
 
+	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, "Healthy")
+	})
+
 	return &gw, nil
 }
 
 type Gateway struct {
 	sm ServiceMapper
 	nm *NGINXManager
+	hs *http.Server
 }
 
 func (gw *Gateway) Start() error {
@@ -35,9 +46,14 @@ func (gw *Gateway) Start() error {
 	if err := gw.nm.WriteConfig(&ServiceMap{}); err != nil {
 		return err
 	}
+
 	if err := gw.nm.Start(); err != nil {
 		return err
 	}
+
+	log.Printf("Started health server on 7333")
+	log.Fatal(http.ListenAndServe(":7333", nil))
+
 	return nil
 }
 

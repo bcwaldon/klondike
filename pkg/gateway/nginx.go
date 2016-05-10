@@ -18,6 +18,12 @@ events {
 }
 
 http {
+    server {
+        listen 7332;
+        location /health {
+            return 200 'Healthy!';
+        }
+    }
 {{ range $svc := .ServiceMap.Services }}
     server {
         listen {{ $svc.ListenPort }};
