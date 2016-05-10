@@ -10,10 +10,14 @@ import (
 
 func main() {
 	fs := flag.NewFlagSet("farva", flag.ExitOnError)
-	kubeconfig := fs.String("kubeconfig", "", "Set this to provide an explicit path to a kubeconfig, otherwise the in-cluster config will be used.")
+
+	var cfg gateway.Config
+	fs.StringVar(&cfg.KubeconfigFile, "kubeconfig", "", "Set this to provide an explicit path to a kubeconfig, otherwise the in-cluster config will be used.")
+	fs.BoolVar(&cfg.NGINXDryRun, "nginx-dry-run", false, "Log nginx management commands rather than executing them.")
+
 	fs.Parse(os.Args[1:])
 
-	gw, err := gateway.New(*kubeconfig)
+	gw, err := gateway.New(cfg)
 	if err != nil {
 		log.Fatalf("Failed constructing Gateway: %v", err)
 	}

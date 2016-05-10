@@ -8,14 +8,25 @@ import (
 
 const HealthPort = 7333
 
-func New(kubeconfig string) (*Gateway, error) {
-	kc, err := newKubernetesClient(kubeconfig)
+type Config struct {
+	KubeconfigFile string
+	NGINXDryRun    bool
+}
+
+func New(cfg Config) (*Gateway, error) {
+	kc, err := newKubernetesClient(cfg.KubeconfigFile)
 	if err != nil {
 		return nil, err
 	}
 
 	sm := newServiceMapper(kc)
-	nm := newNGINXManager()
+
+	var nm NGINXManager
+	if cfg.NGINXDryRun {
+		nm = newLoggingNGINXManager()
+	} else {
+		nm = newNGINXManager()
+	}
 
 	gw := Gateway{
 		sm: sm,
@@ -31,7 +42,7 @@ func New(kubeconfig string) (*Gateway, error) {
 
 type Gateway struct {
 	sm ServiceMapper
-	nm *NGINXManager
+	nm NGINXManager
 	hs *http.Server
 }
 
@@ -70,8 +81,6 @@ func (gw *Gateway) Refresh() error {
 	if err != nil {
 		return err
 	}
-
-	log.Printf("Using ServiceMap: %+v", sm)
 
 	if err := gw.nm.WriteConfig(sm); err != nil {
 		return err

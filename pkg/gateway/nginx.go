@@ -54,20 +54,27 @@ const (
 	nginxStatusUnknown = "unknown"
 )
 
-func newNGINXManager() *NGINXManager {
-	return &NGINXManager{cfg: DefaultNGINXConfig}
-}
-
 type NGINXConfig struct {
 	ConfigFile string
 	PIDFile    string
 }
 
-type NGINXManager struct {
+type NGINXManager interface {
+	Status() (string, error)
+	WriteConfig(*ServiceMap) error
+	Start() error
+	Reload() error
+}
+
+func newNGINXManager() NGINXManager {
+	return &nginxManager{cfg: DefaultNGINXConfig}
+}
+
+type nginxManager struct {
 	cfg NGINXConfig
 }
 
-func (n *NGINXManager) Status() (string, error) {
+func (n *nginxManager) Status() (string, error) {
 	if _, err := os.Stat(n.cfg.PIDFile); err != nil {
 		if os.IsNotExist(err) {
 			return nginxStatusStopped, nil
@@ -79,7 +86,7 @@ func (n *NGINXManager) Status() (string, error) {
 	return nginxStatusRunning, nil
 }
 
-func (n *NGINXManager) WriteConfig(sm *ServiceMap) error {
+func (n *nginxManager) WriteConfig(sm *ServiceMap) error {
 	cfg, err := renderConfig(&n.cfg, sm)
 	if err != nil {
 		return err
@@ -90,19 +97,19 @@ func (n *NGINXManager) WriteConfig(sm *ServiceMap) error {
 	return nil
 }
 
-func (n *NGINXManager) assertConfigOK() error {
+func (n *nginxManager) assertConfigOK() error {
 	return n.run("-t")
 }
 
-func (n *NGINXManager) Start() error {
+func (n *nginxManager) Start() error {
 	return n.run()
 }
 
-func (n *NGINXManager) Reload() error {
+func (n *nginxManager) Reload() error {
 	return n.run("-s", "reload")
 }
 
-func (n *NGINXManager) run(args ...string) error {
+func (n *nginxManager) run(args ...string) error {
 	args = append([]string{"-c", n.cfg.ConfigFile}, args...)
 	output, err := exec.Command("nginx", args...).CombinedOutput()
 	if err != nil {
@@ -126,4 +133,33 @@ func renderConfig(cfg *NGINXConfig, sm *ServiceMap) ([]byte, error) {
 		return nil, err
 	}
 	return buf.Bytes(), nil
+}
+
+func newLoggingNGINXManager() NGINXManager {
+	return &loggingNGINXManager{status: nginxStatusStopped}
+}
+
+type loggingNGINXManager struct {
+	status string
+}
+
+func (l *loggingNGINXManager) Status() (string, error) {
+	log.Printf("called NGINXManager.Status()")
+	return l.status, nil
+}
+
+func (l *loggingNGINXManager) Start() error {
+	log.Printf("called NGINXManager.Start()")
+	l.status = nginxStatusRunning
+	return nil
+}
+
+func (l *loggingNGINXManager) Reload() error {
+	log.Printf("called NGINXManager.Reload()")
+	return nil
+}
+
+func (l *loggingNGINXManager) WriteConfig(sm *ServiceMap) error {
+	log.Printf("called NGINXManager.WriteConfig(*ServiceMap) w/ %+v", sm)
+	return nil
 }
