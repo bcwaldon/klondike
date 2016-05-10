@@ -13,9 +13,9 @@ http {
         listen {{ $svc.ListenPort }};
     }
     upstream {{ $svc.Namespace }}__{{ $svc.Name }} {
-    {{ range $name, $ep := $svc.Endpoints }}
+{{ range $name, $ep := $svc.Endpoints }}
         server {{ $ep }};  # {{ $name }}
-    {{- end }}
+{{- end }}
     }
 {{ end }}
 }
