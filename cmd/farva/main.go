@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"log"
 	"os"
 
@@ -19,10 +18,17 @@ func main() {
 		log.Fatalf("Failed constructing Gateway: %v", err)
 	}
 
-	cfg, err := gw.Render()
-	if err != nil {
-		log.Fatalf("Failed rendering config: %v", err)
+	if err := gw.Start(); err != nil {
+		log.Fatalf("Failed starting Gateway: %v", err)
 	}
 
-	fmt.Printf("%s", cfg)
+	log.Printf("Started")
+
+	if err := gw.Refresh(); err != nil {
+		log.Fatalf("Failed refreshing Gateway: %v", err)
+	}
+
+	log.Printf("Refreshed")
+
+	select {}
 }
