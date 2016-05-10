@@ -12,5 +12,10 @@ type Service struct {
 	Namespace  string
 	Name       string
 	ListenPort int32
-	Endpoints  map[string]string
+	Endpoints  []Endpoint
+}
+
+type Endpoint struct {
+	Name string
+	IP   string
 }

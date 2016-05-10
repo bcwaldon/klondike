@@ -55,7 +55,7 @@ func (asm *apiServiceMapper) ServiceMap() (*ServiceMap, error) {
 		svc := Service{
 			Name:      ing.Spec.Backend.ServiceName,
 			Namespace: ing.ObjectMeta.Namespace,
-			Endpoints: map[string]string{},
+			Endpoints: []Endpoint{},
 		}
 
 		service, err := asm.kc.Services(svc.Namespace).Get(svc.Name)
@@ -80,8 +80,14 @@ func (asm *apiServiceMapper) ServiceMap() (*ServiceMap, error) {
 				continue
 			}
 
+			//NOTE(bcwaldon): addresses may not be guaranteed to be in the same
+			// order every time we make this API call. Probably want to sort.
 			for _, addr := range sub.Addresses {
-				svc.Endpoints[addr.TargetRef.Name] = addr.IP
+				ep := Endpoint{
+					Name: addr.TargetRef.Name,
+					IP:   addr.IP,
+				}
+				svc.Endpoints = append(svc.Endpoints, ep)
 			}
 		}
 

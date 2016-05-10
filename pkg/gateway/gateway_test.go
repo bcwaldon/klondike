@@ -21,10 +21,10 @@ func TestRender(t *testing.T) {
 					Namespace:  "ns1",
 					Name:       "svc1",
 					ListenPort: 30001,
-					Endpoints: map[string]string{
-						"pod1": "10.0.0.1",
-						"pod2": "10.0.0.2",
-						"pod3": "10.0.0.3",
+					Endpoints: []Endpoint{
+						Endpoint{Name: "pod1", IP: "10.0.0.1"},
+						Endpoint{Name: "pod2", IP: "10.0.0.2"},
+						Endpoint{Name: "pod3", IP: "10.0.0.3"},
 					},
 				},
 			},
