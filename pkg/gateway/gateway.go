@@ -33,10 +33,6 @@ func New(cfg Config) (*Gateway, error) {
 		nm: nm,
 	}
 
-	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Healthy")
-	})
-
 	return &gw, nil
 }
 
@@ -62,10 +58,26 @@ func (gw *Gateway) Start() error {
 		return err
 	}
 
-	log.Printf("Started health server on 7333")
-	log.Fatal(http.ListenAndServe(":7333", nil))
+	gw.startHTTPServer()
 
 	return nil
+}
+
+func (gw *Gateway) startHTTPServer() {
+	mux := http.NewServeMux()
+
+	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, "Healthy!")
+	})
+
+	s := &http.Server{
+		Addr:    fmt.Sprintf(":%d", HealthPort),
+		Handler: mux,
+	}
+
+	go func() {
+		log.Fatal(s.ListenAndServe())
+	}()
 }
 
 func (gw *Gateway) isRunning() (bool, error) {
