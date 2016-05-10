@@ -4,6 +4,7 @@ import (
 	"flag"
 	"log"
 	"os"
+	"time"
 
 	"github.com/bcwaldon/farva/pkg/gateway"
 )
@@ -12,6 +13,7 @@ func main() {
 	fs := flag.NewFlagSet("farva", flag.ExitOnError)
 
 	var cfg gateway.Config
+	fs.DurationVar(&cfg.RefreshInterval, "refresh-interval", 30*time.Second, "Attempt to build and reload a new nginx config at this interval")
 	fs.StringVar(&cfg.KubeconfigFile, "kubeconfig", "", "Set this to provide an explicit path to a kubeconfig, otherwise the in-cluster config will be used.")
 	fs.BoolVar(&cfg.NGINXDryRun, "nginx-dry-run", false, "Log nginx management commands rather than executing them.")
 
@@ -19,20 +21,12 @@ func main() {
 
 	gw, err := gateway.New(cfg)
 	if err != nil {
-		log.Fatalf("Failed constructing Gateway: %v", err)
+		log.Fatalf("Gateway construction failed: %v", err)
 	}
 
-	if err := gw.Start(); err != nil {
-		log.Fatalf("Failed starting Gateway: %v", err)
+	if err := gw.Run(); err != nil {
+		log.Printf("Gateway operation failed: %v", err)
 	}
 
-	log.Printf("Started")
-
-	if err := gw.Refresh(); err != nil {
-		log.Fatalf("Failed refreshing Gateway: %v", err)
-	}
-
-	log.Printf("Refreshed")
-
-	select {}
+	log.Printf("Gateway shutting down")
 }

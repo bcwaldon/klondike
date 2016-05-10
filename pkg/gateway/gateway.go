@@ -4,13 +4,15 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 )
 
 const HealthPort = 7333
 
 type Config struct {
-	KubeconfigFile string
-	NGINXDryRun    bool
+	RefreshInterval time.Duration
+	KubeconfigFile  string
+	NGINXDryRun     bool
 }
 
 func New(cfg Config) (*Gateway, error) {
@@ -29,21 +31,22 @@ func New(cfg Config) (*Gateway, error) {
 	}
 
 	gw := Gateway{
-		sm: sm,
-		nm: nm,
+		cfg: cfg,
+		sm:  sm,
+		nm:  nm,
 	}
 
 	return &gw, nil
 }
 
 type Gateway struct {
-	sm ServiceMapper
-	nm NGINXManager
-	hs *http.Server
+	cfg Config
+	sm  ServiceMapper
+	nm  NGINXManager
 }
 
-func (gw *Gateway) Start() error {
-	ok, err := gw.isRunning()
+func (gw *Gateway) start() error {
+	ok, err := gw.nginxIsRunning()
 	if err != nil {
 		return err
 	} else if ok {
@@ -80,7 +83,7 @@ func (gw *Gateway) startHTTPServer() {
 	}()
 }
 
-func (gw *Gateway) isRunning() (bool, error) {
+func (gw *Gateway) nginxIsRunning() (bool, error) {
 	st, err := gw.nm.Status()
 	if err != nil {
 		return false, err
@@ -88,7 +91,7 @@ func (gw *Gateway) isRunning() (bool, error) {
 	return st == nginxStatusRunning, nil
 }
 
-func (gw *Gateway) Refresh() error {
+func (gw *Gateway) refresh() error {
 	sm, err := gw.sm.ServiceMap()
 	if err != nil {
 		return err
@@ -99,6 +102,28 @@ func (gw *Gateway) Refresh() error {
 	}
 	if err := gw.nm.Reload(); err != nil {
 		return err
+	}
+
+	return nil
+}
+
+func (gw *Gateway) Run() error {
+	if err := gw.start(); err != nil {
+		return err
+	}
+
+	log.Printf("Gateway started successfully, entering refresh loop")
+
+	ticker := time.NewTicker(gw.cfg.RefreshInterval)
+
+	for {
+		if err := gw.refresh(); err != nil {
+			log.Printf("Failed refreshing Gateway: %v", err)
+		}
+
+		//NOTE(bcwaldon): receive from the ticker at the
+		// end of the loop to emulate do-while semantics.
+		<-ticker.C
 	}
 
 	return nil
