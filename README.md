@@ -1,10 +1,18 @@
 # farva
 
 This is the start to a Kubernetes Ingress Controller.
-Assuming you've got a Kubernetes cluster with a single service, you can do this:
+Start by building the code:
 
 ```
-% go run cmd/farva/main.go --kubeconfig=<KUBECONFIG>
+% ./build
+Building bin/darwin_amd64/farva...done
+Building bin/linux_amd64/farva...done
+```
+
+Now, assuming you've got a Kubernetes cluster with a single service, you can run farva:
+
+```
+% ./bin/darwin_amd64/farva --kubeconfig=<KUBECONFIG>
 
 http {
 
