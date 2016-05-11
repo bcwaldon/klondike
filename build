@@ -1,8 +1,5 @@
 #!/bin/bash -e
 
-set -o xtrace
-set -o errexit
-
 operating_systems=( "darwin" "linux" )
 arch="amd64"
 cmd="farva"
