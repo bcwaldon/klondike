@@ -116,12 +116,12 @@ func (n *nginxManager) Reload() error {
 func (n *nginxManager) run(args ...string) error {
 	args = append([]string{"-c", n.cfg.ConfigFile}, args...)
 	log.Printf("Calling run on nginx with args: %q", args)
-	output, err := exec.Command("nginx", args...).CombinedOutput()
+	err := exec.Command("nginx", args...).Run()
 	if err != nil {
-		log.Printf("nginx command failed w/ output:\n%s", output)
+		log.Printf("nginx command failed w/ err: %v", err)
 		return err
 	} else {
-		log.Printf("nginx command success w/ output:\n%s", output)
+		log.Printf("nginx command success")
 	}
 	return nil
 }
