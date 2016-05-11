@@ -119,6 +119,8 @@ func (n *nginxManager) run(args ...string) error {
 	if err != nil {
 		log.Printf("nginx command failed w/ output:\n%s", output)
 		return err
+	} else {
+		log.Printf("nginx command success w/ output:\n%s", output)
 	}
 	return nil
 }
