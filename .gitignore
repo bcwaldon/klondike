@@ -1,1 +1,7 @@
 /bin
+
+# Wercker specific
+_builds
+_cache
+_projects
+_steps
