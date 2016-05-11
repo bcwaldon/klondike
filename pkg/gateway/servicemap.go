@@ -11,7 +11,7 @@ type ServiceMap struct {
 type Service struct {
 	Namespace  string
 	Name       string
-	ListenPort int32
+	ListenPort int
 	Endpoints  []Endpoint
 }
 

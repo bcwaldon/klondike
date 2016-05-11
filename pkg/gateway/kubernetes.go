@@ -50,7 +50,7 @@ func (asm *apiServiceMapper) ServiceMap() (*ServiceMap, error) {
 
 	var services []Service
 	for _, ing := range ingressList.Items {
-		ingServicePort := int32(ing.Spec.Backend.ServicePort.IntValue())
+		ingServicePort := ing.Spec.Backend.ServicePort.IntValue()
 
 		svc := Service{
 			Name:      ing.Spec.Backend.ServiceName,
