@@ -75,6 +75,7 @@ type nginxManager struct {
 }
 
 func (n *nginxManager) Status() (string, error) {
+	log.Printf("Checking status")
 	if _, err := os.Stat(n.cfg.PIDFile); err != nil {
 		if os.IsNotExist(err) {
 			return nginxStatusStopped, nil
@@ -102,15 +103,18 @@ func (n *nginxManager) assertConfigOK() error {
 }
 
 func (n *nginxManager) Start() error {
+	log.Printf("Starting nginx")
 	return n.run()
 }
 
 func (n *nginxManager) Reload() error {
+	log.Printf("Reloading nginx")
 	return n.run("-s", "reload")
 }
 
 func (n *nginxManager) run(args ...string) error {
 	args = append([]string{"-c", n.cfg.ConfigFile}, args...)
+	log.Printf("Calling run on nginx with args: %q", args)
 	output, err := exec.Command("nginx", args...).CombinedOutput()
 	if err != nil {
 		log.Printf("nginx command failed w/ output:\n%s", output)
@@ -120,6 +124,7 @@ func (n *nginxManager) run(args ...string) error {
 }
 
 func renderConfig(cfg *NGINXConfig, sm *ServiceMap) ([]byte, error) {
+	log.Printf("Rendering config")
 	config := struct {
 		*NGINXConfig
 		*ServiceMap

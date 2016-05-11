@@ -84,6 +84,7 @@ func (gw *Gateway) startHTTPServer() {
 }
 
 func (gw *Gateway) nginxIsRunning() (bool, error) {
+	log.Printf("Checking if nginx is running")
 	st, err := gw.nm.Status()
 	if err != nil {
 		return false, err
@@ -92,6 +93,7 @@ func (gw *Gateway) nginxIsRunning() (bool, error) {
 }
 
 func (gw *Gateway) refresh() error {
+	log.Printf("Refreshing nginx config")
 	sm, err := gw.sm.ServiceMap()
 	if err != nil {
 		return err
