@@ -12,6 +12,7 @@ import (
 var (
 	nginxTemplateData = `
 pid {{ .NGINXConfig.PIDFile }};
+daemon off;
 
 events {
     worker_connections 512;
