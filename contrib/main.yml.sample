@@ -46,6 +46,16 @@ external_fqdn: "{{ cluster }}.kubernetes.{{ aws_hosted_zone }}"
 # or compute resources.
 bastion_instance_type: m3.medium
 
+# gateway_instance_type is the instance type used when deploying
+# EC2 instances for Kubernetes service ingress traffic.
+gateway_instance_type: m3.large
+
+# gateway_instance_count is the number of instances to deploy
+# for the initial Kubernetes service ingress. This should scale
+# with the amount of traffic routed into the cluster from
+# external clients.
+gateway_instance_count: 1
+
 # controller_instance_type is the instance type used when deploying
 # EC2 instances for the Kubernetes control plane.
 controller_instance_type: m3.large

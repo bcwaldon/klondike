@@ -5,3 +5,5 @@ control_plane_endpoint: "https://{{ external_fqdn }}"
 ca_name: kubernetes
 
 kube_datadog_image: quay.io/bcwaldon/kube-datadog:d79a29a4839188c7714fd4e6c6fa731f1aec50f6
+
+kubelet_enable_pod_proxy: true

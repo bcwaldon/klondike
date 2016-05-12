@@ -1,0 +1,5 @@
+- name: upload pod manifests
+  template: src={{ item }}.j2 dest=/etc/kubernetes/manifests/{{ item }} mode=0644
+  sudo: true
+  with_items:
+  - gateway.yml

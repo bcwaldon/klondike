@@ -353,6 +353,9 @@
         "parent": "a487cf69-e5ce-4956-85df-761e6427deef",
         "embeds": [
           "3ecb5892-f24a-4c85-aa24-e275f34308a1"
+        ],
+        "dependson": [
+          "dd7a601c-41ee-40e3-90a8-a9edd1ea4e55"
         ]
       },
       "3ea679dd-6851-4f71-b9da-063ff1955416": {
@@ -426,6 +429,9 @@
         "parent": "a487cf69-e5ce-4956-85df-761e6427deef",
         "embeds": [
           "fe300dd1-8127-4ecf-a1f2-39141a6e498f"
+        ],
+        "dependson": [
+          "a487cf69-e5ce-4956-85df-761e6427deef"
         ]
       },
       "fe300dd1-8127-4ecf-a1f2-39141a6e498f": {
@@ -799,6 +805,158 @@
         },
         "target": {
           "id": "a487cf69-e5ce-4956-85df-761e6427deef"
+        },
+        "z": 11
+      },
+      "709e8f08-6b1d-4ca0-ab00-1d1486528d41": {
+        "size": {
+          "width": 60,
+          "height": 60
+        },
+        "position": {
+          "x": -1100,
+          "y": 1010
+        },
+        "z": 0,
+        "embeds": [],
+        "isconnectedto": [
+          "f591c362-5976-4efe-aca1-f1c0cb9f31af"
+        ],
+        "isassociatedwith": [
+          "428b2995-219a-422e-a4b6-bc7c91ff2828"
+        ]
+      },
+      "428b2995-219a-422e-a4b6-bc7c91ff2828": {
+        "size": {
+          "width": 60,
+          "height": 60
+        },
+        "position": {
+          "x": -1210,
+          "y": 1010
+        },
+        "z": 0,
+        "embeds": [],
+        "ismemberof": [
+          "4382883d-ccbb-4b33-934c-19e73f682e7f"
+        ],
+        "isrelatedto": [
+          "f77c932d-e2ff-48ee-b941-decf296031a5",
+          "39d0a20d-1063-4d2b-9109-27cbf321ddcd"
+        ]
+      },
+      "4382883d-ccbb-4b33-934c-19e73f682e7f": {
+        "size": {
+          "width": 60,
+          "height": 60
+        },
+        "position": {
+          "x": -1320,
+          "y": 1010
+        },
+        "z": 0,
+        "embeds": []
+      },
+      "f4d0e293-5e7b-4df4-9f21-ef96fe619247": {
+        "source": {
+          "id": "709e8f08-6b1d-4ca0-ab00-1d1486528d41"
+        },
+        "target": {
+          "id": "428b2995-219a-422e-a4b6-bc7c91ff2828"
+        },
+        "z": 11
+      },
+      "68ba0d52-2b86-4d6b-afa3-6c8f1e2d3f07": {
+        "source": {
+          "id": "709e8f08-6b1d-4ca0-ab00-1d1486528d41",
+          "selector": "g:nth-child(1) g:nth-child(4) g:nth-child(2) circle:nth-child(1)     ",
+          "port": "AWS::RefLink-AWS::EC2::Subnet-VPCZoneIdentifier"
+        },
+        "target": {
+          "id": "f591c362-5976-4efe-aca1-f1c0cb9f31af"
+        },
+        "z": 13
+      },
+      "a9264ada-b3d0-4aad-a78b-5a316d53390b": {
+        "source": {
+          "id": "251f6d10-84e4-44a1-b93e-67bbe9078fba"
+        },
+        "target": {
+          "id": "4382883d-ccbb-4b33-934c-19e73f682e7f"
+        },
+        "z": 0
+      },
+      "9fca00aa-30f9-4b28-9fdc-5459f77dabc2": {
+        "source": {
+          "id": "4382883d-ccbb-4b33-934c-19e73f682e7f"
+        },
+        "target": {
+          "id": "4719e386-5f75-42ec-9fb2-91f8386f9f87"
+        },
+        "z": 0
+      },
+      "d31119fa-3256-4089-b95e-b8bdea0d2e16": {
+        "source": {
+          "id": "873403fc-c264-4f6b-86ae-092abee2a1d0"
+        },
+        "target": {
+          "id": "a487cf69-e5ce-4956-85df-761e6427deef"
+        },
+        "z": 11
+      },
+      "bbe6521d-70a4-4ffc-ac79-07124a6740cb": {
+        "source": {
+          "id": "873403fc-c264-4f6b-86ae-092abee2a1d0",
+          "selector": "g:nth-child(1) g:nth-child(5) g:nth-child(2) circle:nth-child(1)     ",
+          "port": "AWS::DependencyLink-*"
+        },
+        "target": {
+          "id": "a487cf69-e5ce-4956-85df-761e6427deef"
+        },
+        "z": 13
+      },
+      "626c56ed-6cd7-4159-b6ab-75dba4e6765c": {
+        "source": {
+          "id": "37fc6d23-1902-4172-ab24-1c0cd8eab5b7"
+        },
+        "target": {
+          "id": "dd7a601c-41ee-40e3-90a8-a9edd1ea4e55"
+        },
+        "z": 12
+      },
+      "39d0a20d-1063-4d2b-9109-27cbf321ddcd": {
+        "size": {
+          "width": 60,
+          "height": 60
+        },
+        "position": {
+          "x": -1210,
+          "y": 910
+        },
+        "z": 0,
+        "embeds": [],
+        "isassociatedwith": [
+          "b0f95c49-7207-4b33-b319-226f6653b599"
+        ]
+      },
+      "b0f95c49-7207-4b33-b319-226f6653b599": {
+        "size": {
+          "width": 60,
+          "height": 60
+        },
+        "position": {
+          "x": -1310,
+          "y": 910
+        },
+        "z": 0,
+        "embeds": []
+      },
+      "a7e13826-1fd5-4714-942a-d3bc06c4bb60": {
+        "source": {
+          "id": "39d0a20d-1063-4d2b-9109-27cbf321ddcd"
+        },
+        "target": {
+          "id": "b0f95c49-7207-4b33-b319-226f6653b599"
         },
         "z": 11
       }
@@ -1508,7 +1666,10 @@
         "AWS::CloudFormation::Designer": {
           "id": "37fc6d23-1902-4172-ab24-1c0cd8eab5b7"
         }
-      }
+      },
+      "DependsOn": [
+        "ClusterInternetGateway"
+      ]
     },
     "ControllerSubnetRouteTableAssociation": {
       "Type": "AWS::EC2::SubnetRouteTableAssociation",
@@ -1566,7 +1727,10 @@
         "AWS::CloudFormation::Designer": {
           "id": "873403fc-c264-4f6b-86ae-092abee2a1d0"
         }
-      }
+      },
+      "DependsOn": [
+        "ClusterVPC"
+      ]
     },
     "PrivateRouteToInternet": {
       "Type": "AWS::EC2::Route",
@@ -1992,6 +2156,224 @@
           "id": "314120e5-87bf-4791-80ae-cd443fad4186"
         }
       }
+    },
+    "GatewayASG": {
+      "Type": "AWS::AutoScaling::AutoScalingGroup",
+      "Properties": {
+        "MinSize": {
+          "Ref": "GatewayInstanceCount"
+        },
+        "MaxSize": {
+          "Ref": "GatewayInstanceCount"
+        },
+        "DesiredCapacity": {
+          "Ref": "GatewayInstanceCount"
+        },
+        "LaunchConfigurationName": {
+          "Ref": "GatewayLC"
+        },
+        "AvailabilityZones": [
+          {
+            "Ref": "AvailabilityZone"
+          }
+        ],
+        "Tags": [
+          {
+            "Key": "KubernetesCluster",
+            "Value": {
+              "Ref": "ClusterName"
+            },
+            "PropagateAtLaunch": true
+          },
+          {
+            "Key": "group",
+            "Value": "gateway",
+            "PropagateAtLaunch": true
+          }
+        ],
+        "VPCZoneIdentifier": [
+          {
+            "Ref": "ControllerSubnet"
+          }
+        ]
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "709e8f08-6b1d-4ca0-ab00-1d1486528d41"
+        }
+      }
+    },
+    "GatewayLC": {
+      "Type": "AWS::AutoScaling::LaunchConfiguration",
+      "Properties": {
+        "AssociatePublicIpAddress": false,
+        "IamInstanceProfile": {
+          "Ref": "GatewayIAMInstanceProfile"
+        },
+        "ImageId": {
+          "Ref": "CoreOSImageID"
+        },
+        "InstanceType": {
+          "Ref": "GatewayInstanceType"
+        },
+        "SecurityGroups": [
+          {
+            "Ref": "GatewaySecurityGroup"
+          }
+        ],
+        "UserData": {
+          "Ref": "GatewayUserData"
+        }
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "428b2995-219a-422e-a4b6-bc7c91ff2828"
+        }
+      }
+    },
+    "GatewaySecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "ControllerSecurityGroup",
+        "VpcId": {
+          "Ref": "ClusterVPC"
+        },
+        "SecurityGroupEgress": [
+          {
+            "IpProtocol": "TCP",
+            "FromPort": 0,
+            "ToPort": 65535,
+            "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol": "UDP",
+            "FromPort": 0,
+            "ToPort": 65535,
+            "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol": "ICMP",
+            "FromPort": -1,
+            "ToPort": -1,
+            "CidrIp": "0.0.0.0/0"
+          }
+        ],
+        "SecurityGroupIngress": [
+          {
+            "IpProtocol": "ICMP",
+            "FromPort": -1,
+            "ToPort": -1,
+            "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol": "TCP",
+            "FromPort": 30000,
+            "ToPort": 32767,
+            "CidrIp": "0.0.0.0/0"
+          }
+        ]
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "4382883d-ccbb-4b33-934c-19e73f682e7f"
+        }
+      }
+    },
+    "WorkerSecurityGroupIngressGatewayTraffic": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "WorkerSecurityGroup"
+        },
+        "SourceSecurityGroupId": {
+          "Ref": "GatewaySecurityGroup"
+        },
+        "FromPort": 0,
+        "ToPort": 65535,
+        "IpProtocol": "TCP"
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "a9264ada-b3d0-4aad-a78b-5a316d53390b"
+        }
+      }
+    },
+    "GatewaySecurityGroupIngressBastionSSH": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "GatewaySecurityGroup"
+        },
+        "SourceSecurityGroupId": {
+          "Ref": "BastionSecurityGroup"
+        },
+        "FromPort": 22,
+        "ToPort": 22,
+        "IpProtocol": "TCP"
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "9fca00aa-30f9-4b28-9fdc-5459f77dabc2"
+        }
+      }
+    },
+    "GatewayIAMInstanceProfile": {
+      "Type": "AWS::IAM::InstanceProfile",
+      "Properties": {
+        "Path": "/",
+        "Roles": [
+          {
+            "Ref": "GatewayIAMRole"
+          }
+        ]
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "39d0a20d-1063-4d2b-9109-27cbf321ddcd"
+        }
+      }
+    },
+    "GatewayIAMRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "Path": "/",
+        "Policies": [
+          {
+            "PolicyName": "root",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": "ec2:*",
+                  "Resource": "*"
+                }
+              ]
+            }
+          }
+        ],
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "ec2.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        }
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "b0f95c49-7207-4b33-b319-226f6653b599"
+        }
+      }
     }
   },
   "Parameters": {
@@ -2002,6 +2384,11 @@
     "UbuntuImageID": {
       "Type": "AWS::EC2::Image::Id",
       "Description": "Launch Bastion EC2 Instances using this Ubuntu AMI"
+    },
+    "GatewayInstanceType": {
+      "Type": "String",
+      "Description": "Launch EC2 Instances in the Gateway AutoScaling Group using this Instance type",
+      "Default": "m3.large"
     },
     "ControllerInstanceType": {
       "Type": "String",
@@ -2042,6 +2429,10 @@
       "Type": "String",
       "Description": "Subnet used for the worker EC2 instances; must be contained within ClusterNetworkCIDR"
     },
+    "GatewayUserData": {
+      "Type": "String",
+      "Description": "Launch Gateway EC2 Instances with this UserData"
+    },
     "ControllerUserData": {
       "Type": "String",
       "Description": "Launch Controller EC2 Instances with this UserData"
@@ -2057,6 +2448,10 @@
     "ControllerInstanceCount": {
       "Type": "Number",
       "Description": "Number of EC2 Instances to provision as Controllers."
+    },
+    "GatewayInstanceCount": {
+      "Type": "Number",
+      "Description": "Number of EC2 Instances to provision as Gateways."
     },
     "WorkerInstanceCount": {
       "Type": "Number",

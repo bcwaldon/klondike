@@ -41,4 +41,16 @@ spec:
     targetPort: 80
   selector:
     app: nginx
-  type: LoadBalancer
+  type: NodePort
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: nginx
+  namespace: default
+spec:
+  backend:
+    serviceName: nginx
+    servicePort: 80
