@@ -620,7 +620,6 @@
         "z": 0,
         "embeds": [],
         "isconnectedto": [
-          "81ac2c65-7edd-45b6-a300-2e0f5576cd84",
           "314120e5-87bf-4791-80ae-cd443fad4186"
         ],
         "isassociatedwith": [
@@ -1830,11 +1829,6 @@
             "Key": "group",
             "Value": "bastion",
             "PropagateAtLaunch": true
-          }
-        ],
-        "LoadBalancerNames": [
-          {
-            "Ref": "ControllerLoadBalancer"
           }
         ],
         "VPCZoneIdentifier": [
