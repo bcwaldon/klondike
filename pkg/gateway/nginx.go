@@ -20,7 +20,7 @@ events {
 
 http {
     server {
-        listen 7332;
+        listen {{ .NGINXConfig.HealthPort }};
         location /health {
             return 200 'Healthy!';
         }
@@ -46,6 +46,7 @@ http {
 	DefaultNGINXConfig = NGINXConfig{
 		ConfigFile: "/etc/nginx/nginx.conf",
 		PIDFile:    "/var/run/nginx.pid",
+		HealthPort: 7332,
 	}
 )
 
@@ -58,6 +59,13 @@ const (
 type NGINXConfig struct {
 	ConfigFile string
 	PIDFile    string
+	HealthPort int
+}
+
+func newNGINXConfig(hp int) NGINXConfig {
+	cfg := DefaultNGINXConfig
+	cfg.HealthPort = hp
+	return cfg
 }
 
 type NGINXManager interface {
@@ -67,8 +75,8 @@ type NGINXManager interface {
 	Reload() error
 }
 
-func newNGINXManager() NGINXManager {
-	return &nginxManager{cfg: DefaultNGINXConfig}
+func newNGINXManager(cfg NGINXConfig) NGINXManager {
+	return &nginxManager{cfg: cfg}
 }
 
 type nginxManager struct {

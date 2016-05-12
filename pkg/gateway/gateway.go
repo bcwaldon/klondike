@@ -7,13 +7,15 @@ import (
 	"time"
 )
 
-const HealthPort = 7333
-
 type Config struct {
 	RefreshInterval time.Duration
 	KubeconfigFile  string
 	NGINXDryRun     bool
+	NGINXHealthPort int
+	FarvaHealthPort int
 }
+
+const DefaultFarvaHealthPort = 7333
 
 func New(cfg Config) (*Gateway, error) {
 	kc, err := newKubernetesClient(cfg.KubeconfigFile)
@@ -23,12 +25,14 @@ func New(cfg Config) (*Gateway, error) {
 
 	sm := newServiceMapper(kc)
 
+	nginxCfg := newNGINXConfig(cfg.NGINXHealthPort)
 	var nm NGINXManager
 	if cfg.NGINXDryRun {
 		nm = newLoggingNGINXManager()
 	} else {
-		nm = newNGINXManager()
+		nm = newNGINXManager(nginxCfg)
 	}
+	log.Printf("Using nginx config: %+v", nginxCfg)
 
 	gw := Gateway{
 		cfg: cfg,
@@ -74,7 +78,7 @@ func (gw *Gateway) startHTTPServer() {
 	})
 
 	s := &http.Server{
-		Addr:    fmt.Sprintf(":%d", HealthPort),
+		Addr:    fmt.Sprintf(":%d", gw.cfg.FarvaHealthPort),
 		Handler: mux,
 	}
 
