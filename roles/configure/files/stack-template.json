@@ -1383,7 +1383,9 @@
         "VpcId": {
           "Ref": "ClusterVPC"
         },
-        "CidrBlock": { "Ref": "WorkerSubnetCIDR" },
+        "CidrBlock": {
+          "Ref": "WorkerSubnetCIDR"
+        },
         "MapPublicIpOnLaunch": false,
         "AvailabilityZone": {
           "Ref": "AvailabilityZone"
@@ -1401,7 +1403,9 @@
         "VpcId": {
           "Ref": "ClusterVPC"
         },
-        "CidrBlock": { "Ref": "ControllerSubnetCIDR" },
+        "CidrBlock": {
+          "Ref": "ControllerSubnetCIDR"
+        },
         "MapPublicIpOnLaunch": false,
         "AvailabilityZone": {
           "Ref": "AvailabilityZone"
@@ -1416,7 +1420,9 @@
     "ClusterVPC": {
       "Type": "AWS::EC2::VPC",
       "Properties": {
-        "CidrBlock": { "Ref": "ClusterNetworkCIDR" },
+        "CidrBlock": {
+          "Ref": "ClusterNetworkCIDR"
+        },
         "EnableDnsSupport": true,
         "EnableDnsHostnames": true,
         "InstanceTenancy": "default",
@@ -1971,7 +1977,9 @@
         "VpcId": {
           "Ref": "ClusterVPC"
         },
-        "CidrBlock": { "Ref": "PublicSubnetCIDR" },
+        "CidrBlock": {
+          "Ref": "PublicSubnetCIDR"
+        },
         "MapPublicIpOnLaunch": true,
         "AvailabilityZone": {
           "Ref": "AvailabilityZone"
