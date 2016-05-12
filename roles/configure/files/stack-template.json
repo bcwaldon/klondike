@@ -380,7 +380,8 @@
           "dd7a601c-41ee-40e3-90a8-a9edd1ea4e55"
         ],
         "dependson": [
-          "dd7a601c-41ee-40e3-90a8-a9edd1ea4e55"
+          "dd7a601c-41ee-40e3-90a8-a9edd1ea4e55",
+          "a487cf69-e5ce-4956-85df-761e6427deef"
         ]
       },
       "c7870f0c-c5cc-4ebc-b3af-f40b1c50b95c": {
@@ -770,6 +771,37 @@
           "id": "4719e386-5f75-42ec-9fb2-91f8386f9f87"
         },
         "z": 0
+      },
+      "653fa1d5-9dd8-4510-91f8-71a37bae3ba2": {
+        "source": {
+          "id": "3ecb5892-f24a-4c85-aa24-e275f34308a1",
+          "selector": "g:nth-child(1) g:nth-child(4) g:nth-child(5) circle:nth-child(1)     ",
+          "port": "AWS::DependencyLink-*"
+        },
+        "target": {
+          "id": "dd7a601c-41ee-40e3-90a8-a9edd1ea4e55"
+        },
+        "z": 12
+      },
+      "92a215ad-24e7-49b7-b51c-a635d8eceb76": {
+        "source": {
+          "id": "dd7a601c-41ee-40e3-90a8-a9edd1ea4e55",
+          "selector": "g:nth-child(1) g:nth-child(4) g:nth-child(2) circle:nth-child(1)     ",
+          "port": "AWS::DependencyLink-*"
+        },
+        "target": {
+          "id": "a487cf69-e5ce-4956-85df-761e6427deef"
+        },
+        "z": 12
+      },
+      "bb71fb13-4a5c-4d27-aaac-c858636b4fd7": {
+        "source": {
+          "id": "3ecb5892-f24a-4c85-aa24-e275f34308a1"
+        },
+        "target": {
+          "id": "a487cf69-e5ce-4956-85df-761e6427deef"
+        },
+        "z": 11
       }
     }
   },
@@ -1506,7 +1538,8 @@
         }
       },
       "DependsOn": [
-        "ClusterInternetGateway"
+        "ClusterInternetGateway",
+        "ClusterVPC"
       ]
     },
     "PrivateRouteTable": {
