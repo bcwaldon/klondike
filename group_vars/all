@@ -1,6 +1,6 @@
 ansible_python_interpreter: PATH=/home/core/bin:$PATH python
 
-control_plane_endpoint: "https://{{ external_fqdn }}"
+control_plane_endpoint: "https://api.{{ external_fqdn }}"
 
 ca_name: kubernetes
 

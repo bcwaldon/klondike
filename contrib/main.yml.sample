@@ -36,8 +36,10 @@ ubuntu_image_id:
 # for the Kubernetes API.
 aws_hosted_zone:
 
-# external_fqdn defines a DNS name the the deployer wishes to make
-# routable to the Kubernetes.
+# external_fqdn defines a DNS zone the the deployer wishes to make
+# routable to various Kubernetes services.
+# For example, if external_fqdn were set to "example.com", users of
+# the Kubernetes API would be able to direct requests to api.example.com
 external_fqdn: "{{ cluster }}.kubernetes.{{ aws_hosted_zone }}"
 
 # bastion_instance_type is the instance type used when deploying
