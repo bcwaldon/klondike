@@ -18,4 +18,5 @@ type Service struct {
 type Endpoint struct {
 	Name string
 	IP   string
+	Port int
 }

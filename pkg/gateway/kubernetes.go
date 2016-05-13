@@ -86,6 +86,7 @@ func (asm *apiServiceMapper) ServiceMap() (*ServiceMap, error) {
 				ep := Endpoint{
 					Name: addr.TargetRef.Name,
 					IP:   addr.IP,
+					Port: sub.Ports[0].Port,
 				}
 				svc.Endpoints = append(svc.Endpoints, ep)
 			}

@@ -34,7 +34,7 @@ http {
     }
     upstream {{ $svc.Namespace }}__{{ $svc.Name }} {
 {{ range $ep := $svc.Endpoints }}
-        server {{ $ep.IP }};  # {{ $ep.Name }}
+        server {{ $ep.IP }}:{{ $ep.Port }};  # {{ $ep.Name }}
 {{- end }}
     }
 {{ end }}
