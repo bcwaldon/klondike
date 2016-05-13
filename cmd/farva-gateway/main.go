@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	fs := flag.NewFlagSet("farva", flag.ExitOnError)
+	fs := flag.NewFlagSet("farva-gateway", flag.ExitOnError)
 
 	var cfg gateway.Config
 	fs.DurationVar(&cfg.RefreshInterval, "refresh-interval", 30*time.Second, "Attempt to build and reload a new nginx config at this interval")
