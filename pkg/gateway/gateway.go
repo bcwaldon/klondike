@@ -5,6 +5,8 @@ import (
 	"log"
 	"net/http"
 	"time"
+
+	"github.com/bcwaldon/farva/pkg/health"
 )
 
 type Config struct {
@@ -71,15 +73,9 @@ func (gw *Gateway) start() error {
 }
 
 func (gw *Gateway) startHTTPServer() {
-	mux := http.NewServeMux()
-
-	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Healthy!")
-	})
-
 	s := &http.Server{
-		Addr:    fmt.Sprintf(":%d", gw.cfg.FarvaHealthPort),
-		Handler: mux,
+		Addr:    fmt.Sprintf(":%d", gw.cfg.HealthPort),
+		Handler: health.NewHandler(),
 	}
 
 	go func() {
