@@ -25,6 +25,10 @@ func main() {
 
 	fs.Parse(os.Args[1:])
 
+	if err := SetFlagsFromEnv(fs, "FARVA_MONITOR"); err != nil {
+		log.Fatalf("Failed setting flags from env: %v", err)
+	}
+
 	cfg.AWSInstanceTags = map[string]string{}
 	for _, pair := range tags {
 		cfg.AWSInstanceTags[pair[0]] = pair[1]
@@ -62,4 +66,17 @@ func (f *KVSliceFlag) Set(value string) error {
 		*f = append(*f, [2]string{parts[0], parts[1]})
 	}
 	return nil
+}
+
+func SetFlagsFromEnv(fs *flag.FlagSet, prefix string) error {
+	var err error
+	fs.VisitAll(func(f *flag.Flag) {
+		key := prefix + "_" + strings.ToUpper(strings.Replace(f.Name, "-", "_", -1))
+		if val := os.Getenv(key); val != "" {
+			if serr := fs.Set(f.Name, val); serr != nil {
+				err = fmt.Errorf("invalid value %q for %s: %v", val, key, serr)
+			}
+		}
+	})
+	return err
 }
