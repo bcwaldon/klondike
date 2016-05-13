@@ -3,11 +3,6 @@
 	"ignore": "test",
 	"package": [
 		{
-			"path": "github.com/DataDog/datadog-go/statsd",
-			"revision": "cc2f4770f4d61871e19bfee967bc767fe730b0d9",
-			"revisionTime": "2016-03-29T09:52:53-04:00"
-		},
-		{
 			"path": "github.com/Sirupsen/logrus",
 			"revision": "081307d9bc1364753142d5962fc1d795c742baaf",
 			"revisionTime": "2016-04-16T13:51:37+05:30"
