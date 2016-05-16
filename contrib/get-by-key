@@ -1,0 +1,24 @@
+#!/usr/bin/env python
+
+import json
+import sys
+
+def get(v, keys):
+    if len(keys) == 0:
+        return v
+    if isinstance(v, dict):
+        return get(v[keys[0]], keys[1:])
+    elif isinstance(v, list):
+        return [get(x, keys) for x in v]
+
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print 'Usage:   {} <dot-delimited keys>'.format(sys.argv[0])
+        print 'Example: {} foo.bar.baz < data.json'.format(sys.argv[0])
+        sys.exit(1)
+
+    keys = sys.argv[1].split('.')
+    doc = json.load(sys.stdin)
+    v = get(doc, keys)
+
+    print (v[0] if len(v) == 1 else v)

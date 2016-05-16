@@ -108,6 +108,7 @@ dnf install ansible
 1. From the root of the git checkout directory, run the `configure.yml` playbook:
 
 	```
+	# Note: If you run into errors here, check your ansible version.
 	ansible-playbook -e cluster=$CLUSTER configure.yml
 	```
 
@@ -147,6 +148,9 @@ dnf install ansible
 	```
 	ansible-playbook -e cluster=$CLUSTER cluster.yml
 	```
+
+Note: some environments require associating this VPC with the hosted zone in
+order to resolve the API hostname.
 
 Now your cluster is ready to go.
 Validate everything is working by querying the cluster for all nodes:

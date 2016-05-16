@@ -17,17 +17,39 @@ aws_availability_zone:
 
 # coreos_image_id is the AMI ID used to deploy both controller
 # and worker EC2 instances. This AMI must be available in the region
-# indicated by aws_region. Use the public manifest of CoreOS AMIs
-# at https://coreos.com/os/docs/latest/booting-on-ec2.html. Select
-# the "Alpha Channel" tab in the image selector, identify the image
-# available in your region, then copy the AMI ID for the HVM AMI type
-# pasting it below.
+# indicated by aws_region.
+#
+# We provide a simple utility to retrieve this AMI ID via the command line:
+#
+#     $ contrib/coreos-image-id ${aws_region}
+#
+# Because there is no guarantee for the stability of the schema, it's not
+# possible to guarantee stability of this utility. As a fallback, we also
+# provide manual instructions:
+#
+# 1. Navigate to  https://coreos.com/os/docs/latest/booting-on-ec2.html
+# 2. Select the "Alpha Channel" tab in the image selector
+# 3. Identify the image available in your region
+# 4. Copy the AMI ID for the HVM AMI type
+#
+# Set `coreos_image_id` with the AMI ID retrieved via either method.
 coreos_image_id:
 
-# ubuntu_image_id is the AMI ID used to deploy bastion EC2 instances.
-# Navigate to https://cloud-images.ubuntu.com/locator/ec2/ and search
-# for "16.04 hvm:instance-store". Identify the AMI available in your
-# region, copy the AMI ID and paste it below.
+# ubuntu_image_id is the AMI ID used to deploy bastion EC2 instances. We
+# provide a simple utility to retrieve this ID via the command line:
+#
+#     $ contrib/ubuntu-image-id ${aws_region}
+#
+# Because there is no guarantee for the stability of the schema, it's not
+# possible to guarantee stability of this utility. As a fallback, we also
+# provide manual instructions:
+#
+# 1. Navigate to https://cloud-images.ubuntu.com/locator/ec2/
+# 2. Search for "16.04 hvm:instance-store"
+# 3. Identify the AMI available in your region
+# 4. Copy the AMI ID
+#
+# Set `ubuntu_image_id` with the AMI ID retrieve via either method.
 ubuntu_image_id:
 
 # aws_hosted_zone is a DNS zone delegated to AWS Route 53 the
