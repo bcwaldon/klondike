@@ -9,8 +9,10 @@ spec:
   - name: "farva"
     image: "{{ farva_image }}"
     command:
-    - /pipeline/source/farva
-    - --kubeconfig=/etc/kubernetes/kubeconfig
+    - ./farva-gateway
+    env:
+    - name: FARVA_GATEWAY_KUBECONFIG
+      value: /etc/kubernetes/kubeconfig
     volumeMounts:
     - mountPath: /etc/kubernetes
       name: etc-kubernetes
