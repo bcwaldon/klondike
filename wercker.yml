@@ -9,8 +9,8 @@ build:
         code: ./build
 
     - script:
-        name: copy binary
-        code: cp bin/linux_amd64/farva "$WERCKER_OUTPUT_DIR"
+        name: copy binaries
+        code: cp bin/linux_amd64/* "$WERCKER_OUTPUT_DIR"
 
 deploy:
     box: nginx:1.10.0
@@ -18,7 +18,7 @@ deploy:
     - internal/docker-push:
         username: $QUAY_USERNAME
         password: $QUAY_PASSWORD
-        cmd: /pipeline/source/farva
+        working-dir: /pipeline/source/
         tag: $WERCKER_GIT_COMMIT
         repository: quay.io/bcwaldon/farva
         registry: https://quay.io
