@@ -74,7 +74,7 @@ func (gw *Gateway) start() error {
 
 func (gw *Gateway) startHTTPServer() {
 	s := &http.Server{
-		Addr:    fmt.Sprintf(":%d", gw.cfg.HealthPort),
+		Addr:    fmt.Sprintf(":%d", gw.cfg.FarvaHealthPort),
 		Handler: health.NewHandler(),
 	}
 
@@ -127,6 +127,4 @@ func (gw *Gateway) Run() error {
 		// end of the loop to emulate do-while semantics.
 		<-ticker.C
 	}
-
-	return nil
 }
