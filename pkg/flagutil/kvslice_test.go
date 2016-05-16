@@ -27,8 +27,8 @@ func TestKVSliceSet(t *testing.T) {
 		{
 			arg: " foo = bar , ping = pong ",
 			want: [][2]string{
-				[2]string{" foo ", " bar "},
-				[2]string{" ping ", " pong "},
+				[2]string{"foo", "bar"},
+				[2]string{"ping", "pong"},
 			},
 		},
 		{

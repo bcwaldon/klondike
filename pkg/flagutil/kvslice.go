@@ -22,7 +22,7 @@ func (f *KVSliceFlag) Set(value string) error {
 		if len(parts) != 2 {
 			return fmt.Errorf("invalid value: %v", pair)
 		}
-		*f = append(*f, [2]string{parts[0], parts[1]})
+		*f = append(*f, [2]string{strings.TrimSpace(parts[0]), strings.TrimSpace(parts[1])})
 	}
 	return nil
 }
