@@ -2411,13 +2411,15 @@
         "Path": "/",
         "Policies": [
           {
-            "PolicyName": "root",
+            "PolicyName": "kubernetes-describe-instances",
             "PolicyDocument": {
               "Version": "2012-10-17",
               "Statement": [
                 {
                   "Effect": "Allow",
-                  "Action": "ec2:*",
+                  "Action": [
+                    "ec2:DescribeInstances"
+                  ],
                   "Resource": "*"
                 }
               ]
