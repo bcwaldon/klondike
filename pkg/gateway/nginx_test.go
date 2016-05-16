@@ -1,6 +1,7 @@
 package gateway
 
 import (
+	"strings"
 	"testing"
 )
 
@@ -31,17 +32,33 @@ func TestRender(t *testing.T) {
 		},
 	}
 
-	gw := Gateway{sm: &fsm}
-	got, err := gw.Render()
+	cfg := DefaultNGINXConfig
+	got, err := renderConfig(&cfg, &fsm.sm)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
 
 	want := `
-http {
+pid /var/run/nginx.pid;
+daemon on;
 
-    server ns1__svc1 {
+events {
+    worker_connections 512;
+}
+
+http {
+    server {
+        listen 7332;
+        location /health {
+            return 200 'Healthy!';
+        }
+    }
+
+    server {
         listen 30001;
+        location / {
+            proxy_pass http://ns1__svc1;
+        }
     }
     upstream ns1__svc1 {
 
@@ -53,6 +70,10 @@ http {
 }
 `
 	if want != string(got) {
-		t.Fatalf("unexpected output: want=\n%s\ngot=%s", want, string(got))
+		t.Fatalf(
+			"unexpected output: want=%sgot=%s",
+			strings.Replace(want, " ", "÷", -1),
+			strings.Replace(string(got), " ", "÷", -1),
+		)
 	}
 }

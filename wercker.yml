@@ -5,6 +5,10 @@ build:
         package-dir: github.com/bcwaldon/farva
 
     - script:
+        name: go test
+        code: ./test
+
+    - script:
         name: go build
         code: ./build
 
