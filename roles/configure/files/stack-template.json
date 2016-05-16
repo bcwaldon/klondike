@@ -1216,23 +1216,31 @@
         "Path": "/",
         "Policies": [
           {
-            "PolicyName": "root",
+            "PolicyName": "ec2-describe-all",
             "PolicyDocument": {
               "Version": "2012-10-17",
               "Statement": [
                 {
                   "Effect": "Allow",
-                  "Action": "ec2:Describe*",
+                  "Action": [
+                    "ec2:Describe*"
+                  ],
                   "Resource": "*"
-                },
+                }
+              ]
+            }
+          },
+          {
+            "PolicyName": "ebs-manage-attachment",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
                 {
                   "Effect": "Allow",
-                  "Action": "ec2:AttachVolume",
-                  "Resource": "*"
-                },
-                {
-                  "Effect": "Allow",
-                  "Action": "ec2:DetachVolume",
+                  "Action": [
+                    "ec2:AttachVolume",
+                    "ec2:DetachVolume"
+                  ],
                   "Resource": "*"
                 }
               ]
