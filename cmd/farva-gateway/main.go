@@ -6,6 +6,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/bcwaldon/farva/pkg/flagutil"
 	"github.com/bcwaldon/farva/pkg/gateway"
 )
 
@@ -20,6 +21,10 @@ func main() {
 	fs.IntVar(&cfg.FarvaHealthPort, "farva-health-port", gateway.DefaultFarvaHealthPort, "Port to listen on for farva health checks.")
 
 	fs.Parse(os.Args[1:])
+
+	if err := flagutil.SetFlagsFromEnv(fs, "FARVA_GATEWAY"); err != nil {
+		log.Fatalf("Failed setting flags from env: %v", err)
+	}
 
 	gw, err := gateway.New(cfg)
 	if err != nil {
