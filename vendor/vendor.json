@@ -238,6 +238,18 @@
 			"revisionTime": "2015-11-25T20:19:25Z"
 		},
 		{
+			"checksumSHA1": "0utJAePiKZZzPG3SxPA+xWQ3JAw=",
+			"path": "github.com/kylelemons/godebug/diff",
+			"revision": "eadb3ce320cbab8393bea5ca17bebac3f78a021b",
+			"revisionTime": "2016-04-06T21:19:39Z"
+		},
+		{
+			"checksumSHA1": "f1Cya7f83KJIkWcYWxT3ZZxDeZc=",
+			"path": "github.com/kylelemons/godebug/pretty",
+			"revision": "eadb3ce320cbab8393bea5ca17bebac3f78a021b",
+			"revisionTime": "2016-04-06T21:19:39Z"
+		},
+		{
 			"path": "github.com/matttproud/golang_protobuf_extensions/pbutil",
 			"revision": "d0c3fe89de86839aecf2e0579c40ba3bb336a453",
 			"revisionTime": "2015-10-11T12:25:29+02:00"
