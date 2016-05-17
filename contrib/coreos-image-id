@@ -5,4 +5,4 @@ REGION=$1
 
 [ ! -z $REGION ] || { echo "Usage: $0 <aws_region>"; exit 1; }
 
-curl -s https://coreos.com/dist/aws/aws-alpha.json | $DIR/get-by-key $REGION.hvm
+curl -s https://coreos.com/dist/aws/aws-beta.json | $DIR/get-by-key $REGION.hvm

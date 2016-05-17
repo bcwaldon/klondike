@@ -19,6 +19,11 @@ aws_availability_zone:
 # and worker EC2 instances. This AMI must be available in the region
 # indicated by aws_region.
 #
+# The "Beta" CoreOS release channel should be used when selecting a
+# CoreOS AMI, as this provides the best trade-off of stability and
+# up-to-date software. The current minimum version of CoreOS
+# is 962.0.0, which is the first release with kubelet-wrapper.
+#
 # We provide a simple utility to retrieve this AMI ID via the command line:
 #
 #     $ contrib/coreos-image-id ${aws_region}
@@ -28,7 +33,7 @@ aws_availability_zone:
 # provide manual instructions:
 #
 # 1. Navigate to  https://coreos.com/os/docs/latest/booting-on-ec2.html
-# 2. Select the "Alpha Channel" tab in the image selector
+# 2. Select the "Beta Channel" tab in the image selector
 # 3. Identify the image available in your region
 # 4. Copy the AMI ID for the HVM AMI type
 #
