@@ -160,7 +160,8 @@ datadog_enabled: false
 # logstash_elasticsearch_host must be set.
 logstash_enabled: false
 
-# logstash_elasticsearch_host is the host:port representing an
-# elasticsearch cluster where logstash should send its logs.
-# Only used if logstash_enabled is true.
+# logstash_elasticsearch_host is the <scheme>://<host> representing an
+# elasticsearch cluster where logstash should send its logs. The
+# scheme should typically be https. This field is only used if
+# logstash_enabled is true.
 #logstash_elasticsearch_host:
