@@ -1183,6 +1183,7 @@
                     "elasticloadbalancing:CreateLoadBalancerListeners",
                     "elasticloadbalancing:DeleteLoadBalancerListeners",
                     "elasticloadbalancing:DeregisterInstancesFromLoadBalancer",
+                    "elasticloadbalancing:DescribeLoadBalancers",
                     "elasticloadbalancing:DetachLoadBalancerFromSubnets",
                     "elasticloadbalancing:RegisterInstancesWithLoadBalancer",
                     "ec2:AuthorizeSecurityGroupIngress",
