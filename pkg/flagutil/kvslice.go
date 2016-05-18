@@ -9,8 +9,8 @@ type KVSliceFlag [][2]string
 
 func (f *KVSliceFlag) String() string {
 	pairs := []string{}
-	for k, v := range *f {
-		pairs = append(pairs, fmt.Sprintf("%s=%s", k, v))
+	for _, v := range *f {
+		pairs = append(pairs, fmt.Sprintf("%s=%s", v[0], v[1]))
 	}
 	return strings.Join(pairs, ",")
 }

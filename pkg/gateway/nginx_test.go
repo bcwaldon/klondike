@@ -62,9 +62,9 @@ http {
     }
     upstream ns1__svc1 {
 
-        server 10.0.0.1;  # pod1
-        server 10.0.0.2;  # pod2
-        server 10.0.0.3;  # pod3
+        server 10.0.0.1:0;  # pod1
+        server 10.0.0.2:0;  # pod2
+        server 10.0.0.3:0;  # pod3
     }
 
 }

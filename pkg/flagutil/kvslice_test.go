@@ -65,3 +65,32 @@ func TestKVSliceSetError(t *testing.T) {
 		}
 	}
 }
+
+func TestKVSliceString(t *testing.T) {
+
+	tests := []struct {
+		arg  KVSliceFlag
+		want string
+	}{
+		{
+			arg: KVSliceFlag{
+				[2]string{"foo", "bar"},
+			},
+			want: "foo=bar",
+		},
+		{
+			arg: KVSliceFlag{
+				[2]string{"foo", "bar"},
+				[2]string{"woot", "sauce"},
+			},
+			want: "foo=bar,woot=sauce",
+		},
+	}
+
+	for i, tt := range tests {
+		got := tt.arg.String()
+		if diff := pretty.Compare(tt.want, got); diff != "" {
+			t.Errorf("case %d: diff=%s", i, diff)
+		}
+	}
+}
