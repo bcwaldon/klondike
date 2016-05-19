@@ -66,8 +66,11 @@ func (asm *apiServiceMapper) ServiceMap() (*ServiceMap, error) {
 		for _, port := range service.Spec.Ports {
 			if port.Port != ingServicePort || port.Protocol != kapi.ProtocolTCP {
 				continue
+			} else {
+				svc.ListenPort = port.NodePort
+				svc.TargetPort = port.TargetPort.IntValue()
+				break
 			}
-			svc.ListenPort = port.NodePort
 		}
 
 		endpoints, err := asm.kc.Endpoints(svc.Namespace).Get(svc.Name)
@@ -76,7 +79,7 @@ func (asm *apiServiceMapper) ServiceMap() (*ServiceMap, error) {
 		}
 
 		for _, sub := range endpoints.Subsets {
-			if sub.Ports[0].Port != ingServicePort || sub.Ports[0].Protocol != kapi.ProtocolTCP {
+			if sub.Ports[0].Port != svc.TargetPort || sub.Ports[0].Protocol != kapi.ProtocolTCP {
 				continue
 			}
 

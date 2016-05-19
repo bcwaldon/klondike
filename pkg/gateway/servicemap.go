@@ -12,6 +12,7 @@ type Service struct {
 	Namespace  string
 	Name       string
 	ListenPort int
+	TargetPort int
 	Endpoints  []Endpoint
 }
 
