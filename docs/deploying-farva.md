@@ -146,12 +146,12 @@ the version that's currently running with a custom build.
 
 If you're branching off this repo, `quay.io` is already configured to
 build and tag every commit into a corresponding container that gets pushed and
-tagged using the git commit hash in this repo. For non-contributors, the
+tagged using the git commit hash that triggered it. For non-contributors, the
 important piece is simply rebuilding farva and pushing the resulting container.
 
-The bastion host has a copy of the roles within this directory. You can look at
-the image id farva uses in the klondike/roles/kube-gateway/vars/main.yml file
-that lives in the bastion's home directory:
+The bastion host has a copy of the roles in this repository. The bastion's home
+directory should have a `klondike` folder. You can look at the image id farva
+uses in the klondike/roles/kube-gateway/vars/main.yml file:
 
     ...
     farva_image: "quay.io/bcwaldon/farva:65e333067dfa5778e28217344ee12c36bb688741"
@@ -159,5 +159,5 @@ that lives in the bastion's home directory:
 
 You can replace this with a custom image and re-deploy farva with:
 
-    cd klondike
+    # From /home/ubuntu/klondike
     ansible-playbook site.yml -l tag_group_gateway -e cluster=$CLUSTER
