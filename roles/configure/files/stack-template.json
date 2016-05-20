@@ -1115,7 +1115,7 @@
         ],
         "LoadBalancerNames": [
           {
-            "Ref": "ControllerLoadBalancer"
+            "Ref": "ControllerPublicELB"
           }
         ],
         "VPCZoneIdentifier": [
@@ -1504,14 +1504,14 @@
         }
       }
     },
-    "ControllerSecurityGroupIngressLoadBalancerToAPI": {
+    "ControllerSecurityGroupIngressELBToAPI": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
           "Ref": "ControllerSecurityGroup"
         },
         "SourceSecurityGroupId": {
-          "Ref": "ControllerLoadBalancerSecurityGroup"
+          "Ref": "ControllerPublicELBSecurityGroup"
         },
         "FromPort": 6443,
         "ToPort": 6443,
@@ -1952,7 +1952,7 @@
         }
       }
     },
-    "ControllerLoadBalancer": {
+    "ControllerPublicELB": {
       "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
       "Properties": {
         "Subnets": [
@@ -1962,7 +1962,7 @@
         ],
         "SecurityGroups": [
           {
-            "Ref": "ControllerLoadBalancerSecurityGroup"
+            "Ref": "ControllerPublicELBSecurityGroup"
           }
         ],
         "Listeners": [
@@ -1987,10 +1987,10 @@
         }
       }
     },
-    "ControllerLoadBalancerSecurityGroup": {
+    "ControllerPublicELBSecurityGroup": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
-        "GroupDescription": "ControllerLoadBalancerSecurityGroup",
+        "GroupDescription": "ControllerPublicELBSecurityGroup",
         "VpcId": {
           "Ref": "ClusterVPC"
         },
@@ -2009,7 +2009,7 @@
         }
       }
     },
-    "ControllerLoadBalancerDNSRecord": {
+    "ControllerPublicELBDNSRecord": {
       "Type": "AWS::Route53::RecordSet",
       "Properties": {
         "HostedZoneName": {
@@ -2040,7 +2040,7 @@
         "ResourceRecords": [
           {
             "Fn::GetAtt": [
-              "ControllerLoadBalancer",
+              "ControllerPublicELB",
               "DNSName"
             ]
           }
@@ -2359,7 +2359,7 @@
         ],
         "LoadBalancerNames": [
           {
-            "Ref": "GatewayLoadBalancer"
+            "Ref": "GatewayPublicELB"
           }
         ]
       },
@@ -2543,7 +2543,7 @@
         }
       }
     },
-    "GatewayLoadBalancer": {
+    "GatewayPublicELB": {
       "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
       "Properties": {
         "Subnets": [
@@ -2553,7 +2553,7 @@
         ],
         "SecurityGroups": [
           {
-            "Ref": "GatewayLoadBalancerSecurityGroup"
+            "Ref": "GatewayPublicELBSecurityGroup"
           }
         ],
         "Listeners": [
@@ -2578,14 +2578,14 @@
         }
       }
     },
-    "ControllerSecurityGroupIngressFromGatewayLoadBalancer": {
+    "ControllerSecurityGroupIngressFromGatewayPublicELB": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
           "Ref": "ControllerSecurityGroup"
         },
         "SourceSecurityGroupId": {
-          "Ref": "GatewayLoadBalancerSecurityGroup"
+          "Ref": "GatewayPublicELBSecurityGroup"
         },
         "FromPort": 7331,
         "ToPort": 7331,
@@ -2597,10 +2597,10 @@
         }
       }
     },
-    "GatewayLoadBalancerSecurityGroup": {
+    "GatewayPublicELBSecurityGroup": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
-        "GroupDescription": "GatewayLoadBalancerSecurityGroup",
+        "GroupDescription": "GatewayPublicELBSecurityGroup",
         "VpcId": {
           "Ref": "ClusterVPC"
         },
