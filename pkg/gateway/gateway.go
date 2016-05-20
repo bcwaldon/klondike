@@ -12,6 +12,7 @@ import (
 type Config struct {
 	RefreshInterval time.Duration
 	KubeconfigFile  string
+	ClusterZone     string
 	NGINXDryRun     bool
 	NGINXHealthPort int
 	FarvaHealthPort int
@@ -27,7 +28,7 @@ func New(cfg Config) (*Gateway, error) {
 
 	sm := newServiceMapper(kc)
 
-	nginxCfg := newNGINXConfig(cfg.NGINXHealthPort)
+	nginxCfg := newNGINXConfig(cfg.NGINXHealthPort, cfg.ClusterZone)
 	var nm NGINXManager
 	if cfg.NGINXDryRun {
 		nm = newLoggingNGINXManager()

@@ -71,7 +71,7 @@ http {
 
     server {
         listen 7331;
-        server_name ing1.svc1.bulbasaur.svc.planet-labs.com;
+        server_name ing1.svc1.example.com;
 
         location / {
             proxy_pass http://ns1__ing1__svc1;

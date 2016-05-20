@@ -27,12 +27,12 @@ type ServiceGroup struct {
 	Services  []Service
 }
 
-func (svg *ServiceGroup) DefaultServerName(suffix string) string {
+func (svg *ServiceGroup) DefaultServerName(cz string) string {
 	return fmt.Sprintf(
 		"%s.%s.%s",
 		svg.Name,
 		svg.Namespace,
-		suffix,
+		cz,
 	)
 }
 

@@ -28,7 +28,7 @@ http {
 {{ range $svg := .ServiceMap.ServiceGroups }}
     server {
         listen {{ $.NGINXConfig.ListenPort }};
-        server_name {{ $svg.DefaultServerName "bulbasaur.svc.planet-labs.com" }};
+        server_name {{ $svg.DefaultServerName $.NGINXConfig.ClusterZone }};
 {{ range $svc := $svg.Services }}
         location {{ or $svc.Path "/" }} {
             proxy_pass http://{{ $svc.Namespace }}__{{ $svg.Name }}__{{ $svc.Name }};
@@ -49,10 +49,11 @@ http {
 	nginxTemplate = template.Must(template.New("nginx").Parse(nginxTemplateData))
 
 	DefaultNGINXConfig = NGINXConfig{
-		ConfigFile: "/etc/nginx/nginx.conf",
-		PIDFile:    "/var/run/nginx.pid",
-		HealthPort: 7332,
-		ListenPort: 7331,
+		ClusterZone: "example.com",
+		ConfigFile:  "/etc/nginx/nginx.conf",
+		PIDFile:     "/var/run/nginx.pid",
+		HealthPort:  7332,
+		ListenPort:  7331,
 	}
 )
 
@@ -63,15 +64,17 @@ const (
 )
 
 type NGINXConfig struct {
-	ConfigFile string
-	PIDFile    string
-	HealthPort int
-	ListenPort int
+	ClusterZone string
+	ConfigFile  string
+	PIDFile     string
+	HealthPort  int
+	ListenPort  int
 }
 
-func newNGINXConfig(hp int) NGINXConfig {
+func newNGINXConfig(hp int, cz string) NGINXConfig {
 	cfg := DefaultNGINXConfig
 	cfg.HealthPort = hp
+	cfg.ClusterZone = cz
 	return cfg
 }
 
