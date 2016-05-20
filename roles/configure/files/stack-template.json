@@ -293,6 +293,7 @@
         "z": 1,
         "embeds": [
           "1cc85fdc-e298-4914-849e-7a7f18364e85",
+          "4382883d-ccbb-4b33-934c-19e73f682e7f",
           "314120e5-87bf-4791-80ae-cd443fad4186",
           "4719e386-5f75-42ec-9fb2-91f8386f9f87",
           "317ab59f-2379-451a-9fbc-c397fd31dd5c",
@@ -822,7 +823,8 @@
         "embeds": [],
         "isconnectedto": [
           "f591c362-5976-4efe-aca1-f1c0cb9f31af",
-          "1bbd2641-5532-431b-a1dd-a7dd893e58db"
+          "1bbd2641-5532-431b-a1dd-a7dd893e58db",
+          "1d4a5fec-f915-4f8b-afef-87442f63ecec"
         ],
         "isassociatedwith": [
           "428b2995-219a-422e-a4b6-bc7c91ff2828"
@@ -886,13 +888,13 @@
           "id": "251f6d10-84e4-44a1-b93e-67bbe9078fba"
         },
         "target": {
-          "id": "9837f252-8e6b-4d4a-8f3c-2d7fd5fad8d0"
+          "id": "4382883d-ccbb-4b33-934c-19e73f682e7f"
         },
         "z": 0
       },
       "9fca00aa-30f9-4b28-9fdc-5459f77dabc2": {
         "source": {
-          "id": "9837f252-8e6b-4d4a-8f3c-2d7fd5fad8d0"
+          "id": "4382883d-ccbb-4b33-934c-19e73f682e7f"
         },
         "target": {
           "id": "4719e386-5f75-42ec-9fb2-91f8386f9f87"
@@ -1047,6 +1049,68 @@
           "id": "1bbd2641-5532-431b-a1dd-a7dd893e58db"
         },
         "z": 11
+      },
+      "1d4a5fec-f915-4f8b-afef-87442f63ecec": {
+        "size": {
+          "width": 60,
+          "height": 60
+        },
+        "position": {
+          "x": -170,
+          "y": 400
+        },
+        "z": 0,
+        "embeds": [],
+        "isconnectedto": [
+          "f591c362-5976-4efe-aca1-f1c0cb9f31af",
+          "314120e5-87bf-4791-80ae-cd443fad4186"
+        ],
+        "ismemberof": [
+          "317ab59f-2379-451a-9fbc-c397fd31dd5c",
+          "255d4787-f655-4580-a914-8fddeba1bc2d"
+        ]
+      },
+      "255d4787-f655-4580-a914-8fddeba1bc2d": {
+        "size": {
+          "width": 60,
+          "height": 60
+        },
+        "position": {
+          "x": -170,
+          "y": 290
+        },
+        "z": 0,
+        "embeds": []
+      },
+      "a0ca15e0-b8a8-400b-b8b8-162577e7cc60": {
+        "source": {
+          "id": "1d4a5fec-f915-4f8b-afef-87442f63ecec"
+        },
+        "target": {
+          "id": "255d4787-f655-4580-a914-8fddeba1bc2d"
+        },
+        "z": 11
+      },
+      "74839bc6-9b1d-46ae-94d1-eb5302f132a6": {
+        "source": {
+          "id": "4cd01314-51ae-4fac-9c95-36004183543b",
+          "selector": "g:nth-child(1) g:nth-child(4) g:nth-child(1) circle:nth-child(1)     ",
+          "port": "AWS::EC2::SecurityGroupIngress"
+        },
+        "target": {
+          "x": -150,
+          "y": 310
+        },
+        "z": 12
+      },
+      "d8239a35-58e3-4723-adf3-f524c1f86af9": {
+        "source": {
+          "id": "4cd01314-51ae-4fac-9c95-36004183543b"
+        },
+        "target": {
+          "id": "255d4787-f655-4580-a914-8fddeba1bc2d"
+        },
+        "z": 0
       }
     }
   },
@@ -2360,6 +2424,9 @@
         "LoadBalancerNames": [
           {
             "Ref": "GatewayPublicELB"
+          },
+          {
+            "Ref": "GatewayPrivateELB"
           }
         ]
       },
@@ -2616,6 +2683,83 @@
       "Metadata": {
         "AWS::CloudFormation::Designer": {
           "id": "1cc85fdc-e298-4914-849e-7a7f18364e85"
+        }
+      }
+    },
+    "GatewayPrivateELB": {
+      "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
+      "Properties": {
+        "Scheme": "internal",
+        "Subnets": [
+          {
+            "Ref": "ControllerSubnet"
+          }
+        ],
+        "SecurityGroups": [
+          {
+            "Ref": "GatewayPrivateELBSecurityGroup"
+          }
+        ],
+        "Listeners": [
+          {
+            "InstancePort": 7331,
+            "InstanceProtocol": "TCP",
+            "LoadBalancerPort": 80,
+            "Protocol": "TCP"
+          }
+        ],
+        "HealthCheck": {
+          "Target": "TCP:7331",
+          "HealthyThreshold": "2",
+          "Interval": "6",
+          "Timeout": "5",
+          "UnhealthyThreshold": "2"
+        }
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "1d4a5fec-f915-4f8b-afef-87442f63ecec"
+        }
+      }
+    },
+    "GatewayPrivateELBSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "GatewayPrivateELBSecurityGroup",
+        "VpcId": {
+          "Ref": "ClusterVPC"
+        },
+        "SecurityGroupIngress": [
+          {
+            "IpProtocol": "TCP",
+            "FromPort": 80,
+            "ToPort": 80,
+            "CidrIp": "0.0.0.0/0"
+          }
+        ]
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "255d4787-f655-4580-a914-8fddeba1bc2d"
+        }
+      }
+    },
+    "ControllerSecurityGroupIngressFromGatewayPrivateELB": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "ControllerSecurityGroup"
+        },
+        "SourceSecurityGroupId": {
+          "Ref": "GatewayPrivateELBSecurityGroup"
+        },
+        "FromPort": 7331,
+        "ToPort": 7331,
+        "IpProtocol": "TCP"
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "d8239a35-58e3-4723-adf3-f524c1f86af9"
         }
       }
     }
