@@ -13,6 +13,8 @@ spec:
     env:
     - name: FARVA_GATEWAY_KUBECONFIG
       value: /etc/kubernetes/kubeconfig
+    - name: FARVA_GATEWAY_CLUSTER_ZONE
+      value: "gateway.{{ external_fqdn }}"
     volumeMounts:
     - mountPath: /etc/kubernetes
       name: etc-kubernetes
