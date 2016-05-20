@@ -17,15 +17,30 @@ func (fsm *fakeServiceMapper) ServiceMap() (*ServiceMap, error) {
 func TestRender(t *testing.T) {
 	fsm := fakeServiceMapper{
 		sm: ServiceMap{
-			Services: []Service{
-				Service{
-					Namespace:  "ns1",
-					Name:       "svc1",
-					ListenPort: 30001,
-					Endpoints: []Endpoint{
-						Endpoint{Name: "pod1", IP: "10.0.0.1"},
-						Endpoint{Name: "pod2", IP: "10.0.0.2"},
-						Endpoint{Name: "pod3", IP: "10.0.0.3"},
+			ServiceGroups: []ServiceGroup{
+				ServiceGroup{
+					Name:      "ing1",
+					Namespace: "svc1",
+					Services: []Service{
+						Service{
+							Namespace: "ns1",
+							Name:      "svc1",
+							Endpoints: []Endpoint{
+								Endpoint{Name: "pod1", IP: "10.0.0.1"},
+								Endpoint{Name: "pod2", IP: "10.0.0.2"},
+								Endpoint{Name: "pod3", IP: "10.0.0.3"},
+							},
+						},
+						Service{
+							Namespace: "ns1",
+							Name:      "svc2",
+							Path:      "/v0",
+							Endpoints: []Endpoint{
+								Endpoint{Name: "pod1", IP: "10.0.0.4"},
+								Endpoint{Name: "pod2", IP: "10.0.0.5"},
+								Endpoint{Name: "pod3", IP: "10.0.0.6"},
+							},
+						},
 					},
 				},
 			},
@@ -55,16 +70,28 @@ http {
     }
 
     server {
-        listen 30001;
+        listen 7331;
+        server_name ing1.svc1.bulbasaur.svc.planet-labs.com;
+
         location / {
-            proxy_pass http://ns1__svc1;
+            proxy_pass http://ns1__ing1__svc1;
+        }
+        location /v0 {
+            proxy_pass http://ns1__ing1__svc2;
         }
     }
-    upstream ns1__svc1 {
+
+    upstream ns1__ing1__svc1 {
 
         server 10.0.0.1:0;  # pod1
         server 10.0.0.2:0;  # pod2
         server 10.0.0.3:0;  # pod3
+    }
+    upstream ns1__ing1__svc2 {
+
+        server 10.0.0.4:0;  # pod1
+        server 10.0.0.5:0;  # pod2
+        server 10.0.0.6:0;  # pod3
     }
 
 }

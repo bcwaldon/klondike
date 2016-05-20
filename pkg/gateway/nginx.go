@@ -25,18 +25,23 @@ http {
             return 200 'Healthy!';
         }
     }
-{{ range $svc := .ServiceMap.Services }}
+{{ range $svg := .ServiceMap.ServiceGroups }}
     server {
-        listen {{ $svc.ListenPort }};
-        location / {
-            proxy_pass http://{{ $svc.Namespace }}__{{ $svc.Name }};
+        listen {{ $.NGINXConfig.ListenPort }};
+        server_name {{ $svg.DefaultServerName "bulbasaur.svc.planet-labs.com" }};
+{{ range $svc := $svg.Services }}
+        location {{ or $svc.Path "/" }} {
+            proxy_pass http://{{ $svc.Namespace }}__{{ $svg.Name }}__{{ $svc.Name }};
         }
+{{- end}}
     }
-    upstream {{ $svc.Namespace }}__{{ $svc.Name }} {
+{{ range $svc := $svg.Services }}
+    upstream {{ $svc.Namespace }}__{{ $svg.Name}}__{{ $svc.Name }} {
 {{ range $ep := $svc.Endpoints }}
         server {{ $ep.IP }}:{{ $ep.Port }};  # {{ $ep.Name }}
 {{- end }}
     }
+{{- end }}
 {{ end }}
 }
 `
@@ -47,6 +52,7 @@ http {
 		ConfigFile: "/etc/nginx/nginx.conf",
 		PIDFile:    "/var/run/nginx.pid",
 		HealthPort: 7332,
+		ListenPort: 7331,
 	}
 )
 
@@ -60,6 +66,7 @@ type NGINXConfig struct {
 	ConfigFile string
 	PIDFile    string
 	HealthPort int
+	ListenPort int
 }
 
 func newNGINXConfig(hp int) NGINXConfig {
@@ -137,8 +144,8 @@ func (n *nginxManager) run(args ...string) error {
 func renderConfig(cfg *NGINXConfig, sm *ServiceMap) ([]byte, error) {
 	log.Printf("Rendering config")
 	config := struct {
-		*NGINXConfig
-		*ServiceMap
+		NGINXConfig *NGINXConfig
+		ServiceMap  *ServiceMap
 	}{
 		NGINXConfig: cfg,
 		ServiceMap:  sm,
