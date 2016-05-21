@@ -71,6 +71,11 @@ http {
 
     server {
         listen 7331;
+        return 444;
+    }
+
+    server {
+        listen 7331;
         server_name ing1.svc1.example.com;
 
         location / {

@@ -25,6 +25,11 @@ http {
             return 200 'Healthy!';
         }
     }
+
+    server {
+        listen {{ .NGINXConfig.ListenPort }};
+        return 444;
+    }
 {{ range $svg := .ServiceMap.ServiceGroups }}
     server {
         listen {{ $.NGINXConfig.ListenPort }};
