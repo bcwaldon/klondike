@@ -19,6 +19,7 @@ func main() {
 	fs.BoolVar(&cfg.NGINXDryRun, "nginx-dry-run", false, "Log nginx management commands rather than executing them.")
 	fs.IntVar(&cfg.NGINXHealthPort, "nginx-health-port", gateway.DefaultNGINXConfig.HealthPort, "Port to listen on for nginx health checks.")
 	fs.IntVar(&cfg.FarvaHealthPort, "farva-health-port", gateway.DefaultFarvaHealthPort, "Port to listen on for farva health checks.")
+	fs.StringVar(&cfg.ClusterZone, "cluster-zone", "", "Use this DNS zone for routing of traffic to Kubernetes")
 
 	fs.Parse(os.Args[1:])
 
