@@ -62,6 +62,8 @@ events {
 }
 
 http {
+    server_names_hash_bucket_size 128;
+
     server {
         listen 7332;
         location /health {
