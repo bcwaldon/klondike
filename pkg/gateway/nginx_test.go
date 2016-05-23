@@ -17,15 +17,15 @@ func (fsm *fakeServiceMapper) ServiceMap() (*ServiceMap, error) {
 func TestRender(t *testing.T) {
 	fsm := fakeServiceMapper{
 		sm: ServiceMap{
-			ServiceGroups: []ServiceGroup{
-				ServiceGroup{
+			HTTPServiceGroups: []HTTPServiceGroup{
+				HTTPServiceGroup{
 					Aliases: []string{
 						"apps.example.com",
 					},
 					Name:      "ing1",
 					Namespace: "ns1",
-					Services: []Service{
-						Service{
+					Services: []HTTPService{
+						HTTPService{
 							Namespace: "ns1",
 							Name:      "svc1",
 							Endpoints: []Endpoint{
@@ -34,7 +34,7 @@ func TestRender(t *testing.T) {
 								Endpoint{Name: "pod3", IP: "10.0.0.3"},
 							},
 						},
-						Service{
+						HTTPService{
 							Namespace: "ns1",
 							Name:      "svc2",
 							Path:      "/v0",

@@ -9,10 +9,10 @@ type ServiceMapper interface {
 }
 
 type ServiceMap struct {
-	ServiceGroups []ServiceGroup
+	HTTPServiceGroups []HTTPServiceGroup
 }
 
-type Service struct {
+type HTTPService struct {
 	Namespace  string
 	Name       string
 	TargetPort int
@@ -20,14 +20,14 @@ type Service struct {
 	Path       string
 }
 
-type ServiceGroup struct {
+type HTTPServiceGroup struct {
 	Aliases   []string
 	Name      string
 	Namespace string
-	Services  []Service
+	Services  []HTTPService
 }
 
-func (svg *ServiceGroup) DefaultServerName(cz string) string {
+func (svg *HTTPServiceGroup) DefaultServerName(cz string) string {
 	return fmt.Sprintf(
 		"%s.%s.%s",
 		svg.Name,

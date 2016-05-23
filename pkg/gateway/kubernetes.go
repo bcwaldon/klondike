@@ -82,7 +82,7 @@ type apiServiceMapper struct {
 	smcfg *ServiceMapperConfig
 }
 
-func setServicePorts(svc *Service, ingServicePort int, asm *apiServiceMapper) error {
+func setServicePorts(svc *HTTPService, ingServicePort int, asm *apiServiceMapper) error {
 	service, err := asm.kc.Services(svc.Namespace).Get(svc.Name)
 
 	if err != nil {
@@ -101,7 +101,7 @@ func setServicePorts(svc *Service, ingServicePort int, asm *apiServiceMapper) er
 	return nil
 }
 
-func setServiceEndpoints(svc *Service, asm *apiServiceMapper) error {
+func setServiceEndpoints(svc *HTTPService, asm *apiServiceMapper) error {
 	endpoints, err := asm.kc.Endpoints(svc.Namespace).Get(svc.Name)
 	if err != nil {
 		return err
@@ -133,13 +133,13 @@ func (asm *apiServiceMapper) ServiceMap() (*ServiceMap, error) {
 		return nil, err
 	}
 
-	var serviceGroups []ServiceGroup
+	var serviceGroups []HTTPServiceGroup
 	for _, ing := range ingressList.Items {
-		var services []Service
-		svg := ServiceGroup{
+		var services []HTTPService
+		svg := HTTPServiceGroup{
 			Name:      ing.ObjectMeta.Name,
 			Namespace: ing.ObjectMeta.Namespace,
-			Services:  []Service{},
+			Services:  []HTTPService{},
 			Aliases:   asm.smcfg.getAnnotationStringList(&ing, HostnameAliasKey),
 		}
 
@@ -147,7 +147,7 @@ func (asm *apiServiceMapper) ServiceMap() (*ServiceMap, error) {
 			// Default backend.
 			ingServicePort := ing.Spec.Backend.ServicePort.IntValue()
 
-			svc := Service{
+			svc := HTTPService{
 				Name:      ing.Spec.Backend.ServiceName,
 				Namespace: ing.ObjectMeta.Namespace,
 				Endpoints: []Endpoint{},
@@ -168,7 +168,7 @@ func (asm *apiServiceMapper) ServiceMap() (*ServiceMap, error) {
 				for _, path := range rule.HTTP.Paths {
 					ingServicePath := path.Path
 					ingServicePort := path.Backend.ServicePort.IntValue()
-					svc := Service{
+					svc := HTTPService{
 						Name:      path.Backend.ServiceName,
 						Namespace: ing.ObjectMeta.Namespace,
 						Endpoints: []Endpoint{},
@@ -188,6 +188,6 @@ func (asm *apiServiceMapper) ServiceMap() (*ServiceMap, error) {
 		serviceGroups = append(serviceGroups, svg)
 	}
 
-	sm := &ServiceMap{ServiceGroups: serviceGroups}
+	sm := &ServiceMap{HTTPServiceGroups: serviceGroups}
 	return sm, nil
 }

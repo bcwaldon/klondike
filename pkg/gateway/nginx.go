@@ -32,7 +32,7 @@ http {
         listen {{ .NGINXConfig.ListenPort }};
         return 444;
     }
-{{ range $svg := .ServiceMap.ServiceGroups }}
+{{ range $svg := .ServiceMap.HTTPServiceGroups }}
     server {
         listen {{ $.NGINXConfig.ListenPort }};
         server_name {{ $svg.DefaultServerName $.NGINXConfig.ClusterZone }} {{ range $svg.Aliases }}{{ . }}{{ end }};
