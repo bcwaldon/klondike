@@ -10,6 +10,7 @@ type ServiceMapper interface {
 
 type ServiceMap struct {
 	HTTPServiceGroups []*HTTPServiceGroup
+	TCPServices       []*TCPService
 }
 
 type ServiceGroup interface {
@@ -37,6 +38,21 @@ func (sg *HTTPServiceGroup) Namespace() string {
 }
 
 func (sg *HTTPServiceGroup) Name() string {
+	return sg.name
+}
+
+type TCPService struct {
+	name       string
+	namespace  string
+	ListenPort int
+	Endpoints  []TCPEndpoint
+}
+
+func (sg *TCPService) Namespace() string {
+	return sg.namespace
+}
+
+func (sg *TCPService) Name() string {
 	return sg.name
 }
 

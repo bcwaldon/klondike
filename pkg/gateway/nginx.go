@@ -48,7 +48,23 @@ http {
         server {{ $ep.IP }}:{{ $ep.Port }};  # {{ $ep.Name }}
 {{- end }}
     }
+
 {{- end }}
+{{ end }}
+}
+
+stream {
+{{ range $svc := .ServiceMap.TCPServices }}
+    server {
+        listen {{ $svc.ListenPort }};
+        proxy_pass {{ $svc.Namespace }}__{{ $svc.Name }};
+    }
+
+    upstream {{ $svc.Namespace }}__{{ $svc.Name }} {
+{{ range $ep := $svc.Endpoints }}
+        server {{ $ep.IP }}:{{ $ep.Port }};  # {{ $ep.Name }}
+{{- end }}
+    }
 {{ end }}
 }
 `
