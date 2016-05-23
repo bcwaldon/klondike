@@ -16,7 +16,7 @@ type HTTPService struct {
 	Namespace  string
 	Name       string
 	TargetPort int
-	Endpoints  []Endpoint
+	Endpoints  []TCPEndpoint
 	Path       string
 }
 
@@ -36,7 +36,7 @@ func (svg *HTTPServiceGroup) DefaultServerName(cz string) string {
 	)
 }
 
-type Endpoint struct {
+type TCPEndpoint struct {
 	Name string
 	IP   string
 	Port int

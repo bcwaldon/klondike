@@ -115,7 +115,7 @@ func setServiceEndpoints(svc *HTTPService, asm *apiServiceMapper) error {
 		//NOTE(bcwaldon): addresses may not be guaranteed to be in the same
 		// order every time we make this API call. Probably want to sort.
 		for _, addr := range sub.Addresses {
-			ep := Endpoint{
+			ep := TCPEndpoint{
 				Name: addr.TargetRef.Name,
 				IP:   addr.IP,
 				Port: sub.Ports[0].Port,
@@ -150,7 +150,7 @@ func (asm *apiServiceMapper) ServiceMap() (*ServiceMap, error) {
 			svc := HTTPService{
 				Name:      ing.Spec.Backend.ServiceName,
 				Namespace: ing.ObjectMeta.Namespace,
-				Endpoints: []Endpoint{},
+				Endpoints: []TCPEndpoint{},
 			}
 			if err := setServicePorts(&svc, ingServicePort, asm); err != nil {
 				return nil, err
@@ -171,7 +171,7 @@ func (asm *apiServiceMapper) ServiceMap() (*ServiceMap, error) {
 					svc := HTTPService{
 						Name:      path.Backend.ServiceName,
 						Namespace: ing.ObjectMeta.Namespace,
-						Endpoints: []Endpoint{},
+						Endpoints: []TCPEndpoint{},
 						Path:      ingServicePath,
 					}
 					if err := setServicePorts(&svc, ingServicePort, asm); err != nil {

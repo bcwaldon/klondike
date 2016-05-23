@@ -28,20 +28,20 @@ func TestRender(t *testing.T) {
 						HTTPService{
 							Namespace: "ns1",
 							Name:      "svc1",
-							Endpoints: []Endpoint{
-								Endpoint{Name: "pod1", IP: "10.0.0.1"},
-								Endpoint{Name: "pod2", IP: "10.0.0.2"},
-								Endpoint{Name: "pod3", IP: "10.0.0.3"},
+							Endpoints: []TCPEndpoint{
+								TCPEndpoint{Name: "pod1", IP: "10.0.0.1"},
+								TCPEndpoint{Name: "pod2", IP: "10.0.0.2"},
+								TCPEndpoint{Name: "pod3", IP: "10.0.0.3"},
 							},
 						},
 						HTTPService{
 							Namespace: "ns1",
 							Name:      "svc2",
 							Path:      "/v0",
-							Endpoints: []Endpoint{
-								Endpoint{Name: "pod1", IP: "10.0.0.4"},
-								Endpoint{Name: "pod2", IP: "10.0.0.5"},
-								Endpoint{Name: "pod3", IP: "10.0.0.6"},
+							Endpoints: []TCPEndpoint{
+								TCPEndpoint{Name: "pod1", IP: "10.0.0.4"},
+								TCPEndpoint{Name: "pod2", IP: "10.0.0.5"},
+								TCPEndpoint{Name: "pod3", IP: "10.0.0.6"},
 							},
 						},
 					},
