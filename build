@@ -2,7 +2,7 @@
 
 operating_systems=( "darwin" "linux" )
 arch="amd64"
-cmds=( "farva-gateway" "farva-monitor" )
+cmds=( "farva-gateway" )
 cmd_pkg="github.com/bcwaldon/farva/cmd"
 
 for os in "${operating_systems[@]}"; do
