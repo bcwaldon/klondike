@@ -35,7 +35,7 @@ http {
 {{ range $svg := .ServiceMap.HTTPServiceGroups }}
     server {
         listen {{ $.NGINXConfig.ListenPort }};
-        server_name {{ $svg.DefaultServerName $.NGINXConfig.ClusterZone }} {{ range $svg.Aliases }}{{ . }}{{ end }};
+        server_name {{ CanonicalHostname $svg $.NGINXConfig.ClusterZone }} {{ range $svg.Aliases }}{{ . }}{{ end }};
 {{ range $svc := $svg.Services }}
         location {{ or $svc.Path "/" }} {
             proxy_pass http://{{ $svc.Namespace }}__{{ $svg.Name }}__{{ $svc.Name }};
@@ -53,7 +53,9 @@ http {
 }
 `
 
-	nginxTemplate = template.Must(template.New("nginx").Parse(nginxTemplateData))
+	nginxTemplate = template.Must(template.New("nginx").Funcs(template.FuncMap{
+		"CanonicalHostname": CanonicalHostname,
+	}).Parse(nginxTemplateData))
 
 	DefaultNGINXConfig = NGINXConfig{
 		ClusterZone: "example.com",

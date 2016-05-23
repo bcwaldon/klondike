@@ -133,12 +133,12 @@ func (asm *apiServiceMapper) ServiceMap() (*ServiceMap, error) {
 		return nil, err
 	}
 
-	var serviceGroups []HTTPServiceGroup
+	var serviceGroups []*HTTPServiceGroup
 	for _, ing := range ingressList.Items {
 		var services []HTTPService
 		svg := HTTPServiceGroup{
-			Name:      ing.ObjectMeta.Name,
-			Namespace: ing.ObjectMeta.Namespace,
+			name:      ing.ObjectMeta.Name,
+			namespace: ing.ObjectMeta.Namespace,
 			Services:  []HTTPService{},
 			Aliases:   asm.smcfg.getAnnotationStringList(&ing, HostnameAliasKey),
 		}
@@ -185,7 +185,7 @@ func (asm *apiServiceMapper) ServiceMap() (*ServiceMap, error) {
 			}
 		}
 		svg.Services = services
-		serviceGroups = append(serviceGroups, svg)
+		serviceGroups = append(serviceGroups, &svg)
 	}
 
 	sm := &ServiceMap{HTTPServiceGroups: serviceGroups}
