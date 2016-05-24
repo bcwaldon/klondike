@@ -11,21 +11,23 @@ import (
 	"strings"
 )
 
-type ServiceMapperConfig struct {
+type kubernetesReverseProxyConfigGetterConfig struct {
 	AnnotationPrefix string
+	ClusterZone      string
+	ListenPort       int
 }
 
 const HostnameAliasKey = "hostname-aliases"
 
-func (smcfg *ServiceMapperConfig) annotationKey(name string) string {
-	return fmt.Sprintf("%s/%s", smcfg.AnnotationPrefix, name)
+func (krc *kubernetesReverseProxyConfigGetterConfig) annotationKey(name string) string {
+	return fmt.Sprintf("%s/%s", krc.AnnotationPrefix, name)
 }
 
 // Gets a list of strings at a given annotation field.
-func (smcfg *ServiceMapperConfig) getAnnotationStringList(ing *kextensions.Ingress, name string) []string {
+func (krc *kubernetesReverseProxyConfigGetterConfig) getAnnotationStringList(ing *kextensions.Ingress, name string) []string {
 	anno := ing.ObjectMeta.GetAnnotations()
 	result := make([]string, 0)
-	annotationKey := smcfg.annotationKey(name)
+	annotationKey := krc.annotationKey(name)
 	for key, val := range anno {
 		if key == annotationKey {
 			result = splitCSV(val)
@@ -34,7 +36,7 @@ func (smcfg *ServiceMapperConfig) getAnnotationStringList(ing *kextensions.Ingre
 	return result
 }
 
-var DefaultServiceMapperConfig = ServiceMapperConfig{
+var DefaultKubernetesReverseProxyConfigGetterConfig = kubernetesReverseProxyConfigGetterConfig{
 	AnnotationPrefix: "klondike.gateway",
 }
 
@@ -73,121 +75,143 @@ func getKubernetesClientConfig(kubeconfig string) (*krestclient.Config, error) {
 	}
 }
 
-func newServiceMapper(kc *kclient.Client, smcfg *ServiceMapperConfig) ServiceMapper {
-	return &apiServiceMapper{kc: kc, smcfg: smcfg}
+func newReverseProxyConfigGetter(kc *kclient.Client, krc *kubernetesReverseProxyConfigGetterConfig) ReverseProxyConfigGetter {
+	return &kubernetesReverseProxyConfigGetter{
+		kc:  kc,
+		krc: krc,
+	}
 }
 
-type apiServiceMapper struct {
-	kc    *kclient.Client
-	smcfg *ServiceMapperConfig
+type kubernetesReverseProxyConfigGetter struct {
+	kc  *kclient.Client
+	krc *kubernetesReverseProxyConfigGetterConfig
 }
 
-func setServicePorts(svc *HTTPService, ingServicePort int, asm *apiServiceMapper) error {
-	service, err := asm.kc.Services(svc.Namespace).Get(svc.Name)
-
+func (rcg *kubernetesReverseProxyConfigGetter) getServiceTargetPort(svcNamespace, svcName string, svcPort int) (int, error) {
+	svc, err := rcg.kc.Services(svcNamespace).Get(svcName)
 	if err != nil {
-		return err
+		return 0, err
 	}
 
-	for _, port := range service.Spec.Ports {
-		if port.Port != ingServicePort || port.Protocol != kapi.ProtocolTCP {
+	for _, port := range svc.Spec.Ports {
+		if port.Port != svcPort || port.Protocol != kapi.ProtocolTCP {
 			continue
 		} else {
-			svc.TargetPort = port.TargetPort.IntValue()
-			break
+			return port.TargetPort.IntValue(), nil
 		}
 	}
 
-	return nil
+	return 0, fmt.Errorf("coult not find port matching %d for service %s in namespace %s", svcPort, svcName, svcNamespace)
 }
 
-func setServiceEndpoints(svc *HTTPService, asm *apiServiceMapper) error {
-	endpoints, err := asm.kc.Endpoints(svc.Namespace).Get(svc.Name)
+func (rcg *kubernetesReverseProxyConfigGetter) getServiceEndpoints(svcNamespace, svcName string, svcTargetPort int) ([]reverseProxyUpstreamServer, error) {
+	endpoints, err := rcg.kc.Endpoints(svcNamespace).Get(svcName)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
+	ups := []reverseProxyUpstreamServer{}
+
 	for _, sub := range endpoints.Subsets {
-		if sub.Ports[0].Port != svc.TargetPort || sub.Ports[0].Protocol != kapi.ProtocolTCP {
+		if sub.Ports[0].Port != svcTargetPort || sub.Ports[0].Protocol != kapi.ProtocolTCP {
 			continue
 		}
 
 		//NOTE(bcwaldon): addresses may not be guaranteed to be in the same
 		// order every time we make this API call. Probably want to sort.
 		for _, addr := range sub.Addresses {
-			ep := TCPEndpoint{
+			up := reverseProxyUpstreamServer{
 				Name: addr.TargetRef.Name,
-				IP:   addr.IP,
+				Host: addr.IP,
 				Port: sub.Ports[0].Port,
 			}
-			svc.Endpoints = append(svc.Endpoints, ep)
+			ups = append(ups, up)
 		}
+	}
+
+	return ups, nil
+}
+
+func (rcg *kubernetesReverseProxyConfigGetter) ReverseProxyConfig() (*reverseProxyConfig, error) {
+	rp := reverseProxyConfig{}
+
+	ingressList, err := rcg.kc.Ingress(kapi.NamespaceAll).List(kapi.ListOptions{})
+	if err != nil {
+		return nil, err
+	}
+
+	// NOTE(bcwaldon): treat Ingress objects w/o rules as HTTP for now. This will
+	// eventually be treated as a TCP-only service.
+	for _, ing := range ingressList.Items {
+		if ing.Spec.Backend != nil {
+			ing.Spec.Rules = []kextensions.IngressRule{
+				kextensions.IngressRule{
+					IngressRuleValue: kextensions.IngressRuleValue{
+						HTTP: &kextensions.HTTPIngressRuleValue{
+							Paths: []kextensions.HTTPIngressPath{
+								kextensions.HTTPIngressPath{
+									Path:    "/",
+									Backend: *ing.Spec.Backend,
+								},
+							},
+						},
+					},
+				},
+			}
+		}
+
+		if err := rcg.addHTTPIngressToReverseProxyConfig(&rp, &ing); err != nil {
+			return nil, fmt.Errorf("failed building reverse proxy config for ingress %s in namespace %s: %v", ing.ObjectMeta.Name, ing.ObjectMeta.Name, err)
+		}
+	}
+
+	return &rp, nil
+}
+
+func (rcg *kubernetesReverseProxyConfigGetter) addHTTPIngressToReverseProxyConfig(rp *reverseProxyConfig, ing *kextensions.Ingress) error {
+	ingNamespace := ing.ObjectMeta.Namespace
+	ingName := ing.ObjectMeta.Name
+
+	for _, rule := range ing.Spec.Rules {
+		srv := httpReverseProxyServer{
+			Name:       CanonicalHostname(ingName, ingNamespace, rcg.krc.ClusterZone),
+			AltNames:   rcg.krc.getAnnotationStringList(ing, HostnameAliasKey),
+			ListenPort: rcg.krc.ListenPort,
+			Locations:  []httpReverseProxyLocation{},
+		}
+
+		for _, path := range rule.HTTP.Paths {
+
+			svcName := path.Backend.ServiceName
+			svcPort := path.Backend.ServicePort.IntValue()
+
+			up := httpReverseProxyUpstream{
+				Name: strings.Join([]string{ingNamespace, ingName, svcName}, "__"),
+			}
+
+			svcTargetPort, err := rcg.getServiceTargetPort(ingNamespace, svcName, svcPort)
+			if err != nil {
+				return err
+			}
+			up.Servers, err = rcg.getServiceEndpoints(ingNamespace, svcName, svcTargetPort)
+			if err != nil {
+				return err
+			}
+
+			rp.HTTPUpstreams = append(rp.HTTPUpstreams, up)
+
+			srv.Locations = append(srv.Locations, httpReverseProxyLocation{
+				Path:     path.Path,
+				Upstream: up.Name,
+			})
+		}
+
+		rp.HTTPServers = append(rp.HTTPServers, srv)
 	}
 
 	return nil
 }
 
-func (asm *apiServiceMapper) ServiceMap() (*ServiceMap, error) {
-	ingressList, err := asm.kc.Ingress(kapi.NamespaceAll).List(kapi.ListOptions{})
-	if err != nil {
-		return nil, err
-	}
-
-	var serviceGroups []*HTTPServiceGroup
-	for _, ing := range ingressList.Items {
-		var services []HTTPService
-		svg := HTTPServiceGroup{
-			name:      ing.ObjectMeta.Name,
-			namespace: ing.ObjectMeta.Namespace,
-			Services:  []HTTPService{},
-			Aliases:   asm.smcfg.getAnnotationStringList(&ing, HostnameAliasKey),
-		}
-
-		if ing.Spec.Backend != nil {
-			// Default backend.
-			ingServicePort := ing.Spec.Backend.ServicePort.IntValue()
-
-			svc := HTTPService{
-				Name:      ing.Spec.Backend.ServiceName,
-				Namespace: ing.ObjectMeta.Namespace,
-				Endpoints: []TCPEndpoint{},
-			}
-			if err := setServicePorts(&svc, ingServicePort, asm); err != nil {
-				return nil, err
-			}
-			if err := setServiceEndpoints(&svc, asm); err != nil {
-				return nil, err
-			}
-			services = append(services, svc)
-		} else {
-			// Rule-based backend.
-			for _, rule := range ing.Spec.Rules {
-				// We're explictly ignoring the host here.
-				// ingServiceHost := rule.Host
-				// Only HTTP is supported currently.
-				for _, path := range rule.HTTP.Paths {
-					ingServicePath := path.Path
-					ingServicePort := path.Backend.ServicePort.IntValue()
-					svc := HTTPService{
-						Name:      path.Backend.ServiceName,
-						Namespace: ing.ObjectMeta.Namespace,
-						Endpoints: []TCPEndpoint{},
-						Path:      ingServicePath,
-					}
-					if err := setServicePorts(&svc, ingServicePort, asm); err != nil {
-						return nil, err
-					}
-					if err := setServiceEndpoints(&svc, asm); err != nil {
-						return nil, err
-					}
-					services = append(services, svc)
-				}
-			}
-		}
-		svg.Services = services
-		serviceGroups = append(serviceGroups, &svg)
-	}
-
-	sm := &ServiceMap{HTTPServiceGroups: serviceGroups}
-	return sm, nil
+func CanonicalHostname(name, namespace, clusterZone string) string {
+	return strings.Join([]string{name, namespace, clusterZone}, ".")
 }

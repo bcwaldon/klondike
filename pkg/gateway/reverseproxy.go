@@ -1,5 +1,9 @@
 package gateway
 
+type ReverseProxyConfigGetter interface {
+	ReverseProxyConfig() (*reverseProxyConfig, error)
+}
+
 type reverseProxyConfig struct {
 	HTTPServers   []httpReverseProxyServer
 	HTTPUpstreams []httpReverseProxyUpstream
@@ -25,10 +29,10 @@ type httpReverseProxyLocation struct {
 
 type httpReverseProxyUpstream struct {
 	Name    string
-	Servers []httpReverseProxyUpstreamServer
+	Servers []reverseProxyUpstreamServer
 }
 
-type httpReverseProxyUpstreamServer struct {
+type reverseProxyUpstreamServer struct {
 	Name string
 	Host string
 	Port int
@@ -41,11 +45,5 @@ type tcpReverseProxyServer struct {
 
 type tcpReverseProxyUpstream struct {
 	Name    string
-	Servers []tcpReverseProxyUpstreamServer
-}
-
-type tcpReverseProxyUpstreamServer struct {
-	Name string
-	Host string
-	Port int
+	Servers []reverseProxyUpstreamServer
 }
