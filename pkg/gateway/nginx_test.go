@@ -19,8 +19,11 @@ func TestRender(t *testing.T) {
 		sm: ServiceMap{
 			ServiceGroups: []ServiceGroup{
 				ServiceGroup{
+					Aliases: []string{
+						"apps.example.com",
+					},
 					Name:      "ing1",
-					Namespace: "svc1",
+					Namespace: "ns1",
 					Services: []Service{
 						Service{
 							Namespace: "ns1",
@@ -78,7 +81,7 @@ http {
 
     server {
         listen 7331;
-        server_name ing1.svc1.example.com;
+        server_name ing1.ns1.example.com apps.example.com;
 
         location / {
             proxy_pass http://ns1__ing1__svc1;

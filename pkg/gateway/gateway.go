@@ -10,12 +10,13 @@ import (
 )
 
 type Config struct {
-	RefreshInterval time.Duration
-	KubeconfigFile  string
-	ClusterZone     string
-	NGINXDryRun     bool
-	NGINXHealthPort int
-	FarvaHealthPort int
+	RefreshInterval  time.Duration
+	KubeconfigFile   string
+	ClusterZone      string
+	NGINXDryRun      bool
+	NGINXHealthPort  int
+	FarvaHealthPort  int
+	AnnotationPrefix string
 }
 
 const DefaultFarvaHealthPort = 7333
@@ -26,7 +27,10 @@ func New(cfg Config) (*Gateway, error) {
 		return nil, err
 	}
 
-	sm := newServiceMapper(kc)
+	smcfg := &ServiceMapperConfig{
+		AnnotationPrefix: cfg.AnnotationPrefix,
+	}
+	sm := newServiceMapper(kc, smcfg)
 
 	nginxCfg := newNGINXConfig(cfg.NGINXHealthPort, cfg.ClusterZone)
 	var nm NGINXManager

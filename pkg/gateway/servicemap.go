@@ -21,9 +21,9 @@ type Service struct {
 }
 
 type ServiceGroup struct {
+	Aliases   []string
 	Name      string
 	Namespace string
-	Aliases   []string
 	Services  []Service
 }
 

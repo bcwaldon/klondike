@@ -1,12 +1,51 @@
 package gateway
 
 import (
+	"fmt"
 	kapi "k8s.io/kubernetes/pkg/api"
+	kextensions "k8s.io/kubernetes/pkg/apis/extensions"
 	krestclient "k8s.io/kubernetes/pkg/client/restclient"
 	kclient "k8s.io/kubernetes/pkg/client/unversioned"
 	kclientcmd "k8s.io/kubernetes/pkg/client/unversioned/clientcmd"
 	kclientcmdapi "k8s.io/kubernetes/pkg/client/unversioned/clientcmd/api"
+	"strings"
 )
+
+type ServiceMapperConfig struct {
+	AnnotationPrefix string
+}
+
+const HostnameAliasKey = "hostname-aliases"
+
+func (smcfg *ServiceMapperConfig) annotationKey(name string) string {
+	return fmt.Sprintf("%s/%s", smcfg.AnnotationPrefix, name)
+}
+
+// Gets a list of strings at a given annotation field.
+func (smcfg *ServiceMapperConfig) getAnnotationStringList(ing *kextensions.Ingress, name string) []string {
+	anno := ing.ObjectMeta.GetAnnotations()
+	result := make([]string, 0)
+	annotationKey := smcfg.annotationKey(name)
+	for key, val := range anno {
+		if key == annotationKey {
+			result = splitCSV(val)
+		}
+	}
+	return result
+}
+
+var DefaultServiceMapperConfig = ServiceMapperConfig{
+	AnnotationPrefix: "klondike.gateway",
+}
+
+func splitCSV(csv string) []string {
+	parts := strings.Split(csv, ",")
+	trimmed := []string{}
+	for _, part := range parts {
+		trimmed = append(trimmed, strings.TrimSpace(part))
+	}
+	return trimmed
+}
 
 func newKubernetesClient(kubeconfig string) (*kclient.Client, error) {
 	cfg, err := getKubernetesClientConfig(kubeconfig)
@@ -34,12 +73,13 @@ func getKubernetesClientConfig(kubeconfig string) (*krestclient.Config, error) {
 	}
 }
 
-func newServiceMapper(kc *kclient.Client) ServiceMapper {
-	return &apiServiceMapper{kc: kc}
+func newServiceMapper(kc *kclient.Client, smcfg *ServiceMapperConfig) ServiceMapper {
+	return &apiServiceMapper{kc: kc, smcfg: smcfg}
 }
 
 type apiServiceMapper struct {
-	kc *kclient.Client
+	kc    *kclient.Client
+	smcfg *ServiceMapperConfig
 }
 
 func setServicePorts(svc *Service, ingServicePort int, asm *apiServiceMapper) error {
@@ -100,6 +140,7 @@ func (asm *apiServiceMapper) ServiceMap() (*ServiceMap, error) {
 			Name:      ing.ObjectMeta.Name,
 			Namespace: ing.ObjectMeta.Namespace,
 			Services:  []Service{},
+			Aliases:   asm.smcfg.getAnnotationStringList(&ing, HostnameAliasKey),
 		}
 
 		if ing.Spec.Backend != nil {
