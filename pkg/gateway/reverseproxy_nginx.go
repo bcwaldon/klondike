@@ -36,7 +36,7 @@ http {
 			{{- end }}
         }
 {{ end }}
-{{ end }}
+{{- end }}
     }
 {{ end }}
 {{ range $up := $.ReverseProxyConfig.HTTPUpstreams }}
@@ -48,7 +48,6 @@ http {
 {{ end }}
 }
 
-
 stream {
 {{ range $srv := $.ReverseProxyConfig.TCPServers }}
     server {
@@ -56,14 +55,12 @@ stream {
         proxy_pass {{ $srv.Upstream }};
     }
 {{ end }}
-
 {{ range $up := $.ReverseProxyConfig.TCPUpstreams }}
     upstream {{ $up.Name }} {
 {{ range $ep := $up.Servers }}
         server {{ $ep.Host }}:{{ $ep.Port }};  # {{ $ep.Name }}
 {{- end }}
     }
-
 {{ end }}
 }
 `
