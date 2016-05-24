@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"strings"
 	"text/template"
 )
 
@@ -20,35 +21,50 @@ events {
 
 http {
     server_names_hash_bucket_size 128;
-
+{{ range $srv := $.Data.HTTPServers }}
     server {
-        listen {{ .NGINXConfig.HealthPort }};
-        location /health {
-            return 200 'Healthy!';
+        listen {{ $srv.ListenPort }};
+        {{ if $srv.Name }}server_name {{ $srv.Name }}{{ if $srv.AltNames }} {{ range $srv.AltNames }}{{ . }}{{ end }}{{ end }};{{ end }}
+        {{ if $srv.StaticCode -}}
+        return {{ $srv.StaticCode }}{{ if $srv.StaticMessage }} '{{ $srv.StaticMessage }}'{{ end }};
+        {{- else -}}
+{{ range $loc := $srv.Locations }}
+        location {{ or $loc.Path "/" }} {
+            {{ if $loc.StaticCode -}}
+			return {{ $loc.StaticCode }}{{ if $loc.StaticMessage }} '{{ $loc.StaticMessage }}'{{end}};
+			{{- else }}
+            proxy_pass http://{{ $loc.Upstream }};
+			{{- end }}
         }
+{{ end }}
+{{ end }}
     }
-
-    server {
-        listen {{ .NGINXConfig.ListenPort }};
-        return 444;
-    }
-{{ range $svg := .ServiceMap.ServiceGroups }}
-    server {
-        listen {{ $.NGINXConfig.ListenPort }};
-        server_name {{ $svg.DefaultServerName $.NGINXConfig.ClusterZone }} {{ range $svg.Aliases }}{{ . }}{{ end }};
-{{ range $svc := $svg.Services }}
-        location {{ or $svc.Path "/" }} {
-            proxy_pass http://{{ $svc.Namespace }}__{{ $svg.Name }}__{{ $svc.Name }};
-        }
-{{- end}}
-    }
-{{ range $svc := $svg.Services }}
-    upstream {{ $svc.Namespace }}__{{ $svg.Name}}__{{ $svc.Name }} {
-{{ range $ep := $svc.Endpoints }}
-        server {{ $ep.IP }}:{{ $ep.Port }};  # {{ $ep.Name }}
+{{ end }}
+{{ range $up := $.Data.HTTPUpstreams }}
+    upstream {{ $up.Name }} {
+{{ range $ep := $up.Servers }}
+        server {{ $ep.Host }}:{{ $ep.Port }};  # {{ $ep.Name }}
 {{- end }}
     }
+{{ end }}
+}
+
+
+stream {
+{{ range $srv := $.Data.TCPServers }}
+    server {
+        listen {{ $srv.ListenPort }};
+        proxy_pass {{ $srv.Upstream }};
+    }
+{{ end }}
+
+{{ range $up := $.Data.TCPUpstreams }}
+    upstream {{ $up.Name }} {
+{{ range $ep := $up.Servers }}
+        server {{ $ep.Host }}:{{ $ep.Port }};  # {{ $ep.Name }}
 {{- end }}
+    }
+
 {{ end }}
 }
 `
@@ -70,6 +86,55 @@ const (
 	nginxStatusUnknown = "unknown"
 )
 
+type nginxData struct {
+	HTTPServers   []nginxHTTPServer
+	HTTPUpstreams []nginxHTTPUpstream
+	TCPServers    []nginxTCPServer
+	TCPUpstreams  []nginxTCPUpstream
+}
+
+type nginxHTTPServer struct {
+	Name          string
+	AltNames      []string
+	ListenPort    int
+	Locations     []nginxHTTPLocation
+	StaticCode    int
+	StaticMessage string
+}
+
+type nginxHTTPLocation struct {
+	Path          string
+	StaticCode    int
+	StaticMessage string
+	Upstream      string
+}
+
+type nginxHTTPUpstream struct {
+	Name    string
+	Servers []nginxHTTPUpstreamServer
+}
+
+type nginxHTTPUpstreamServer struct {
+	Name string
+	Host string
+	Port int
+}
+
+type nginxTCPServer struct {
+	ListenPort int
+	Upstream   string
+}
+
+type nginxTCPUpstream struct {
+	Name    string
+	Servers []nginxTCPUpstreamServer
+}
+
+type nginxTCPUpstreamServer struct {
+	Name string
+	Host string
+	Port int
+}
 type NGINXConfig struct {
 	ClusterZone string
 	ConfigFile  string
@@ -151,14 +216,94 @@ func (n *nginxManager) run(args ...string) error {
 	return nil
 }
 
+func newNGINXData(cfg *NGINXConfig, sm *ServiceMap) *nginxData {
+	data := nginxData{
+		HTTPServers: []nginxHTTPServer{
+			nginxHTTPServer{
+				ListenPort: cfg.HealthPort,
+				Locations: []nginxHTTPLocation{
+					nginxHTTPLocation{
+						Path:          "/health",
+						StaticCode:    200,
+						StaticMessage: "Healthy!",
+					},
+				},
+			},
+			nginxHTTPServer{
+				ListenPort: cfg.ListenPort,
+				StaticCode: 444,
+			},
+		},
+	}
+
+	for _, svg := range sm.HTTPServiceGroups {
+		srv := nginxHTTPServer{
+			Name:       CanonicalHostname(svg, cfg.ClusterZone),
+			AltNames:   svg.Aliases,
+			ListenPort: cfg.ListenPort,
+			Locations:  []nginxHTTPLocation{},
+		}
+
+		for _, svc := range svg.Services {
+			up := nginxHTTPUpstream{
+				Name:    strings.Join([]string{svc.Namespace, svg.Name(), svc.Name}, "__"),
+				Servers: []nginxHTTPUpstreamServer{},
+			}
+
+			for _, ep := range svc.Endpoints {
+				up.Servers = append(up.Servers, nginxHTTPUpstreamServer{
+					Name: ep.Name,
+					Host: ep.IP,
+					Port: ep.Port,
+				})
+			}
+
+			data.HTTPUpstreams = append(data.HTTPUpstreams, up)
+
+			srv.Locations = append(srv.Locations, nginxHTTPLocation{
+				Path:     svc.Path,
+				Upstream: up.Name,
+			})
+		}
+
+		data.HTTPServers = append(data.HTTPServers, srv)
+	}
+
+	for _, svc := range sm.TCPServices {
+		up := nginxTCPUpstream{
+			Name:    strings.Join([]string{svc.Namespace(), svc.Name()}, "__"),
+			Servers: []nginxTCPUpstreamServer{},
+		}
+
+		srv := nginxTCPServer{
+			ListenPort: svc.ListenPort,
+			Upstream:   up.Name,
+		}
+
+		for _, ep := range svc.Endpoints {
+			up.Servers = append(up.Servers, nginxTCPUpstreamServer{
+				Name: ep.Name,
+				Host: ep.IP,
+				Port: ep.Port,
+			})
+		}
+
+		data.TCPUpstreams = append(data.TCPUpstreams, up)
+		data.TCPServers = append(data.TCPServers, srv)
+	}
+
+	return &data
+}
+
 func renderConfig(cfg *NGINXConfig, sm *ServiceMap) ([]byte, error) {
 	log.Printf("Rendering config")
+
 	config := struct {
-		NGINXConfig *NGINXConfig
-		ServiceMap  *ServiceMap
+		Data *nginxData
+		*NGINXConfig
 	}{
+		Data:        newNGINXData(cfg, sm),
 		NGINXConfig: cfg,
-		ServiceMap:  sm,
 	}
 
 	var buf bytes.Buffer
