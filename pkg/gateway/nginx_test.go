@@ -69,27 +69,38 @@ http {
 
     server {
         listen 7332;
+        
+        
         location /health {
             return 200 'Healthy!';
         }
+
+
     }
 
     server {
         listen 7331;
+        
         return 444;
     }
 
     server {
         listen 7331;
         server_name ing1.svc1.example.com apps.example.com;
-
+        
         location / {
+            
             proxy_pass http://ns1__ing1__svc1;
         }
+
         location /v0 {
+            
             proxy_pass http://ns1__ing1__svc2;
         }
+
+
     }
+
 
     upstream ns1__ing1__svc1 {
 
@@ -97,6 +108,7 @@ http {
         server 10.0.0.2:0;  # pod2
         server 10.0.0.3:0;  # pod3
     }
+
     upstream ns1__ing1__svc2 {
 
         server 10.0.0.4:0;  # pod1
@@ -106,7 +118,10 @@ http {
 
 }
 
+
 stream {
+
+
 
 }
 `
@@ -166,17 +181,24 @@ http {
 
     server {
         listen 7332;
+        
+        
         location /health {
             return 200 'Healthy!';
         }
+
+
     }
 
     server {
         listen 7331;
+        
         return 444;
     }
 
+
 }
+
 
 stream {
 
@@ -185,6 +207,13 @@ stream {
         proxy_pass ns1__svc1;
     }
 
+    server {
+        listen 19305;
+        proxy_pass ns2__svc2;
+    }
+
+
+
     upstream ns1__svc1 {
 
         server 10.0.0.1:0;  # pod1
@@ -192,10 +221,6 @@ stream {
         server 10.0.0.3:0;  # pod3
     }
 
-    server {
-        listen 19305;
-        proxy_pass ns2__svc2;
-    }
 
     upstream ns2__svc2 {
 
@@ -203,6 +228,7 @@ stream {
         server 10.0.0.5:0;  # pod2
         server 10.0.0.6:0;  # pod3
     }
+
 
 }
 `
