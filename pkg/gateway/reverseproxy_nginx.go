@@ -6,7 +6,6 @@ import (
 	"log"
 	"os"
 	"os/exec"
-	"strings"
 	"text/template"
 )
 
@@ -21,7 +20,7 @@ events {
 
 http {
     server_names_hash_bucket_size 128;
-{{ range $srv := $.Data.HTTPServers }}
+{{ range $srv := $.ReverseProxyConfig.HTTPServers }}
     server {
         listen {{ $srv.ListenPort }};
         {{ if $srv.Name }}server_name {{ $srv.Name }}{{ if $srv.AltNames }} {{ range $srv.AltNames }}{{ . }}{{ end }}{{ end }};{{ end }}
@@ -37,10 +36,10 @@ http {
 			{{- end }}
         }
 {{ end }}
-{{ end }}
+{{- end }}
     }
 {{ end }}
-{{ range $up := $.Data.HTTPUpstreams }}
+{{ range $up := $.ReverseProxyConfig.HTTPUpstreams }}
     upstream {{ $up.Name }} {
 {{ range $ep := $up.Servers }}
         server {{ $ep.Host }}:{{ $ep.Port }};  # {{ $ep.Name }}
@@ -49,22 +48,19 @@ http {
 {{ end }}
 }
 
-
 stream {
-{{ range $srv := $.Data.TCPServers }}
+{{ range $srv := $.ReverseProxyConfig.TCPServers }}
     server {
         listen {{ $srv.ListenPort }};
         proxy_pass {{ $srv.Upstream }};
     }
 {{ end }}
-
-{{ range $up := $.Data.TCPUpstreams }}
+{{ range $up := $.ReverseProxyConfig.TCPUpstreams }}
     upstream {{ $up.Name }} {
 {{ range $ep := $up.Servers }}
         server {{ $ep.Host }}:{{ $ep.Port }};  # {{ $ep.Name }}
 {{- end }}
     }
-
 {{ end }}
 }
 `
@@ -75,8 +71,6 @@ stream {
 		ClusterZone: "example.com",
 		ConfigFile:  "/etc/nginx/nginx.conf",
 		PIDFile:     "/var/run/nginx.pid",
-		HealthPort:  7332,
-		ListenPort:  7331,
 	}
 )
 
@@ -86,55 +80,6 @@ const (
 	nginxStatusUnknown = "unknown"
 )
 
-type nginxData struct {
-	HTTPServers   []nginxHTTPServer
-	HTTPUpstreams []nginxHTTPUpstream
-	TCPServers    []nginxTCPServer
-	TCPUpstreams  []nginxTCPUpstream
-}
-
-type nginxHTTPServer struct {
-	Name          string
-	AltNames      []string
-	ListenPort    int
-	Locations     []nginxHTTPLocation
-	StaticCode    int
-	StaticMessage string
-}
-
-type nginxHTTPLocation struct {
-	Path          string
-	StaticCode    int
-	StaticMessage string
-	Upstream      string
-}
-
-type nginxHTTPUpstream struct {
-	Name    string
-	Servers []nginxHTTPUpstreamServer
-}
-
-type nginxHTTPUpstreamServer struct {
-	Name string
-	Host string
-	Port int
-}
-
-type nginxTCPServer struct {
-	ListenPort int
-	Upstream   string
-}
-
-type nginxTCPUpstream struct {
-	Name    string
-	Servers []nginxTCPUpstreamServer
-}
-
-type nginxTCPUpstreamServer struct {
-	Name string
-	Host string
-	Port int
-}
 type NGINXConfig struct {
 	ClusterZone string
 	ConfigFile  string
@@ -152,7 +97,7 @@ func newNGINXConfig(hp int, cz string) NGINXConfig {
 
 type NGINXManager interface {
 	Status() (string, error)
-	WriteConfig(*ServiceMap) error
+	WriteConfig(*reverseProxyConfig) error
 	Start() error
 	Reload() error
 }
@@ -178,8 +123,8 @@ func (n *nginxManager) Status() (string, error) {
 	return nginxStatusRunning, nil
 }
 
-func (n *nginxManager) WriteConfig(sm *ServiceMap) error {
-	cfg, err := renderConfig(&n.cfg, sm)
+func (n *nginxManager) WriteConfig(rc *reverseProxyConfig) error {
+	cfg, err := renderConfig(&n.cfg, rc)
 	if err != nil {
 		return err
 	}
@@ -216,94 +161,15 @@ func (n *nginxManager) run(args ...string) error {
 	return nil
 }
 
-func newNGINXData(cfg *NGINXConfig, sm *ServiceMap) *nginxData {
-	data := nginxData{
-		HTTPServers: []nginxHTTPServer{
-			nginxHTTPServer{
-				ListenPort: cfg.HealthPort,
-				Locations: []nginxHTTPLocation{
-					nginxHTTPLocation{
-						Path:          "/health",
-						StaticCode:    200,
-						StaticMessage: "Healthy!",
-					},
-				},
-			},
-			nginxHTTPServer{
-				ListenPort: cfg.ListenPort,
-				StaticCode: 444,
-			},
-		},
-	}
-
-	for _, svg := range sm.HTTPServiceGroups {
-		srv := nginxHTTPServer{
-			Name:       CanonicalHostname(svg, cfg.ClusterZone),
-			AltNames:   svg.Aliases,
-			ListenPort: cfg.ListenPort,
-			Locations:  []nginxHTTPLocation{},
-		}
-
-		for _, svc := range svg.Services {
-			up := nginxHTTPUpstream{
-				Name:    strings.Join([]string{svc.Namespace, svg.Name(), svc.Name}, "__"),
-				Servers: []nginxHTTPUpstreamServer{},
-			}
-
-			for _, ep := range svc.Endpoints {
-				up.Servers = append(up.Servers, nginxHTTPUpstreamServer{
-					Name: ep.Name,
-					Host: ep.IP,
-					Port: ep.Port,
-				})
-			}
-
-			data.HTTPUpstreams = append(data.HTTPUpstreams, up)
-
-			srv.Locations = append(srv.Locations, nginxHTTPLocation{
-				Path:     svc.Path,
-				Upstream: up.Name,
-			})
-		}
-
-		data.HTTPServers = append(data.HTTPServers, srv)
-	}
-
-	for _, svc := range sm.TCPServices {
-		up := nginxTCPUpstream{
-			Name:    strings.Join([]string{svc.Namespace(), svc.Name()}, "__"),
-			Servers: []nginxTCPUpstreamServer{},
-		}
-
-		srv := nginxTCPServer{
-			ListenPort: svc.ListenPort,
-			Upstream:   up.Name,
-		}
-
-		for _, ep := range svc.Endpoints {
-			up.Servers = append(up.Servers, nginxTCPUpstreamServer{
-				Name: ep.Name,
-				Host: ep.IP,
-				Port: ep.Port,
-			})
-		}
-
-		data.TCPUpstreams = append(data.TCPUpstreams, up)
-		data.TCPServers = append(data.TCPServers, srv)
-	}
-
-	return &data
-}
-
-func renderConfig(cfg *NGINXConfig, sm *ServiceMap) ([]byte, error) {
+func renderConfig(cfg *NGINXConfig, rc *reverseProxyConfig) ([]byte, error) {
 	log.Printf("Rendering config")
 
 	config := struct {
-		Data *nginxData
+		ReverseProxyConfig *reverseProxyConfig
 		*NGINXConfig
 	}{
-		Data:        newNGINXData(cfg, sm),
-		NGINXConfig: cfg,
+		ReverseProxyConfig: rc,
+		NGINXConfig:        cfg,
 	}
 
 	var buf bytes.Buffer
@@ -337,7 +203,7 @@ func (l *loggingNGINXManager) Reload() error {
 	return nil
 }
 
-func (l *loggingNGINXManager) WriteConfig(sm *ServiceMap) error {
-	log.Printf("called NGINXManager.WriteConfig(*ServiceMap) w/ %+v", sm)
+func (l *loggingNGINXManager) WriteConfig(rc *reverseProxyConfig) error {
+	log.Printf("called NGINXManager.WriteConfig(*reverseProxyConfig) w/ %+v", rc)
 	return nil
 }

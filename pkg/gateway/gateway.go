@@ -15,11 +15,40 @@ type Config struct {
 	ClusterZone      string
 	NGINXDryRun      bool
 	NGINXHealthPort  int
+	HTTPListenPort   int
 	FarvaHealthPort  int
 	AnnotationPrefix string
 }
 
-const DefaultFarvaHealthPort = 7333
+var DefaultConfig = Config{
+	HTTPListenPort:  7331,
+	FarvaHealthPort: 7333,
+}
+
+func DefaultHTTPReverseProxyServers(cfg *Config) []httpReverseProxyServer {
+	return []httpReverseProxyServer{
+		httpReverseProxyServer{
+			ListenPort: cfg.NGINXHealthPort,
+			Locations: []httpReverseProxyLocation{
+				httpReverseProxyLocation{
+					Path:          "/health",
+					StaticCode:    200,
+					StaticMessage: "Healthy!",
+				},
+			},
+		},
+		httpReverseProxyServer{
+			ListenPort: cfg.HTTPListenPort,
+			StaticCode: 444,
+		},
+	}
+}
+
+func DefaultReverseProxyConfig(cfg *Config) *reverseProxyConfig {
+	return &reverseProxyConfig{
+		HTTPServers: DefaultHTTPReverseProxyServers(cfg),
+	}
+}
 
 func New(cfg Config) (*Gateway, error) {
 	kc, err := newKubernetesClient(cfg.KubeconfigFile)
@@ -27,10 +56,12 @@ func New(cfg Config) (*Gateway, error) {
 		return nil, err
 	}
 
-	smcfg := &ServiceMapperConfig{
+	krc := &kubernetesReverseProxyConfigGetterConfig{
 		AnnotationPrefix: cfg.AnnotationPrefix,
+		ClusterZone:      cfg.ClusterZone,
+		ListenPort:       cfg.HTTPListenPort,
 	}
-	sm := newServiceMapper(kc, smcfg)
+	rg := newReverseProxyConfigGetter(kc, krc)
 
 	nginxCfg := newNGINXConfig(cfg.NGINXHealthPort, cfg.ClusterZone)
 	var nm NGINXManager
@@ -43,7 +74,7 @@ func New(cfg Config) (*Gateway, error) {
 
 	gw := Gateway{
 		cfg: cfg,
-		sm:  sm,
+		rg:  rg,
 		nm:  nm,
 	}
 
@@ -52,7 +83,7 @@ func New(cfg Config) (*Gateway, error) {
 
 type Gateway struct {
 	cfg Config
-	sm  ServiceMapper
+	rg  ReverseProxyConfigGetter
 	nm  NGINXManager
 }
 
@@ -64,7 +95,8 @@ func (gw *Gateway) start() error {
 		return nil
 	}
 
-	if err := gw.nm.WriteConfig(&ServiceMap{}); err != nil {
+	rc := DefaultReverseProxyConfig(&gw.cfg)
+	if err := gw.nm.WriteConfig(rc); err != nil {
 		return err
 	}
 
@@ -99,12 +131,14 @@ func (gw *Gateway) nginxIsRunning() (bool, error) {
 
 func (gw *Gateway) refresh() error {
 	log.Printf("Refreshing nginx config")
-	sm, err := gw.sm.ServiceMap()
+	rc, err := gw.rg.ReverseProxyConfig()
 	if err != nil {
 		return err
 	}
 
-	if err := gw.nm.WriteConfig(sm); err != nil {
+	rc.HTTPServers = append(rc.HTTPServers, DefaultHTTPReverseProxyServers(&gw.cfg)...)
+
+	if err := gw.nm.WriteConfig(rc); err != nil {
 		return err
 	}
 	if err := gw.nm.Reload(); err != nil {
