@@ -2484,7 +2484,7 @@
     "GatewaySecurityGroup": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
-        "GroupDescription": "ControllerSecurityGroup",
+        "GroupDescription": "GatewaySecurityGroup",
         "VpcId": {
           "Ref": "ClusterVPC"
         },
@@ -2517,8 +2517,8 @@
           },
           {
             "IpProtocol": "TCP",
-            "FromPort": 30000,
-            "ToPort": 32767,
+            "FromPort": 7331,
+            "ToPort": 7331,
             "CidrIp": "0.0.0.0/0"
           }
         ]
