@@ -296,7 +296,6 @@
           "1cc85fdc-e298-4914-849e-7a7f18364e85",
           "4382883d-ccbb-4b33-934c-19e73f682e7f",
           "314120e5-87bf-4791-80ae-cd443fad4186",
-          "4719e386-5f75-42ec-9fb2-91f8386f9f87",
           "317ab59f-2379-451a-9fbc-c397fd31dd5c",
           "873403fc-c264-4f6b-86ae-092abee2a1d0",
           "37fc6d23-1902-4172-ab24-1c0cd8eab5b7",
@@ -650,11 +649,10 @@
           "height": 60
         },
         "position": {
-          "x": -1000,
+          "x": 990,
           "y": 690
         },
-        "z": 0,
-        "parent": "a487cf69-e5ce-4956-85df-761e6427deef",
+        "z": 2,
         "embeds": []
       },
       "3541fdd2-09f7-40f4-bbd1-df7ed407ddca": {
@@ -1126,8 +1124,45 @@
         "z": 0,
         "embeds": [],
         "isrelatedto": [
-          "81ac2c65-7edd-45b6-a300-2e0f5576cd84"
+          "81ac2c65-7edd-45b6-a300-2e0f5576cd84",
+          "1d4a5fec-f915-4f8b-afef-87442f63ecec"
         ]
+      },
+      "029d0672-407c-447f-949c-cf6086440f86": {
+        "size": {
+          "width": 60,
+          "height": 60
+        },
+        "position": {
+          "x": -250,
+          "y": 1230
+        },
+        "z": 0,
+        "embeds": []
+      },
+      "d175ef88-202f-4896-b8a8-4332f115f150": {
+        "size": {
+          "width": 60,
+          "height": 60
+        },
+        "position": {
+          "x": 30,
+          "y": 270
+        },
+        "z": 1,
+        "embeds": []
+      },
+      "168d81a9-a92e-403e-bb34-f8e451c845f8": {
+        "size": {
+          "width": 60,
+          "height": 60
+        },
+        "position": {
+          "x": 150,
+          "y": 270
+        },
+        "z": 0,
+        "embeds": []
       }
     }
   },
@@ -1196,7 +1231,7 @@
         ],
         "LoadBalancerNames": [
           {
-            "Ref": "ControllerPublicELB"
+            "Ref": "ControllerPrivateELB"
           }
         ],
         "VPCZoneIdentifier": [
@@ -1592,7 +1627,7 @@
           "Ref": "ControllerSecurityGroup"
         },
         "SourceSecurityGroupId": {
-          "Ref": "ControllerPublicELBSecurityGroup"
+          "Ref": "ControllerPrivateELBSecurityGroup"
         },
         "FromPort": 6443,
         "ToPort": 6443,
@@ -2033,17 +2068,18 @@
         }
       }
     },
-    "ControllerPublicELB": {
+    "ControllerPrivateELB": {
       "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
       "Properties": {
+        "Scheme": "internal",
         "Subnets": [
           {
-            "Ref": "PublicSubnet"
+            "Ref": "ControllerSubnet"
           }
         ],
         "SecurityGroups": [
           {
-            "Ref": "ControllerPublicELBSecurityGroup"
+            "Ref": "ControllerPrivateELBSecurityGroup"
           }
         ],
         "Listeners": [
@@ -2068,10 +2104,10 @@
         }
       }
     },
-    "ControllerPublicELBSecurityGroup": {
+    "ControllerPrivateELBSecurityGroup": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
-        "GroupDescription": "ControllerPublicELBSecurityGroup",
+        "GroupDescription": "ControllerPrivateELBSecurityGroup",
         "VpcId": {
           "Ref": "ClusterVPC"
         },
@@ -2090,7 +2126,7 @@
         }
       }
     },
-    "ControllerPublicELBDNSRecord": {
+    "ControllerPrivateELBDNSRecord": {
       "Type": "AWS::Route53::RecordSet",
       "Properties": {
         "HostedZoneName": {
@@ -2121,7 +2157,7 @@
         "ResourceRecords": [
           {
             "Fn::GetAtt": [
-              "ControllerPublicELB",
+              "ControllerPrivateELB",
               "DNSName"
             ]
           }
@@ -2141,7 +2177,7 @@
             "Ref": "BastionSecurityGroup"
           }
         ],
-        "AssociatePublicIpAddress": true,
+        "AssociatePublicIpAddress": false,
         "IamInstanceProfile": {
           "Ref": "BastionIAMInstanceProfile"
         },
@@ -2166,7 +2202,7 @@
       "Properties": {
         "GroupDescription": "BastionSecurityGroup",
         "VpcId": {
-          "Ref": "ClusterVPC"
+          "Ref": "PeerVPC"
         },
         "SecurityGroupEgress": [
           {
@@ -2218,11 +2254,6 @@
         "MinSize": 1,
         "MaxSize": 1,
         "DesiredCapacity": 1,
-        "AvailabilityZones": [
-          {
-            "Ref": "AvailabilityZone"
-          }
-        ],
         "Tags": [
           {
             "Key": "KubernetesCluster",
@@ -2239,7 +2270,7 @@
         ],
         "VPCZoneIdentifier": [
           {
-            "Ref": "PublicSubnet"
+            "Ref": "PeerSubnetID"
           }
         ]
       },
@@ -2822,6 +2853,68 @@
           "id": "74e76bcc-cb53-4b2d-94ef-51fb3dfb196c"
         }
       }
+    },
+    "PeerConnection": {
+      "Type": "AWS::EC2::VPCPeeringConnection",
+      "Properties": {
+        "PeerVpcId": {
+          "Ref": "PeerVPC"
+        },
+        "VpcId": {
+          "Ref": "ClusterVPC"
+        },
+        "Tags": [
+          {
+            "Key": "KubernetesCluster",
+            "Value": {
+              "Ref": "ClusterName"
+            }
+          }
+        ]
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "029d0672-407c-447f-949c-cf6086440f86"
+        }
+      }
+    },
+    "RoutePeerVPCToClusterVPC": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "PeerRouteTableID"
+        },
+        "DestinationCidrBlock": {
+          "Ref": "ClusterNetworkCIDR"
+        },
+        "VpcPeeringConnectionId": {
+          "Ref": "PeerConnection"
+        }
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "d175ef88-202f-4896-b8a8-4332f115f150"
+        }
+      }
+    },
+    "RouteClusterVPCToPeerVPC": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "PrivateRouteTable"
+        },
+        "DestinationCidrBlock": {
+          "Ref": "PeerNetworkCIDR"
+        },
+        "VpcPeeringConnectionId": {
+          "Ref": "PeerConnection"
+        }
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "168d81a9-a92e-403e-bb34-f8e451c845f8"
+        }
+      }
     }
   },
   "Parameters": {
@@ -2867,7 +2960,7 @@
     },
     "PublicSubnetCIDR": {
       "Type": "String",
-      "Description": "Subnet used for the bastion EC2 instances; must be contained within ClusterNetworkCIDR"
+      "Description": "Subnet used for the public-facing EC2 entities; must be contained within ClusterNetworkCIDR"
     },
     "ControllerSubnetCIDR": {
       "Type": "String",
@@ -2916,6 +3009,22 @@
     "S3ConfigBucket": {
       "Type": "String",
       "Description": "S3 bucket that hosts the config tarball for this cluster. An object by the name of <ClusterName>.tar.gz must be present in this bucket."
+    },
+    "PeerVPC": {
+      "Type": "String",
+      "Description": "ID of VPC that should be peered to the ClusterVPC"
+    },
+    "PeerNetworkCIDR": {
+      "Type": "String",
+      "Description": "Network of the peer VPC"
+    },
+    "PeerSubnetID": {
+      "Type": "String",
+      "Description": "ID of Subnet in peer VPC used to deploy bastion EC2 instances"
+    },
+    "PeerRouteTableID": {
+      "Type": "String",
+      "Description": "ID of RouteTable in peer VPC"
     }
   }
 }

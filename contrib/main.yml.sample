@@ -15,6 +15,28 @@ aws_region:
 # availablility zones include us-west-2a, us-west-2b and us-west-2c.
 aws_availability_zone:
 
+# peer_vpc_id is the ID of the VPC that will be routable to and from
+# the Kubernetes cluster. A VPC peering connection will be created
+# the peer VPC and the VPC created for Kubernetes.
+peer_vpc_id:
+
+# peer_network_cidr is the network of the VPC that will be routable to and
+# from the Kubernetes cluster.
+peer_network_cidr:
+
+# peer_subnet_id is the ID of the subnet in the peer VPC that is
+# used to host the bastion instances. These instances facilitate
+# administration of the Kubernetes cluster.
+peer_subnet_id:
+
+# peer_route_table_id is the ID of the route table associated with
+# the peer subnet. Routes will be added to this table to direct
+# traffic from any associated peer VPC subnet to Kubernetes. At a
+# minimum, this route table must be associated with the peer
+# subnet provided in peer_subnet_id to enable Bastion instances
+# to administer the Kubernetes cluster.
+peer_route_table_id:
+
 # coreos_image_id is the AMI ID used to deploy both controller
 # and worker EC2 instances. This AMI must be available in the region
 # indicated by aws_region.
