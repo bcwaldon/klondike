@@ -43,7 +43,7 @@ def get_bastion_info(asg_client, ec2_client, cluster):
     instance_id = bastion_group['Instances'][0]['InstanceId']
     ec2_resp = ec2_client.describe_instances(InstanceIds=[instance_id])
     instance = ec2_resp['Reservations'][0]['Instances'][0]
-    info['bastion_public_ip'] = instance['PublicIpAddress']
+    info['bastion_public_ip'] = instance['PrivateIpAddress']
 
     return info
 
