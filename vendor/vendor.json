@@ -3,9 +3,10 @@
 	"ignore": "test",
 	"package": [
 		{
+			"checksumSHA1": "XD32TFkwUQg4C0yJs40A8f2xSeA=",
 			"path": "github.com/Sirupsen/logrus",
-			"revision": "081307d9bc1364753142d5962fc1d795c742baaf",
-			"revisionTime": "2016-04-16T13:51:37+05:30"
+			"revision": "6d9ae300aaf85d6acd2e5424081c7fcddb21dab8",
+			"revisionTime": "2016-05-24T13:24:53Z"
 		},
 		{
 			"path": "github.com/beorn7/perks/quantile",
@@ -178,6 +179,12 @@
 			"path": "golang.org/x/net/context",
 			"revision": "fb93926129b8ec0056f2f458b1f519654814edf0",
 			"revisionTime": "2016-04-13T08:48:50+10:00"
+		},
+		{
+			"checksumSHA1": "oBKY8LJtCoSvmYA4ADFDY02A8NY=",
+			"path": "golang.org/x/sys/unix",
+			"revision": "d4feaf1a7e61e1d9e79e6c4e76c6349e9cab0a03",
+			"revisionTime": "2016-05-16T12:31:02Z"
 		},
 		{
 			"path": "k8s.io/kubernetes/pkg/api",
