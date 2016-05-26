@@ -2,8 +2,8 @@ package gateway
 
 import (
 	"bytes"
+	"github.com/bcwaldon/farva/pkg/logger"
 	"io/ioutil"
-	"log"
 	"os"
 	"os/exec"
 	"text/template"
@@ -71,6 +71,7 @@ stream {
 		ClusterZone: "example.com",
 		ConfigFile:  "/etc/nginx/nginx.conf",
 		PIDFile:     "/var/run/nginx.pid",
+		HealthPort:  7332,
 	}
 )
 
@@ -111,7 +112,7 @@ type nginxManager struct {
 }
 
 func (n *nginxManager) Status() (string, error) {
-	log.Printf("Checking status")
+	logger.Log.Info("Checking status")
 	if _, err := os.Stat(n.cfg.PIDFile); err != nil {
 		if os.IsNotExist(err) {
 			return nginxStatusStopped, nil
@@ -125,6 +126,7 @@ func (n *nginxManager) Status() (string, error) {
 
 func (n *nginxManager) WriteConfig(rc *reverseProxyConfig) error {
 	cfg, err := renderConfig(&n.cfg, rc)
+	logger.Log.Infof("About to write config: %s", string(cfg))
 	if err != nil {
 		return err
 	}
@@ -135,34 +137,55 @@ func (n *nginxManager) WriteConfig(rc *reverseProxyConfig) error {
 }
 
 func (n *nginxManager) assertConfigOK() error {
-	return n.run("-t")
+	_, err := n.runCombinedOutput("-t")
+	return err
 }
 
 func (n *nginxManager) Start() error {
-	log.Printf("Starting nginx")
+	if err := n.assertConfigOK(); err != nil {
+		logger.Log.Info("Configuration is invalid, aborting start")
+		return err
+	}
+	logger.Log.Info("Starting nginx")
 	return n.run()
 }
 
 func (n *nginxManager) Reload() error {
-	log.Printf("Reloading nginx")
+	if err := n.assertConfigOK(); err != nil {
+		return err
+	}
+	logger.Log.Info("Reloading nginx")
 	return n.run("-s", "reload")
 }
 
 func (n *nginxManager) run(args ...string) error {
 	args = append([]string{"-c", n.cfg.ConfigFile}, args...)
-	log.Printf("Calling run on nginx with args: %q", args)
+	logger.Log.Infof("Calling run on nginx with args: %q", args)
 	err := exec.Command("nginx", args...).Run()
 	if err != nil {
-		log.Printf("nginx command failed w/ err: %v", err)
+		logger.Log.Infof("nginx command failed w/ err: %v", err)
 		return err
 	} else {
-		log.Printf("nginx command success")
+		logger.Log.Info("nginx command success")
 	}
 	return nil
 }
 
+func (n *nginxManager) runCombinedOutput(args ...string) (string, error) {
+	args = append([]string{"-c", n.cfg.ConfigFile}, args...)
+	logger.Log.Infof("Calling run on nginx with args: %q", args)
+	output, err := exec.Command("nginx", args...).CombinedOutput()
+	if err != nil {
+		logger.Log.Infof("nginx command failed w/ err: %v, output:%s", err, output)
+		return "", err
+	} else {
+		logger.Log.Info("nginx command success")
+	}
+	return string(output), nil
+}
+
 func renderConfig(cfg *NGINXConfig, rc *reverseProxyConfig) ([]byte, error) {
-	log.Printf("Rendering config")
+	logger.Log.Info("Rendering config")
 
 	config := struct {
 		ReverseProxyConfig *reverseProxyConfig
@@ -188,22 +211,22 @@ type loggingNGINXManager struct {
 }
 
 func (l *loggingNGINXManager) Status() (string, error) {
-	log.Printf("called NGINXManager.Status()")
+	logger.Log.Info("called NGINXManager.Status()")
 	return l.status, nil
 }
 
 func (l *loggingNGINXManager) Start() error {
-	log.Printf("called NGINXManager.Start()")
+	logger.Log.Info("called NGINXManager.Start()")
 	l.status = nginxStatusRunning
 	return nil
 }
 
 func (l *loggingNGINXManager) Reload() error {
-	log.Printf("called NGINXManager.Reload()")
+	logger.Log.Info("called NGINXManager.Reload()")
 	return nil
 }
 
 func (l *loggingNGINXManager) WriteConfig(rc *reverseProxyConfig) error {
-	log.Printf("called NGINXManager.WriteConfig(*reverseProxyConfig) w/ %+v", rc)
+	logger.Log.Infof("called NGINXManager.WriteConfig(*reverseProxyConfig) w/ %+v", rc)
 	return nil
 }

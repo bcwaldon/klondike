@@ -2,6 +2,8 @@ package gateway
 
 import (
 	"fmt"
+	"github.com/Sirupsen/logrus"
+	"github.com/bcwaldon/farva/pkg/logger"
 	kapi "k8s.io/kubernetes/pkg/api"
 	kextensions "k8s.io/kubernetes/pkg/apis/extensions"
 	krestclient "k8s.io/kubernetes/pkg/client/restclient"
@@ -114,6 +116,12 @@ func (rcg *kubernetesReverseProxyConfigGetter) getServiceEndpoints(svcNamespace,
 
 	for _, sub := range endpoints.Subsets {
 		if sub.Ports[0].Port != svcTargetPort || sub.Ports[0].Protocol != kapi.ProtocolTCP {
+			logger.Log.WithFields(logrus.Fields{
+				"SourcePort":            sub.Ports[0].Port,
+				"SourceProtocol":        sub.Ports[0].Protocol,
+				"ServiceTargetPort":     svcTargetPort,
+				"ServiceTargetProtocol": kapi.ProtocolTCP,
+			}).Info("Ignoring endpoint")
 			continue
 		}
 
@@ -125,6 +133,11 @@ func (rcg *kubernetesReverseProxyConfigGetter) getServiceEndpoints(svcNamespace,
 				Host: addr.IP,
 				Port: sub.Ports[0].Port,
 			}
+			logger.Log.WithFields(logrus.Fields{
+				"Name": addr.TargetRef.Name,
+				"Host": addr.IP,
+				"Port": sub.Ports[0].Port,
+			}).Info("Adding upstream")
 			ups = append(ups, up)
 		}
 	}
@@ -179,6 +192,12 @@ func (rcg *kubernetesReverseProxyConfigGetter) addHTTPIngressToReverseProxyConfi
 			ListenPort: rcg.krc.ListenPort,
 			Locations:  []httpReverseProxyLocation{},
 		}
+
+		logger.Log.WithFields(logrus.Fields{
+			"Name":        srv.Name,
+			"AltNames":    srv.AltNames,
+			"ListentPort": srv.ListenPort,
+		}).Info("Generating new reverse proxy server")
 
 		for _, path := range rule.HTTP.Paths {
 

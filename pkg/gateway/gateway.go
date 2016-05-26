@@ -2,11 +2,11 @@ package gateway
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"time"
 
 	"github.com/bcwaldon/farva/pkg/health"
+	"github.com/bcwaldon/farva/pkg/logger"
 )
 
 type Config struct {
@@ -70,7 +70,7 @@ func New(cfg Config) (*Gateway, error) {
 	} else {
 		nm = newNGINXManager(nginxCfg)
 	}
-	log.Printf("Using nginx config: %+v", nginxCfg)
+	logger.Log.Infof("Using nginx config: %+v", nginxCfg)
 
 	gw := Gateway{
 		cfg: cfg,
@@ -116,12 +116,12 @@ func (gw *Gateway) startHTTPServer() {
 	}
 
 	go func() {
-		log.Fatal(s.ListenAndServe())
+		logger.Log.Fatal(s.ListenAndServe())
 	}()
 }
 
 func (gw *Gateway) nginxIsRunning() (bool, error) {
-	log.Printf("Checking if nginx is running")
+	logger.Log.Info("Checking if nginx is running")
 	st, err := gw.nm.Status()
 	if err != nil {
 		return false, err
@@ -130,7 +130,7 @@ func (gw *Gateway) nginxIsRunning() (bool, error) {
 }
 
 func (gw *Gateway) refresh() error {
-	log.Printf("Refreshing nginx config")
+	logger.Log.Info("Refreshing nginx config")
 	rc, err := gw.rg.ReverseProxyConfig()
 	if err != nil {
 		return err
@@ -153,13 +153,13 @@ func (gw *Gateway) Run() error {
 		return err
 	}
 
-	log.Printf("Gateway started successfully, entering refresh loop")
+	logger.Log.Info("Gateway started successfully, entering refresh loop")
 
 	ticker := time.NewTicker(gw.cfg.RefreshInterval)
 
 	for {
 		if err := gw.refresh(); err != nil {
-			log.Printf("Failed refreshing Gateway: %v", err)
+			logger.Log.Infof("Failed refreshing Gateway: %v", err)
 		}
 
 		//NOTE(bcwaldon): receive from the ticker at the
