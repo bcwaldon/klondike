@@ -315,6 +315,44 @@ stream {
 }
 `,
 		},
+		// Multiple AltNames
+		{
+			rc: reverseProxyConfig{
+				HTTPServers: []httpReverseProxyServer{
+					httpReverseProxyServer{
+						Name:       "default.example.com",
+						AltNames:   []string{"test.example.com", "foo.bar.com"},
+						ListenPort: 9001,
+						StaticCode: 202,
+					},
+				},
+			},
+			want: `
+pid /var/run/nginx.pid;
+daemon on;
+
+events {
+    worker_connections 512;
+}
+
+http {
+    server_names_hash_bucket_size 128;
+
+    server {
+        listen 9001;
+        server_name default.example.com test.example.com foo.bar.com;
+        return 202;
+    }
+
+
+}
+
+stream {
+
+
+}
+`,
+		},
 	}
 
 	for i, tt := range tests {

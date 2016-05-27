@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 	"os/exec"
+	"strings"
 	"text/template"
 )
 
@@ -23,7 +24,7 @@ http {
 {{ range $srv := $.ReverseProxyConfig.HTTPServers }}
     server {
         listen {{ $srv.ListenPort }};
-        {{ if $srv.Name }}server_name {{ $srv.Name }}{{ if $srv.AltNames }} {{ range $srv.AltNames }}{{ . }}{{ end }}{{ end }};{{ end }}
+        {{ if $srv.Name }}server_name {{ $srv.Name }}{{ if $srv.AltNames }} {{ join $srv.AltNames " " }}{{ end }};{{ end }}
         {{ if $srv.StaticCode -}}
         return {{ $srv.StaticCode }}{{ if $srv.StaticMessage }} '{{ $srv.StaticMessage }}'{{ end }};
         {{- else -}}
@@ -65,7 +66,9 @@ stream {
 }
 `
 
-	nginxTemplate = template.Must(template.New("nginx").Parse(nginxTemplateData))
+	nginxTemplate = template.Must(template.New("nginx").Funcs(template.FuncMap{
+		"join": strings.Join,
+	}).Parse(nginxTemplateData))
 
 	DefaultNGINXConfig = NGINXConfig{
 		ClusterZone: "example.com",
