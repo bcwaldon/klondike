@@ -13,6 +13,7 @@ import (
 var (
 	nginxTemplateData = `
 pid {{ .NGINXConfig.PIDFile }};
+error_log {{ .NGINXConfig.ErrorLog }};
 daemon on;
 
 events {
@@ -21,6 +22,10 @@ events {
 
 http {
     server_names_hash_bucket_size 128;
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+    access_log {{ .NGINXConfig.AccessLog }} main;
 {{ range $srv := $.ReverseProxyConfig.HTTPServers }}
     server {
         listen {{ $srv.ListenPort }};
@@ -75,6 +80,8 @@ stream {
 		ConfigFile:  "/etc/nginx/nginx.conf",
 		PIDFile:     "/var/run/nginx.pid",
 		HealthPort:  7332,
+		AccessLog:   "/dev/stdout",
+		ErrorLog:    "/dev/stderr",
 	}
 )
 
@@ -90,12 +97,16 @@ type NGINXConfig struct {
 	PIDFile     string
 	HealthPort  int
 	ListenPort  int
+	ErrorLog    string
+	AccessLog   string
 }
 
-func newNGINXConfig(hp int, cz string) NGINXConfig {
+func newNGINXConfig(hp int, cz string, errorLog string, accessLog string) NGINXConfig {
 	cfg := DefaultNGINXConfig
 	cfg.HealthPort = hp
 	cfg.ClusterZone = cz
+	cfg.ErrorLog = errorLog
+	cfg.AccessLog = accessLog
 	return cfg
 }
 

@@ -7,6 +7,7 @@ import (
 
 	"github.com/bcwaldon/farva/pkg/health"
 	"github.com/bcwaldon/farva/pkg/logger"
+	"github.com/bcwaldon/farva/pkg/logpipe"
 )
 
 type Config struct {
@@ -18,11 +19,13 @@ type Config struct {
 	HTTPListenPort   int
 	FarvaHealthPort  int
 	AnnotationPrefix string
+	FifoPath         string
 }
 
 var DefaultConfig = Config{
 	HTTPListenPort:  7331,
 	FarvaHealthPort: 7333,
+	FifoPath:        "/nginx.fifo",
 }
 
 func DefaultHTTPReverseProxyServers(cfg *Config) []httpReverseProxyServer {
@@ -63,7 +66,7 @@ func New(cfg Config) (*Gateway, error) {
 	}
 	rg := newReverseProxyConfigGetter(kc, krc)
 
-	nginxCfg := newNGINXConfig(cfg.NGINXHealthPort, cfg.ClusterZone)
+	nginxCfg := newNGINXConfig(cfg.NGINXHealthPort, cfg.ClusterZone, cfg.FifoPath, cfg.FifoPath)
 	var nm NGINXManager
 	if cfg.NGINXDryRun {
 		nm = newLoggingNGINXManager()
@@ -149,6 +152,15 @@ func (gw *Gateway) refresh() error {
 }
 
 func (gw *Gateway) Run() error {
+
+	fifoLogger := logpipe.NewLogPipe(gw.cfg.FifoPath)
+	if err := fifoLogger.Start(); err != nil {
+		logger.Log.Fatalf(
+			"Could not start fifo logger, exiting since this will cause NGINX to block: %s",
+			err,
+		)
+	}
+
 	if err := gw.start(); err != nil {
 		return err
 	}

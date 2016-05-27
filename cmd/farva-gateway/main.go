@@ -20,6 +20,7 @@ func main() {
 	fs.IntVar(&cfg.NGINXHealthPort, "nginx-health-port", gateway.DefaultNGINXConfig.HealthPort, "Port to listen on for nginx health checks.")
 	fs.IntVar(&cfg.FarvaHealthPort, "farva-health-port", gateway.DefaultConfig.FarvaHealthPort, "Port to listen on for farva health checks.")
 	fs.IntVar(&cfg.HTTPListenPort, "http-listen-port", gateway.DefaultConfig.HTTPListenPort, "Port to listen on for HTTP traffic.")
+	fs.StringVar(&cfg.FifoPath, "fifo-path", gateway.DefaultConfig.FifoPath, "Location of nginx stderr and stdout logging fifo.")
 	fs.StringVar(&cfg.ClusterZone, "cluster-zone", "", "Use this DNS zone for routing of traffic to Kubernetes")
 	fs.StringVar(&cfg.AnnotationPrefix, "annotation-prefix", gateway.DefaultKubernetesReverseProxyConfigGetterConfig.AnnotationPrefix, "Forms the lookup key for additional gateway configuration annotations.")
 
