@@ -30,7 +30,7 @@
     - name: apiserver
       profile: server
       hosts:
-      - "api.{{ external_fqdn }}"
+      - "api.{{ aws_hosted_zone }}"
       - "{{ cluster_service_kubernetes_ip }}"
 
 - hosts: 127.0.0.1

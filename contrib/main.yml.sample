@@ -79,17 +79,11 @@ coreos_image_id:
 # Set `ubuntu_image_id` with the AMI ID retrieve via either method.
 ubuntu_image_id:
 
-# aws_hosted_zone is a DNS zone delegated to AWS Route 53 the
-# to which the deployer has the ability to add records. This
-# zone will be used to provide a publicly-routable DNS name
-# for the Kubernetes API.
+# aws_hosted_zone is a DNS zone delegated to AWS Route 53. This
+# zone will be used to provide DNS resolution for the Kubernetes
+# API and gateway. For example:
+#aws_hosted_zone: "{{ cluster }}.kubernetes.example.com"
 aws_hosted_zone:
-
-# external_fqdn defines a DNS zone the the deployer wishes to make
-# routable to various Kubernetes services.
-# For example, if external_fqdn were set to "example.com", users of
-# the Kubernetes API would be able to direct requests to api.example.com
-external_fqdn: "{{ cluster }}.kubernetes.{{ aws_hosted_zone }}"
 
 # bastion_instance_type is the instance type used when deploying
 # EC2 instances as bastions in your cluster. This instance is an
