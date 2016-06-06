@@ -2146,7 +2146,7 @@
             [
               "api.",
               {
-                "Ref": "ExternalFQDN"
+                "Ref": "HostedZone"
               },
               "."
             ]
@@ -2811,6 +2811,40 @@
         }
       }
     },
+    "ClusterHostedZone": {
+      "Type": "AWS::Route53::HostedZone",
+      "Properties": {
+        "Name": {
+          "Ref": "HostedZone"
+        },
+        "HostedZoneTags": [
+          {
+            "Key": "KubernetesCluster",
+            "Value": {
+              "Ref": "ClusterName"
+            }
+          }
+        ],
+        "VPCs": [
+          {
+            "VPCId": {
+              "Ref": "ClusterVPC"
+            },
+            "VPCRegion": {
+              "Ref": "AWS::Region"
+            }
+          },
+          {
+            "VPCId": {
+              "Ref": "PeerVPC"
+            },
+            "VPCRegion": {
+              "Ref": "AWS::Region"
+            }
+          }
+        ]
+      }
+    },
     "GatewayPrivateELBDNSRecordSet": {
       "Type": "AWS::Route53::RecordSet",
       "Properties": {
@@ -2831,7 +2865,7 @@
             [
               "*.gateway.",
               {
-                "Ref": "ExternalFQDN"
+                "Ref": "HostedZone"
               },
               "."
             ]
@@ -3001,10 +3035,6 @@
     "HostedZone": {
       "Type": "String",
       "Description": "DNS zone hosted in Route 53 that will be used to provide DNS resolution for the Kubernetes API to external clients"
-    },
-    "ExternalFQDN": {
-      "Type": "String",
-      "Description": "DNS name in the indicated HostedZone to make routable to the Kubernetes API via the Controller ELB"
     },
     "S3ConfigBucket": {
       "Type": "String",
