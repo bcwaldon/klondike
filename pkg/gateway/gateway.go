@@ -41,8 +41,9 @@ func DefaultHTTPReverseProxyServers(cfg *Config) []httpReverseProxyServer {
 			},
 		},
 		httpReverseProxyServer{
-			ListenPort: cfg.HTTPListenPort,
-			StaticCode: 444,
+			ListenPort:    cfg.HTTPListenPort,
+			DefaultServer: true,
+			StaticCode:    444,
 		},
 	}
 }

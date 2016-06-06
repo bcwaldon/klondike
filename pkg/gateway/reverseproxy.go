@@ -14,6 +14,7 @@ type reverseProxyConfig struct {
 type httpReverseProxyServer struct {
 	Name          string
 	AltNames      []string
+	DefaultServer bool
 	ListenPort    int
 	Locations     []httpReverseProxyLocation
 	StaticCode    int

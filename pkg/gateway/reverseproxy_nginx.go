@@ -28,7 +28,7 @@ http {
     access_log {{ .NGINXConfig.AccessLog }} main;
 {{ range $srv := $.ReverseProxyConfig.HTTPServers }}
     server {
-        listen {{ $srv.ListenPort }};
+        listen {{ $srv.ListenPort }}{{ if $srv.DefaultServer }} default_server{{ end }};
         {{ if $srv.Name }}server_name {{ $srv.Name }}{{ if $srv.AltNames }} {{ join $srv.AltNames " " }}{{ end }};{{ end }}
         {{ if $srv.StaticCode -}}
         return {{ $srv.StaticCode }}{{ if $srv.StaticMessage }} '{{ $srv.StaticMessage }}'{{ end }};

@@ -378,6 +378,48 @@ stream {
 }
 `,
 		},
+		// DefaultServer
+		{
+			rc: reverseProxyConfig{
+				HTTPServers: []httpReverseProxyServer{
+					httpReverseProxyServer{
+						ListenPort:    9001,
+						DefaultServer: true,
+						StaticCode:    202,
+					},
+				},
+			},
+			want: `
+pid /var/run/nginx.pid;
+error_log /dev/stderr;
+daemon on;
+
+events {
+    worker_connections 512;
+}
+
+http {
+    server_names_hash_bucket_size 128;
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+    access_log /dev/stdout main;
+
+    server {
+        listen 9001 default_server;
+        
+        return 202;
+    }
+
+
+}
+
+stream {
+
+
+}
+`,
+		},
 	}
 
 	for i, tt := range tests {
