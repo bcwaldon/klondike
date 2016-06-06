@@ -2673,14 +2673,14 @@
         ],
         "Listeners": [
           {
-            "InstancePort": 7331,
+            "InstancePort": 7330,
             "InstanceProtocol": "TCP",
             "LoadBalancerPort": 80,
             "Protocol": "TCP"
           }
         ],
         "HealthCheck": {
-          "Target": "TCP:7331",
+          "Target": "TCP:7330",
           "HealthyThreshold": "2",
           "Interval": "6",
           "Timeout": "5",
@@ -2702,8 +2702,8 @@
         "SourceSecurityGroupId": {
           "Ref": "GatewayPublicELBSecurityGroup"
         },
-        "FromPort": 7331,
-        "ToPort": 7331,
+        "FromPort": 7330,
+        "ToPort": 7330,
         "IpProtocol": "TCP"
       },
       "Metadata": {
