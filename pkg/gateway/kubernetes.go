@@ -212,17 +212,29 @@ func (rcg *kubernetesReverseProxyConfigGetter) addHTTPIngressToReverseProxyConfi
 			if err != nil {
 				return err
 			}
+
 			up.Servers, err = rcg.getServiceEndpoints(ingNamespace, svcName, svcTargetPort)
 			if err != nil {
 				return err
 			}
 
-			rp.HTTPUpstreams = append(rp.HTTPUpstreams, up)
-
-			srv.Locations = append(srv.Locations, httpReverseProxyLocation{
-				Path:     path.Path,
-				Upstream: up.Name,
-			})
+			if len(up.Servers) == 0 {
+				logger.Log.WithFields(logrus.Fields{
+					"svcName":       svcName,
+					"ingNamespace":  ingNamespace,
+					"svcTargetPort": svcTargetPort,
+				}).Infof("No servers found for upstream, using StaticCode for %s", path.Path)
+				srv.Locations = append(srv.Locations, httpReverseProxyLocation{
+					Path:       path.Path,
+					StaticCode: 503,
+				})
+			} else {
+				rp.HTTPUpstreams = append(rp.HTTPUpstreams, up)
+				srv.Locations = append(srv.Locations, httpReverseProxyLocation{
+					Path:     path.Path,
+					Upstream: up.Name,
+				})
+			}
 		}
 
 		rp.HTTPServers = append(rp.HTTPServers, srv)

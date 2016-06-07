@@ -46,11 +46,13 @@ http {
     }
 {{ end }}
 {{ range $up := $.ReverseProxyConfig.HTTPUpstreams }}
+{{ if $up.Servers }}
     upstream {{ $up.Name }} {
 {{ range $ep := $up.Servers }}
         server {{ $ep.Host }}:{{ $ep.Port }};  # {{ $ep.Name }}
 {{- end }}
     }
+{{- end }}
 {{ end }}
 }
 
@@ -62,11 +64,13 @@ stream {
     }
 {{ end }}
 {{ range $up := $.ReverseProxyConfig.TCPUpstreams }}
+{{ if $up.Servers }}
     upstream {{ $up.Name }} {
 {{ range $ep := $up.Servers }}
         server {{ $ep.Host }}:{{ $ep.Port }};  # {{ $ep.Name }}
 {{- end }}
     }
+{{- end }}
 {{ end }}
 }
 `
