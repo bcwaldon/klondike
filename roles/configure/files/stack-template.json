@@ -1227,7 +1227,19 @@
         ],
         "UserData": {
           "Ref": "ControllerUserData"
-        }
+        },
+        "BlockDeviceMappings": [
+          {
+            "DeviceName": "/dev/xvda",
+            "Ebs": {
+              "VolumeSize": {
+                "Ref": "ControllerInstanceRootDiskSize"
+              },
+              "VolumeType": "gp2",
+              "DeleteOnTermination": true
+            }
+          }
+        ]
       },
       "Metadata": {
         "AWS::CloudFormation::Designer": {
@@ -1354,8 +1366,12 @@
           {
             "DeviceName": "/dev/xvda",
             "Ebs": {
-              "VolumeSize": 32,
-              "Iops": 960,
+              "VolumeSize": {
+                "Ref": "WorkerInstanceRootDiskSize"
+              },
+              "Iops": {
+                "Ref": "WorkerInstanceRootDiskIOPs"
+              },
               "VolumeType": "io1",
               "DeleteOnTermination": true
             }
@@ -2224,7 +2240,20 @@
         },
         "UserData": {
           "Ref": "BastionUserData"
-        }
+        },
+        "EbsOptimized": true,
+        "BlockDeviceMappings": [
+          {
+            "DeviceName": "/dev/xvda",
+            "Ebs": {
+              "VolumeSize": {
+                "Ref": "BastionInstanceRootDiskSize"
+              },
+              "VolumeType": "gp2",
+              "DeleteOnTermination": true
+            }
+          }
+        ]
       },
       "Metadata": {
         "AWS::CloudFormation::Designer": {
@@ -2539,7 +2568,20 @@
         ],
         "UserData": {
           "Ref": "GatewayUserData"
-        }
+        },
+        "EbsOptimized": true,
+        "BlockDeviceMappings": [
+          {
+            "DeviceName": "/dev/xvda",
+            "Ebs": {
+              "VolumeSize": {
+                "Ref": "GatewayInstanceRootDiskSize"
+              },
+              "VolumeType": "gp2",
+              "DeleteOnTermination": true
+            }
+          }
+        ]
       },
       "Metadata": {
         "AWS::CloudFormation::Designer": {
@@ -3063,17 +3105,37 @@
       "Type": "String",
       "Description": "Launch Bastion EC2 Instances with this UserData"
     },
+    "BastionInstanceRootDiskSize": {
+      "Type": "Number",
+      "Description": "Size in GB of Bastion EC2 Instance root disk."
+    },
     "ControllerInstanceCount": {
       "Type": "Number",
       "Description": "Number of EC2 Instances to provision as Controllers."
+    },
+    "ControllerInstanceRootDiskSize": {
+      "Type": "Number",
+      "Description": "Size in GB of Controller EC2 Instance root disk."
     },
     "GatewayInstanceCount": {
       "Type": "Number",
       "Description": "Number of EC2 Instances to provision as Gateways."
     },
+    "GatewayInstanceRootDiskSize": {
+      "Type": "Number",
+      "Description": "Size in GB of Gateway EC2 Instance root disk."
+    },
     "WorkerInstanceCount": {
       "Type": "Number",
       "Description": "Number of EC2 Instances to provision as Workers"
+    },
+    "WorkerInstanceRootDiskSize": {
+      "Type": "Number",
+      "Description": "Size in GB of Worker EC2 Instance root disk."
+    },
+    "WorkerInstanceRootDiskIOPs": {
+      "Type": "Number",
+      "Description": "Number of IOPs to provision for the Worker EC2 Instance root disk."
     },
     "HostedZone": {
       "Type": "String",
