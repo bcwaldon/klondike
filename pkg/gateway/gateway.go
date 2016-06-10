@@ -100,7 +100,7 @@ func (gw *Gateway) start() error {
 	}
 
 	rc := DefaultReverseProxyConfig(&gw.cfg)
-	if err := gw.nm.WriteConfig(rc); err != nil {
+	if err := gw.nm.SetConfig(rc); err != nil {
 		return err
 	}
 
@@ -142,13 +142,9 @@ func (gw *Gateway) refresh() error {
 
 	rc.HTTPServers = append(rc.HTTPServers, DefaultHTTPReverseProxyServers(&gw.cfg)...)
 
-	if err := gw.nm.WriteConfig(rc); err != nil {
+	if err := gw.nm.SetConfig(rc); err != nil {
 		return err
 	}
-	if err := gw.nm.Reload(); err != nil {
-		return err
-	}
-
 	return nil
 }
 

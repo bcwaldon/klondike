@@ -116,9 +116,8 @@ func newNGINXConfig(hp int, cz string, errorLog string, accessLog string) NGINXC
 
 type NGINXManager interface {
 	Status() (string, error)
-	WriteConfig(*reverseProxyConfig) error
+	SetConfig(*reverseProxyConfig) error
 	Start() error
-	Reload() error
 }
 
 func newNGINXManager(cfg NGINXConfig) NGINXManager {
@@ -142,16 +141,35 @@ func (n *nginxManager) Status() (string, error) {
 	return nginxStatusRunning, nil
 }
 
-func (n *nginxManager) WriteConfig(rc *reverseProxyConfig) error {
+func (n *nginxManager) SetConfig(rc *reverseProxyConfig) error {
 	cfg, err := renderConfig(&n.cfg, rc)
-	logger.Log.Infof("About to write config: %s", string(cfg))
 	if err != nil {
 		return err
 	}
+	if !n.hasConfigChanged(cfg) {
+		return nil
+	}
+
+	logger.Log.Infof("About to write config: %s", cfg)
 	if err := ioutil.WriteFile(n.cfg.ConfigFile, cfg, os.FileMode(0644)); err != nil {
 		return err
 	}
+	if status, _ := n.Status(); status != nginxStatusRunning {
+		return nil
+	}
+	if err := n.reload(); err != nil {
+		return err
+	}
 	return nil
+}
+
+func (n *nginxManager) hasConfigChanged(incoming []byte) bool {
+	current, err := ioutil.ReadFile(n.cfg.ConfigFile)
+	if err != nil {
+		logger.Log.Errorf("Could not read existing configuration, assuming changed: %s", err)
+		return true
+	}
+	return bytes.Compare(current, incoming) != 0
 }
 
 func (n *nginxManager) assertConfigOK() error {
@@ -168,7 +186,7 @@ func (n *nginxManager) Start() error {
 	return n.run()
 }
 
-func (n *nginxManager) Reload() error {
+func (n *nginxManager) reload() error {
 	if err := n.assertConfigOK(); err != nil {
 		return err
 	}
@@ -239,12 +257,7 @@ func (l *loggingNGINXManager) Start() error {
 	return nil
 }
 
-func (l *loggingNGINXManager) Reload() error {
-	logger.Log.Info("called NGINXManager.Reload()")
-	return nil
-}
-
-func (l *loggingNGINXManager) WriteConfig(rc *reverseProxyConfig) error {
-	logger.Log.Infof("called NGINXManager.WriteConfig(*reverseProxyConfig) w/ %+v", rc)
+func (l *loggingNGINXManager) SetConfig(rc *reverseProxyConfig) error {
+	logger.Log.Infof("called NGINXManager.SetConfig(*reverseProxyConfig) w/ %+v", rc)
 	return nil
 }
