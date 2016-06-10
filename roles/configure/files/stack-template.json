@@ -430,6 +430,7 @@
         "z": 2,
         "parent": "a487cf69-e5ce-4956-85df-761e6427deef",
         "embeds": [
+          "168d81a9-a92e-403e-bb34-f8e451c845f8",
           "fe300dd1-8127-4ecf-a1f2-39141a6e498f"
         ],
         "dependson": [
@@ -573,6 +574,9 @@
         },
         "z": 0,
         "embeds": [],
+        "dependson": [
+          "1ece2221-9e15-4bab-9567-3dbf55137b44"
+        ],
         "isrelatedto": [
           "81ac2c65-7edd-45b6-a300-2e0f5576cd84"
         ]
@@ -1123,6 +1127,9 @@
         },
         "z": 0,
         "embeds": [],
+        "dependson": [
+          "1ece2221-9e15-4bab-9567-3dbf55137b44"
+        ],
         "isrelatedto": [
           "81ac2c65-7edd-45b6-a300-2e0f5576cd84",
           "1d4a5fec-f915-4f8b-afef-87442f63ecec"
@@ -1163,6 +1170,39 @@
         },
         "z": 0,
         "embeds": []
+      },
+      "1ece2221-9e15-4bab-9567-3dbf55137b44": {
+        "size": {
+          "width": 150,
+          "height": 150
+        },
+        "position": {
+          "x": 120,
+          "y": 90
+        },
+        "z": 1,
+        "embeds": [],
+        "isrelatedto": [
+          "a487cf69-e5ce-4956-85df-761e6427deef"
+        ]
+      },
+      "1f71bb20-f245-4a10-acba-704b66f85dd9": {
+        "source": {
+          "id": "0374cc4d-4484-4e1e-bc01-7817a99d2f72"
+        },
+        "target": {
+          "id": "1ece2221-9e15-4bab-9567-3dbf55137b44"
+        },
+        "z": 11
+      },
+      "c438de9d-5377-4216-bbf7-edc7c9f20d6d": {
+        "source": {
+          "id": "74e76bcc-cb53-4b2d-94ef-51fb3dfb196c"
+        },
+        "target": {
+          "id": "1ece2221-9e15-4bab-9567-3dbf55137b44"
+        },
+        "z": 12
       }
     }
   },
@@ -2126,7 +2166,7 @@
         }
       }
     },
-    "ControllerPrivateELBDNSRecord": {
+    "ControllerPrivateELBDNSRecordSet": {
       "Type": "AWS::Route53::RecordSet",
       "Properties": {
         "HostedZoneName": {
@@ -2167,7 +2207,10 @@
         "AWS::CloudFormation::Designer": {
           "id": "0374cc4d-4484-4e1e-bc01-7817a99d2f72"
         }
-      }
+      },
+      "DependsOn": [
+        "ClusterHostedZone"
+      ]
     },
     "BastionLC": {
       "Type": "AWS::AutoScaling::LaunchConfiguration",
@@ -2843,6 +2886,11 @@
             }
           }
         ]
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "1ece2221-9e15-4bab-9567-3dbf55137b44"
+        }
       }
     },
     "GatewayPrivateELBDNSRecordSet": {
@@ -2886,7 +2934,10 @@
         "AWS::CloudFormation::Designer": {
           "id": "74e76bcc-cb53-4b2d-94ef-51fb3dfb196c"
         }
-      }
+      },
+      "DependsOn": [
+        "ClusterHostedZone"
+      ]
     },
     "PeerConnection": {
       "Type": "AWS::EC2::VPCPeeringConnection",
