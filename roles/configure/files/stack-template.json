@@ -1359,14 +1359,6 @@
               "VolumeType": "io1",
               "DeleteOnTermination": true
             }
-          },
-          {
-            "DeviceName": "/dev/xvdb",
-            "Ebs": {
-              "VolumeSize": 128,
-              "VolumeType": "gp2",
-              "DeleteOnTermination": true
-            }
           }
         ]
       },
