@@ -6,5 +6,5 @@ REGION=$1
 [ ! -z $REGION ] || { echo "Usage: $0 <aws_region>"; exit 1; }
 
 curl -s https://cloud-images.ubuntu.com/locator/ec2/releasesTable |\
-    grep $REGION.*16.04.*hvm:instance-store |\
+    grep $REGION.*16.04.*hvm:ebs-ssd |\
     grep -o 'ami-\w\+' | head -1

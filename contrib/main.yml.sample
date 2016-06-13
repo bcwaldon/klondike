@@ -72,7 +72,7 @@ coreos_image_id:
 # provide manual instructions:
 #
 # 1. Navigate to https://cloud-images.ubuntu.com/locator/ec2/
-# 2. Search for "16.04 hvm:instance-store"
+# 2. Search for "16.04 hvm:ebs-ssd"
 # 3. Identify the AMI available in your region
 # 4. Copy the AMI ID
 #
@@ -89,11 +89,24 @@ aws_hosted_zone:
 # EC2 instances as bastions in your cluster. This instance is an
 # administrative host, so it does not need a large amount of storage
 # or compute resources.
-bastion_instance_type: m3.medium
+#
+# These instances must support the EBS-optimized boot flag.
+# It is suggested that m4 or c4 instances are used, as these
+# there is no additional cost to support EBS optimization.
+bastion_instance_type: m4.medium
+
+# bastion_instance_root_disk_size_gb controls the size of the root
+# disk provisioned for each bastion instance (in GB). The underlying
+# disk is a gp2 EBS volume, not instance storage.
+bastion_instance_root_disk_size_gb: 32
 
 # gateway_instance_type is the instance type used when deploying
 # EC2 instances for Kubernetes service ingress traffic.
-gateway_instance_type: m3.large
+#
+# These instances must support the EBS-optimized boot flag.
+# It is suggested that m4 or c4 instances are used, as these
+# there is no additional cost to support EBS optimization.
+gateway_instance_type: m4.large
 
 # gateway_instance_count is the number of instances to deploy
 # for the initial Kubernetes service ingress. This should scale
@@ -101,23 +114,45 @@ gateway_instance_type: m3.large
 # external clients.
 gateway_instance_count: 1
 
+# gateway_instance_root_disk_size_gb controls the size of the root
+# disk provisioned for each gateway instance (in GB). The underlying
+# disk is a gp2 EBS volume, not instance storage.
+gateway_instance_root_disk_size_gb: 32
+
 # controller_instance_type is the instance type used when deploying
 # EC2 instances for the Kubernetes control plane.
-controller_instance_type: m3.large
+#
+# These instances must support the EBS-optimized boot flag.
+# It is suggested that m4 or c4 instances are used, as these
+# there is no additional cost to support EBS optimization.
+controller_instance_type: m4.large
 
 # controller_instance_count is the number of instances to deploy
 # for the initial Kubernetes control plane. 3 is recommended.
 controller_instance_count: 3
 
+# controller_instance_root_disk_size_gb controls the size of the root
+# disk provisioned for each controller instance (in GB). The underlying
+# disk is a gp2 EBS volume, not instance storage.
+controller_instance_root_disk_size_gb: 32
+
 # worker_instance_type is the instance type used when deploying
-# EC2 instances for the Kubernetes worker pool. These instances
-# must support the EBS-optimized boot flag (e.g. c4-level instances).
+# EC2 instances for the Kubernetes worker pool.
+#
+# These instances must support the EBS-optimized boot flag.
+# It is suggested that m4 or c4 instances are used, as these
+# there is no additional cost to support EBS optimization.
 worker_instance_type: c4.large
 
 # worker_instance_count is the number of instances to deploy
 # for the initial Kubernetes worker pool. Increasing this number
 # increases the amount of resources available for pods.
 worker_instance_count: 3
+
+# worker_instance_root_disk_size_gb controls the size of the root
+# disk provisioned for each worker instance (in GB). The underlying
+# disk is an io1 EBS volume, not instance storage.
+worker_instance_root_disk_size_gb: 64
 
 # cluster_instance_network_cidr defines the range of IPs to use
 # for the VPC, which contains all EC2 instances. These IPs must
