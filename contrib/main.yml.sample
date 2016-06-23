@@ -15,28 +15,6 @@ aws_region:
 # availablility zones include us-west-2a, us-west-2b and us-west-2c.
 aws_availability_zone:
 
-# peer_vpc_id is the ID of the VPC that will be routable to and from
-# the Kubernetes cluster. A VPC peering connection will be created
-# the peer VPC and the VPC created for Kubernetes.
-peer_vpc_id:
-
-# peer_network_cidr is the network of the VPC that will be routable to and
-# from the Kubernetes cluster.
-peer_network_cidr:
-
-# peer_subnet_id is the ID of the subnet in the peer VPC that is
-# used to host the bastion instances. These instances facilitate
-# administration of the Kubernetes cluster.
-peer_subnet_id:
-
-# peer_route_table_id is the ID of the route table associated with
-# the peer subnet. Routes will be added to this table to direct
-# traffic from any associated peer VPC subnet to Kubernetes. At a
-# minimum, this route table must be associated with the peer
-# subnet provided in peer_subnet_id to enable Bastion instances
-# to administer the Kubernetes cluster.
-peer_route_table_id:
-
 # coreos_image_id is the AMI ID used to deploy both controller
 # and worker EC2 instances. This AMI must be available in the region
 # indicated by aws_region.
@@ -154,28 +132,38 @@ worker_instance_count: 3
 # disk is an io1 EBS volume, not instance storage.
 worker_instance_root_disk_size_gb: 64
 
+# cluster_vpc_id is the ID of the VPC into which the Kubernetes
+# cluster should be deployed. This VPC must already have an
+# Internet Gateway attached. See the documentation for more
+# information on how to create this network.
+cluster_vpc_id:
+
+# cluster_vpc_internet_gateway_id is the ID of the Internet
+# Gateway attached to the cluster VPC.
+cluster_vpc_internet_gateway_id:
+
 # cluster_instance_network_cidr defines the range of IPs to use
 # for the VPC, which contains all EC2 instances. These IPs must
 # not conflict with the pod- or service-level networking.
-cluster_instance_network_cidr: 10.0.0.0/16
+cluster_instance_network_cidr: 10.0.0.0/23
 
 # public_instance_subnet_cidr defines the range of IPs to use
 # for internet-facing EC2 instances. This must be a subnet within
 # the cluster_instance_network_cidr, not conflicting with any
 # other *_instance_network_cidr values.
-public_instance_subnet_cidr: 10.0.255.0/26
+public_instance_subnet_cidr: 10.0.0.0/25
 
 # controller_instance_subnet_cidr defines the range of IPs to use
 # for controller EC2 instances. This must be a subnet within
 # the cluster_instance_network_cidr, not conflicting with any
 # other *_instance_network_cidr values.
-controller_instance_subnet_cidr: 10.0.255.192/26
+controller_instance_subnet_cidr: 10.0.0.128/25
 
 # worker_instance_subnet_cidr defines the range of IPs to use
 # for worker EC2 instances. This must be a subnet within
 # the cluster_instance_network_cidr, not conflicting with any
 # other *_instance_network_cidr values.
-worker_instance_subnet_cidr: 10.0.99.0/24
+worker_instance_subnet_cidr: 10.0.1.0/24
 
 # cluster_pod_network_cidr defines the range of IPs to use for
 # the kubernetes pod network. These IPs must not conflict with
@@ -201,6 +189,19 @@ cluster_service_dns_ip: 10.255.0.10
 # example, if "cluster.local" is used here, the default Kubernetes
 # service will be available at "kubernetes.default.svc.cluster.local".
 cluster_service_dns_zone: cluster.local
+
+# peer_vpc_id is the ID of the VPC that will be routable to and from
+# the Kubernetes cluster. A VPC peering connection will be created
+# the peer VPC and the VPC created for Kubernetes.
+peer_vpc_id:
+
+# peer_network_cidr is the network of the VPC that will be routable to and
+# from the Kubernetes cluster.
+peer_network_cidr:
+
+# peer_connection_id is the ID of the VPC Peering Connection already
+# established between the cluster VPC and the peer VPC.
+peer_connection_id:
 
 # datadog_enabled controls whether or not the DataDog agent should be
 # deployed across the cluster. If true, datadog_api_key must be set.

@@ -6,7 +6,7 @@
 
 The topics covered in the deploy guide are relevant to those who are creating, modifying and destroying klondike clusters.
 
-TODO
+- [Network Setup](deployer/network-setup.md)
 
 ### Admin Guide
 

@@ -194,7 +194,6 @@
           "y": 900
         },
         "z": 0,
-        "parent": "a487cf69-e5ce-4956-85df-761e6427deef",
         "embeds": []
       },
       "6fefc014-dddb-41a8-96b8-02255342c5a4": {
@@ -216,7 +215,6 @@
           "y": 1110
         },
         "z": 0,
-        "parent": "a487cf69-e5ce-4956-85df-761e6427deef",
         "embeds": []
       },
       "f00c9142-37b5-4239-ad24-e5a09a412882": {
@@ -265,7 +263,6 @@
           "y": 1050
         },
         "z": 2,
-        "parent": "a487cf69-e5ce-4956-85df-761e6427deef",
         "embeds": []
       },
       "f591c362-5976-4efe-aca1-f1c0cb9f31af": {
@@ -278,7 +275,6 @@
           "y": 870
         },
         "z": 2,
-        "parent": "a487cf69-e5ce-4956-85df-761e6427deef",
         "embeds": []
       },
       "a487cf69-e5ce-4956-85df-761e6427deef": {
@@ -352,7 +348,6 @@
           "y": 670
         },
         "z": 2,
-        "parent": "a487cf69-e5ce-4956-85df-761e6427deef",
         "embeds": [
           "3ecb5892-f24a-4c85-aa24-e275f34308a1"
         ],
@@ -428,9 +423,7 @@
           "y": 980
         },
         "z": 2,
-        "parent": "a487cf69-e5ce-4956-85df-761e6427deef",
         "embeds": [
-          "168d81a9-a92e-403e-bb34-f8e451c845f8",
           "fe300dd1-8127-4ecf-a1f2-39141a6e498f"
         ],
         "dependson": [
@@ -524,7 +517,6 @@
           "y": 410
         },
         "z": 0,
-        "parent": "a487cf69-e5ce-4956-85df-761e6427deef",
         "embeds": []
       },
       "ba5ed5e4-dbc6-46d0-99b6-11844d72790b": {
@@ -632,7 +624,8 @@
         "z": 0,
         "embeds": [],
         "isconnectedto": [
-          "314120e5-87bf-4791-80ae-cd443fad4186"
+          "314120e5-87bf-4791-80ae-cd443fad4186",
+          "f591c362-5976-4efe-aca1-f1c0cb9f31af"
         ],
         "isassociatedwith": [
           "c1dcc697-c876-4d7d-b222-18013870cef9"
@@ -653,8 +646,8 @@
           "height": 60
         },
         "position": {
-          "x": 990,
-          "y": 690
+          "x": -1030,
+          "y": 700
         },
         "z": 2,
         "embeds": []
@@ -732,7 +725,6 @@
           "y": 660
         },
         "z": 2,
-        "parent": "a487cf69-e5ce-4956-85df-761e6427deef",
         "embeds": [
           "dd161430-6440-4ef3-856b-99c6e8a6bbc5"
         ]
@@ -863,7 +855,6 @@
           "y": 1010
         },
         "z": 0,
-        "parent": "a487cf69-e5ce-4956-85df-761e6427deef",
         "embeds": []
       },
       "f4d0e293-5e7b-4df4-9f21-ef96fe619247": {
@@ -999,7 +990,6 @@
           "y": 350
         },
         "z": 0,
-        "parent": "a487cf69-e5ce-4956-85df-761e6427deef",
         "embeds": []
       },
       "69e0901d-92ad-4175-b3f2-1f6618904efe": {
@@ -1083,7 +1073,6 @@
           "y": 290
         },
         "z": 0,
-        "parent": "a487cf69-e5ce-4956-85df-761e6427deef",
         "embeds": []
       },
       "a0ca15e0-b8a8-400b-b8b8-162577e7cc60": {
@@ -1165,8 +1154,8 @@
           "height": 60
         },
         "position": {
-          "x": 150,
-          "y": 270
+          "x": -220,
+          "y": 1010
         },
         "z": 0,
         "embeds": []
@@ -1177,8 +1166,8 @@
           "height": 150
         },
         "position": {
-          "x": 120,
-          "y": 90
+          "x": 190,
+          "y": 820
         },
         "z": 1,
         "embeds": [],
@@ -1898,64 +1887,6 @@
         }
       }
     },
-    "ClusterVPC": {
-      "Type": "AWS::EC2::VPC",
-      "Properties": {
-        "CidrBlock": {
-          "Ref": "ClusterNetworkCIDR"
-        },
-        "EnableDnsSupport": true,
-        "EnableDnsHostnames": true,
-        "InstanceTenancy": "default",
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": {
-              "Ref": "AWS::StackName"
-            }
-          },
-          {
-            "Key": "KubernetesCluster",
-            "Value": {
-              "Ref": "ClusterName"
-            }
-          }
-        ]
-      },
-      "Metadata": {
-        "AWS::CloudFormation::Designer": {
-          "id": "a487cf69-e5ce-4956-85df-761e6427deef"
-        }
-      }
-    },
-    "ClusterInternetGateway": {
-      "Type": "AWS::EC2::InternetGateway",
-      "Properties": {},
-      "Metadata": {
-        "AWS::CloudFormation::Designer": {
-          "id": "dd7a601c-41ee-40e3-90a8-a9edd1ea4e55"
-        }
-      },
-      "DependsOn": [
-        "ClusterVPC"
-      ]
-    },
-    "ClusterVPCGatewayAttachment": {
-      "Type": "AWS::EC2::VPCGatewayAttachment",
-      "Properties": {
-        "InternetGatewayId": {
-          "Ref": "ClusterInternetGateway"
-        },
-        "VpcId": {
-          "Ref": "ClusterVPC"
-        }
-      },
-      "Metadata": {
-        "AWS::CloudFormation::Designer": {
-          "id": "529bca45-b10b-47ef-81ab-6a55c9a5488c"
-        }
-      }
-    },
     "PublicNATGateway": {
       "Type": "AWS::EC2::NatGateway",
       "Properties": {
@@ -1973,11 +1904,7 @@
         "AWS::CloudFormation::Designer": {
           "id": "dd161430-6440-4ef3-856b-99c6e8a6bbc5"
         }
-      },
-      "DependsOn": [
-        "ClusterInternetGateway",
-        "ClusterVPC"
-      ]
+      }
     },
     "PublicRouteTable": {
       "Type": "AWS::EC2::RouteTable",
@@ -1990,10 +1917,7 @@
         "AWS::CloudFormation::Designer": {
           "id": "37fc6d23-1902-4172-ab24-1c0cd8eab5b7"
         }
-      },
-      "DependsOn": [
-        "ClusterInternetGateway"
-      ]
+      }
     },
     "ControllerSubnetRouteTableAssociation": {
       "Type": "AWS::EC2::SubnetRouteTableAssociation",
@@ -2026,11 +1950,7 @@
         "AWS::CloudFormation::Designer": {
           "id": "3ecb5892-f24a-4c85-aa24-e275f34308a1"
         }
-      },
-      "DependsOn": [
-        "ClusterInternetGateway",
-        "ClusterVPC"
-      ]
+      }
     },
     "PrivateRouteTable": {
       "Type": "AWS::EC2::RouteTable",
@@ -2051,10 +1971,7 @@
         "AWS::CloudFormation::Designer": {
           "id": "873403fc-c264-4f6b-86ae-092abee2a1d0"
         }
-      },
-      "DependsOn": [
-        "ClusterVPC"
-      ]
+      }
     },
     "PrivateRouteToInternet": {
       "Type": "AWS::EC2::Route",
@@ -2266,7 +2183,7 @@
       "Properties": {
         "GroupDescription": "BastionSecurityGroup",
         "VpcId": {
-          "Ref": "PeerVPC"
+          "Ref": "ClusterVPC"
         },
         "SecurityGroupEgress": [
           {
@@ -2334,7 +2251,7 @@
         ],
         "VPCZoneIdentifier": [
           {
-            "Ref": "PeerSubnetID"
+            "Ref": "ControllerSubnet"
           }
         ]
       },
@@ -2973,50 +2890,7 @@
         "ClusterHostedZone"
       ]
     },
-    "PeerConnection": {
-      "Type": "AWS::EC2::VPCPeeringConnection",
-      "Properties": {
-        "PeerVpcId": {
-          "Ref": "PeerVPC"
-        },
-        "VpcId": {
-          "Ref": "ClusterVPC"
-        },
-        "Tags": [
-          {
-            "Key": "KubernetesCluster",
-            "Value": {
-              "Ref": "ClusterName"
-            }
-          }
-        ]
-      },
-      "Metadata": {
-        "AWS::CloudFormation::Designer": {
-          "id": "029d0672-407c-447f-949c-cf6086440f86"
-        }
-      }
-    },
-    "RoutePeerVPCToClusterVPC": {
-      "Type": "AWS::EC2::Route",
-      "Properties": {
-        "RouteTableId": {
-          "Ref": "PeerRouteTableID"
-        },
-        "DestinationCidrBlock": {
-          "Ref": "ClusterNetworkCIDR"
-        },
-        "VpcPeeringConnectionId": {
-          "Ref": "PeerConnection"
-        }
-      },
-      "Metadata": {
-        "AWS::CloudFormation::Designer": {
-          "id": "d175ef88-202f-4896-b8a8-4332f115f150"
-        }
-      }
-    },
-    "RouteClusterVPCToPeerVPC": {
+    "RoutePrivateSubnetToPeerVPC": {
       "Type": "AWS::EC2::Route",
       "Properties": {
         "RouteTableId": {
@@ -3026,7 +2900,7 @@
           "Ref": "PeerNetworkCIDR"
         },
         "VpcPeeringConnectionId": {
-          "Ref": "PeerConnection"
+          "Ref": "PeerConnectionID"
         }
       },
       "Metadata": {
@@ -3073,9 +2947,29 @@
       "Type": "String",
       "Description": "Name of cluster; resources are tagged with this value"
     },
+    "ClusterVPC": {
+      "Type": "String",
+      "Description": "ID of VPC into which the Kubernetes cluster is deployed"
+    },
     "ClusterNetworkCIDR": {
       "Type": "String",
-      "Description": "Network used for the cluster VPC"
+      "Description": "Network used for the ClusterVPC"
+    },
+    "ClusterInternetGateway": {
+      "Type": "String",
+      "Description": "ID of Internet Gateway attached to ClusterVPC"
+    },
+    "PeerVPC": {
+      "Type": "String",
+      "Description": "ID of VPC made routable to and from the Kubernetes cluster"
+    },
+    "PeerNetworkCIDR": {
+      "Type": "String",
+      "Description": "Network used for the PeerVPC"
+    },
+    "PeerConnectionID": {
+      "Type": "String",
+      "Description": "ID of existing VPC Peering Connection that connects the PeerVPC to the ClusterVPC"
     },
     "PublicSubnetCIDR": {
       "Type": "String",
@@ -3144,22 +3038,6 @@
     "S3ConfigBucket": {
       "Type": "String",
       "Description": "S3 bucket that hosts the config tarball for this cluster. An object by the name of <ClusterName>.tar.gz must be present in this bucket."
-    },
-    "PeerVPC": {
-      "Type": "String",
-      "Description": "ID of VPC that should be peered to the ClusterVPC"
-    },
-    "PeerNetworkCIDR": {
-      "Type": "String",
-      "Description": "Network of the peer VPC"
-    },
-    "PeerSubnetID": {
-      "Type": "String",
-      "Description": "ID of Subnet in peer VPC used to deploy bastion EC2 instances"
-    },
-    "PeerRouteTableID": {
-      "Type": "String",
-      "Description": "ID of RouteTable in peer VPC"
     }
   }
 }

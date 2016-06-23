@@ -6,8 +6,9 @@ BASTION_USER_DATA=$(cat {{ cluster_dir }}/bastion-cloud-config.yml | base64)
 PARAMETERS=( 
 	"ParameterKey=PeerVPC,ParameterValue={{ peer_vpc_id }}"
 	"ParameterKey=PeerNetworkCIDR,ParameterValue={{ peer_network_cidr }}"
-	"ParameterKey=PeerSubnetID,ParameterValue={{ peer_subnet_id }}"
-	"ParameterKey=PeerRouteTableID,ParameterValue={{ peer_route_table_id }}"
+	"ParameterKey=PeerConnectionID,ParameterValue={{ peer_connection_id }}"
+	"ParameterKey=ClusterVPC,ParameterValue={{ cluster_vpc_id }}"
+	"ParameterKey=ClusterInternetGateway,ParameterValue={{ cluster_vpc_internet_gateway_id }}"
 	"ParameterKey=ClusterNetworkCIDR,ParameterValue={{ cluster_instance_network_cidr }}"
 	"ParameterKey=PublicSubnetCIDR,ParameterValue={{ public_instance_subnet_cidr }}"
 	"ParameterKey=ControllerSubnetCIDR,ParameterValue={{ controller_instance_subnet_cidr }}"
