@@ -71,7 +71,7 @@ aws_hosted_zone:
 # These instances must support the EBS-optimized boot flag.
 # It is suggested that m4 or c4 instances are used, as these
 # there is no additional cost to support EBS optimization.
-bastion_instance_type: m4.medium
+bastion_instance_type: m4.large
 
 # bastion_instance_root_disk_size_gb controls the size of the root
 # disk provisioned for each bastion instance (in GB). The underlying
