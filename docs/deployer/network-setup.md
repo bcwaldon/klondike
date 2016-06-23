@@ -8,5 +8,5 @@ aws cloudformation create-stack --stack-name klondike-vpc \
   --template-body=file://contrib/network-stack-template.json \
   --parameters ParameterKey=ClusterNetworkCIDR,ParameterValue=${ClusterNetworkCIDR} \
                ParameterKey=PeerVPC,ParameterValue=${PeerVPC} \
-			   ParameterKey=PeerRouteTable,ParameterValue=${PeerRouteTable}
+               ParameterKey=PeerRouteTable,ParameterValue=${PeerRouteTable}
 ```
