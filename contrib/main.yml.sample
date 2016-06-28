@@ -142,6 +142,10 @@ cluster_vpc_id:
 # Gateway attached to the cluster VPC.
 cluster_vpc_internet_gateway_id:
 
+# cluster_vpn_gateway_id is the ID of the VPN Gateway attached
+# to the cluster VPC.
+cluster_vpn_gateway_id:
+
 # cluster_instance_network_cidr defines the range of IPs to use
 # for the VPC, which contains all EC2 instances. These IPs must
 # not conflict with the pod- or service-level networking.

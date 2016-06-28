@@ -2908,6 +2908,19 @@
           "id": "168d81a9-a92e-403e-bb34-f8e451c845f8"
         }
       }
+    },
+    "ClusterVPNGatewayRoutePropagation": {
+      "Type" : "AWS::EC2::VPNGatewayRoutePropagation",
+      "Properties" : {
+        "RouteTableIds" : [
+          {
+            "Ref": "PrivateRouteTable"
+          }
+        ],
+        "VpnGatewayId": {
+          "Ref": "ClusterVPNGateway"
+        }
+      }
     }
   },
   "Parameters": {
@@ -2958,6 +2971,10 @@
     "ClusterInternetGateway": {
       "Type": "String",
       "Description": "ID of Internet Gateway attached to ClusterVPC"
+    },
+    "ClusterVPNGateway": {
+      "Type": "String",
+      "Description": "ID of VPN gateway available to the ClusterVPC"
     },
     "PeerVPC": {
       "Type": "String",
