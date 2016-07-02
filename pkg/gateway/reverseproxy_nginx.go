@@ -26,6 +26,10 @@ http {
                       '$status $body_bytes_sent "$http_referer" '
                       '"$http_user_agent" "$http_x_forwarded_for"';
     access_log {{ .NGINXConfig.AccessLog }} main;
+
+    proxy_http_version 1.1;
+    proxy_set_header Connection "";
+
 {{ range $srv := $.ReverseProxyConfig.HTTPServers }}
     server {
         listen {{ $srv.ListenPort }}{{ if $srv.DefaultServer }} default_server{{ end }};

@@ -50,6 +50,10 @@ http {
                       '"$http_user_agent" "$http_x_forwarded_for"';
     access_log /dev/stdout main;
 
+    proxy_http_version 1.1;
+    proxy_set_header Connection "";
+
+
     server {
         listen 9001;
         
@@ -112,6 +116,10 @@ http {
                       '$status $body_bytes_sent "$http_referer" '
                       '"$http_user_agent" "$http_x_forwarded_for"';
     access_log /dev/stdout main;
+
+    proxy_http_version 1.1;
+    proxy_set_header Connection "";
+
 
     server {
         listen 9001;
@@ -210,6 +218,10 @@ http {
                       '"$http_user_agent" "$http_x_forwarded_for"';
     access_log /dev/stdout main;
 
+    proxy_http_version 1.1;
+    proxy_set_header Connection "";
+
+
     server {
         listen 9001;
         
@@ -307,6 +319,10 @@ http {
                       '"$http_user_agent" "$http_x_forwarded_for"';
     access_log /dev/stdout main;
 
+    proxy_http_version 1.1;
+    proxy_set_header Connection "";
+
+
 
 }
 
@@ -367,6 +383,10 @@ http {
                       '"$http_user_agent" "$http_x_forwarded_for"';
     access_log /dev/stdout main;
 
+    proxy_http_version 1.1;
+    proxy_set_header Connection "";
+
+
     server {
         listen 9001;
         server_name default.example.com test.example.com foo.bar.com;
@@ -408,6 +428,10 @@ http {
                       '$status $body_bytes_sent "$http_referer" '
                       '"$http_user_agent" "$http_x_forwarded_for"';
     access_log /dev/stdout main;
+
+    proxy_http_version 1.1;
+    proxy_set_header Connection "";
+
 
     server {
         listen 9001 default_server;
@@ -455,6 +479,10 @@ http {
                       '$status $body_bytes_sent "$http_referer" '
                       '"$http_user_agent" "$http_x_forwarded_for"';
     access_log /dev/stdout main;
+
+    proxy_http_version 1.1;
+    proxy_set_header Connection "";
+
 
 
 
