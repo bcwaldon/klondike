@@ -38,6 +38,7 @@ func TestRenderConfig(t *testing.T) {
 pid /var/run/nginx.pid;
 error_log /dev/stderr;
 daemon on;
+worker_processes auto;
 
 events {
     worker_connections 512;
@@ -105,6 +106,7 @@ stream {
 pid /var/run/nginx.pid;
 error_log /dev/stderr;
 daemon on;
+worker_processes auto;
 
 events {
     worker_connections 512;
@@ -206,6 +208,7 @@ stream {
 pid /var/run/nginx.pid;
 error_log /dev/stderr;
 daemon on;
+worker_processes auto;
 
 events {
     worker_connections 512;
@@ -307,6 +310,7 @@ stream {
 pid /var/run/nginx.pid;
 error_log /dev/stderr;
 daemon on;
+worker_processes auto;
 
 events {
     worker_connections 512;
@@ -371,6 +375,7 @@ stream {
 pid /var/run/nginx.pid;
 error_log /dev/stderr;
 daemon on;
+worker_processes auto;
 
 events {
     worker_connections 512;
@@ -417,6 +422,7 @@ stream {
 pid /var/run/nginx.pid;
 error_log /dev/stderr;
 daemon on;
+worker_processes auto;
 
 events {
     worker_connections 512;
@@ -468,6 +474,7 @@ stream {
 pid /var/run/nginx.pid;
 error_log /dev/stderr;
 daemon on;
+worker_processes auto;
 
 events {
     worker_connections 512;

@@ -15,6 +15,7 @@ var (
 pid {{ .NGINXConfig.PIDFile }};
 error_log {{ .NGINXConfig.ErrorLog }};
 daemon on;
+worker_processes auto;
 
 events {
     worker_connections 512;
