@@ -56,6 +56,7 @@ http {
 {{ range $ep := $up.Servers }}
         server {{ $ep.Host }}:{{ $ep.Port }};  # {{ $ep.Name }}
 {{- end }}
+        keepalive 64;
     }
 {{- end }}
 {{ end }}

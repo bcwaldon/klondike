@@ -247,6 +247,7 @@ http {
 
         server ping.example.com:443;  # ping
         server pong.example.com:80;  # pong
+        keepalive 64;
     }
 
 
@@ -254,6 +255,7 @@ http {
 
         server ding.example.com:443;  # ding
         server dong.example.com:80;  # dong
+        keepalive 64;
     }
 
 }
