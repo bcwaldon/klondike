@@ -2137,15 +2137,79 @@
         "ClusterHostedZone"
       ]
     },
-    "BastionLC": {
-      "Type": "AWS::AutoScaling::LaunchConfiguration",
+    "BastionDNSRecordSet": {
+      "Type": "AWS::Route53::RecordSet",
       "Properties": {
-        "SecurityGroups": [
+        "HostedZoneName": {
+          "Fn::Join": [
+            "",
+            [
+              {
+                "Ref": "HostedZone"
+              },
+              "."
+            ]
+          ]
+        },
+        "Name": {
+          "Fn::Join": [
+            "",
+            [
+              "bastion.",
+              {
+                "Ref": "HostedZone"
+              },
+              "."
+            ]
+          ]
+        },
+        "Type": "A",
+        "TTL": "300",
+        "ResourceRecords": [
           {
-            "Ref": "BastionSecurityGroup"
+            "Fn::GetAtt": [
+              "BastionInstance",
+              "PrivateIp"
+            ]
+          }
+        ]
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "0374cc4d-4484-4e1e-bc01-7817a99d2f72"
+        }
+      },
+      "DependsOn": [
+        "ClusterHostedZone"
+      ]
+    },
+    "BastionNetworkInterface": {
+      "Type": "AWS::EC2::NetworkInterface",
+      "Properties": {
+        "SubnetId": {
+          "Ref": "ControllerSubnet"
+        },
+        "GroupSet": [
+          {
+            "Fn::GetAtt": [
+              "BastionSecurityGroup",
+              "GroupId"
+            ]
+          }
+        ]
+      }
+    },
+    "BastionInstance": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "NetworkInterfaces": [
+          {
+            "NetworkInterfaceId": {
+              "Ref": "BastionNetworkInterface"
+            },
+            "DeviceIndex": 0
           }
         ],
-        "AssociatePublicIpAddress": false,
         "IamInstanceProfile": {
           "Ref": "BastionIAMInstanceProfile"
         },
@@ -2223,41 +2287,6 @@
       "Metadata": {
         "AWS::CloudFormation::Designer": {
           "id": "4719e386-5f75-42ec-9fb2-91f8386f9f87"
-        }
-      }
-    },
-    "BastionASG": {
-      "Type": "AWS::AutoScaling::AutoScalingGroup",
-      "Properties": {
-        "LaunchConfigurationName": {
-          "Ref": "BastionLC"
-        },
-        "MinSize": 1,
-        "MaxSize": 1,
-        "DesiredCapacity": 1,
-        "Tags": [
-          {
-            "Key": "KubernetesCluster",
-            "Value": {
-              "Ref": "ClusterName"
-            },
-            "PropagateAtLaunch": true
-          },
-          {
-            "Key": "group",
-            "Value": "bastion",
-            "PropagateAtLaunch": true
-          }
-        ],
-        "VPCZoneIdentifier": [
-          {
-            "Ref": "ControllerSubnet"
-          }
-        ]
-      },
-      "Metadata": {
-        "AWS::CloudFormation::Designer": {
-          "id": "8735ffc7-d4fb-4cdd-befa-8af9fd19f031"
         }
       }
     },

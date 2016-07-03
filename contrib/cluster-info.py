@@ -10,8 +10,12 @@ def tag_dict(tags):
     return dict([(item['Key'], item['Value']) for item in tags])
 
 
+def _stack_name(cluster):
+    return 'klondike-cluster-{}'.format(cluster)
+
+
 def get_stack_info(cfn_client, cluster):
-    stack_name = 'klondike-cluster-{}'.format(cluster)
+    stack_name = _stack_name(cluster)
     info = {
         'stack_name': stack_name,
     }
@@ -22,33 +26,18 @@ def get_stack_info(cfn_client, cluster):
     return info
 
 
-def get_bastion_info(asg_client, ec2_client, cluster):
-    asg_resp = asg_client.describe_auto_scaling_groups()
-
-    groups = [g for g in asg_resp['AutoScalingGroups']
-              if tag_dict(g['Tags']).get('KubernetesCluster') == cluster]
+def get_bastion_info(cfn_client, cluster):
+    res = cfn_client.describe_stack_resource(
+        StackName=_stack_name(cluster),
+        LogicalResourceId='BastionDNSRecordSet')
+    det = res.get('StackResourceDetail', {})
 
     info = {
-        'bastion_public_ip': '',
+        'bastion_host': det.get('PhysicalResourceId'),
     }
 
-    bastion_group = None
-    for g in groups:
-        tags = tag_dict(g['Tags'])
-        tag_group = tags.get('group')
-        if tag_group == 'bastion':
-            bastion_group = g
-            break
-
-    if bastion_group is None:
-        return info
-
-    instance_id = bastion_group['Instances'][0]['InstanceId']
-    ec2_resp = ec2_client.describe_instances(InstanceIds=[instance_id])
-    instance = ec2_resp['Reservations'][0]['Instances'][0]
-    info['bastion_public_ip'] = instance['PrivateIpAddress']
-
     return info
+
 
 def get_worker_info(asg_client, cluster):
     asg_resp = asg_client.describe_auto_scaling_groups()
@@ -83,13 +72,10 @@ def get_worker_info(asg_client, cluster):
     return info
 
 
-
-
 def get_cluster_info(cluster):
     session = botocore.session.get_session()
     cfn_client = session.create_client('cloudformation')
     asg_client = session.create_client('autoscaling')
-    ec2_client = session.create_client('ec2')
 
     info = []
 
@@ -99,7 +85,7 @@ def get_cluster_info(cluster):
     if stack['stack_status'] != "CREATE_COMPLETE":
         return info
 
-    info.extend(get_bastion_info(asg_client, ec2_client, cluster).items())
+    info.extend(get_bastion_info(cfn_client, cluster).items())
     info.extend(get_worker_info(asg_client, cluster).items())
 
     return info
