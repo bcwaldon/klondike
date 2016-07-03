@@ -19,8 +19,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/coreos/go-systemd/sdjournal"
 	"github.com/elastic/beats/libbeat/common"
-	"github.com/mheese/go-systemd/sdjournal"
 )
 
 // MapStrFromJournalEntry takes a JournalD entry and converts it to an event

@@ -22,9 +22,9 @@ import (
 	"github.com/elastic/beats/libbeat/beat"
 	"github.com/elastic/beats/libbeat/cfgfile"
 	//"github.com/elastic/beats/libbeat/common"
+	"github.com/coreos/go-systemd/sdjournal"
 	"github.com/elastic/beats/libbeat/logp"
 	"github.com/elastic/beats/libbeat/publisher"
-	"github.com/mheese/go-systemd/sdjournal"
 )
 
 var SeekPositions = map[string]bool{

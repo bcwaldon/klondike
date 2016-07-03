@@ -9,6 +9,12 @@
 			"revisionTime": "2016-06-09T20:05:44Z"
 		},
 		{
+			"checksumSHA1": "IbcIXY8IVGdhMrUALq4RFY68xT8=",
+			"path": "github.com/coreos/go-systemd/sdjournal",
+			"revision": "b32b8467dbea18858bfebf65c1a6a761090f2c31",
+			"revisionTime": "2016-06-21T13:46:01Z"
+		},
+		{
 			"checksumSHA1": "5rPfda8jFccr3A6heL+JAmi9K9g=",
 			"path": "github.com/davecgh/go-spew/spew",
 			"revision": "5215b55f46b2b919f50a1df0eaa5886afe4e3b3d",
@@ -217,12 +223,6 @@
 			"path": "github.com/klauspost/crc32",
 			"revision": "19b0b332c9e4516a6370a0456e6182c3b5036720",
 			"revisionTime": "2016-02-19T14:26:09Z"
-		},
-		{
-			"checksumSHA1": "h3mZJhO6wBfBa7SsN2hf/b1O+j4=",
-			"path": "github.com/mheese/go-systemd/sdjournal",
-			"revision": "d1bcffe39532765d2d083f4924714159e42db2f5",
-			"revisionTime": "2016-01-25T07:15:41Z"
 		},
 		{
 			"checksumSHA1": "FlEI/BO8wk8bZR0Gz7OfwSaNZ0s=",
