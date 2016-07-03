@@ -1,4 +1,5 @@
 import argparse
+import json
 
 import botocore.session
 
@@ -107,10 +108,14 @@ if __name__ == '__main__':
     parser.add_argument("cluster", help="klondike cluster name")
     parser.add_argument("--debug", action='store_true',
                         help="print debug-level information")
+    parser.add_argument("--json", action='store_true',
+                        help="print cluster info as a JSON rather than YAML")
     args = parser.parse_args()
 
     info = get_cluster_info(args.cluster)
 
-    # print in order (for readability) as YAML
-    for item in info:
-        print "{}: {}".format(*item)
+    if args.json:
+        print json.dumps(dict(info))
+    else:
+        for item in info:
+            print "{}: {}".format(*item)
