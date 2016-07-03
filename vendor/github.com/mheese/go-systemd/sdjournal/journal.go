@@ -25,7 +25,7 @@
 package sdjournal
 
 /*
-#cgo pkg-config: libsystemd
+#cgo pkg-config: libsystemd-daemon
 #include <systemd/sd-journal.h>
 #include <systemd/sd-id128.h>
 #include <stdlib.h>
