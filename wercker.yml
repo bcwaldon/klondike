@@ -17,7 +17,7 @@ build:
         name: save artifacts
         code: |
           cp bin/linux_amd64/* "$WERCKER_OUTPUT_DIR"
-          cp etc/journalctl.yml.tmpl "$WERCKER_OUTPUT_DIR"
+          cp etc/journalbeat.yml.tmpl "$WERCKER_OUTPUT_DIR"
           cp run.sh "$WERCKER_OUTPUT_DIR"
 
 deploy:
