@@ -1,5 +1,5 @@
 build:
-  box: golang
+  box: google/golang:1.6
   steps:
     - wercker/setup-go-workspace:
         package-dir: github.com/bcwaldon/journalbeat
