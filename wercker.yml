@@ -14,8 +14,10 @@ build:
         code: ./build
 
     - script:
-        name: copy binaries
-        code: cp bin/linux_amd64/* "$WERCKER_OUTPUT_DIR"
+        name: save artifacts
+        code: |
+          cp bin/linux_amd64/* "$WERCKER_OUTPUT_DIR"
+          cp etc/journalbeat.yml "$WERCKER_OUTPUT_DIR"
 
 deploy:
     steps:
