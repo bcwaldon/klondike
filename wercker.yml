@@ -29,3 +29,4 @@ deploy:
         tag: $WERCKER_GIT_COMMIT
         repository: quay.io/bcwaldon/journalbeat
         registry: https://quay.io
+        cmd: ./run.sh
