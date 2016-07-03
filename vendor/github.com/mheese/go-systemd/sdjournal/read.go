@@ -38,6 +38,8 @@ type JournalReaderConfig struct {
 	// Show only journal entries whose fields match the supplied values. If
 	// the array is empty, entries will not be filtered.
 	Matches []Match
+
+	Path string
 }
 
 // JournalReader is an io.ReadCloser which provides a simple interface for iterating through the
@@ -53,7 +55,12 @@ func NewJournalReader(config JournalReaderConfig) (*JournalReader, error) {
 
 	var err error
 	// Open the journal
-	if r.Journal, err = NewJournal(); err != nil {
+	if config.Path != "" {
+		r.Journal, err = NewJournalFromDir(config.Path)
+	} else {
+		r.Journal, err = NewJournal()
+	}
+	if err != nil {
 		return nil, err
 	}
 

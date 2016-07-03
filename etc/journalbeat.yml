@@ -18,6 +18,7 @@ input:
   convert_to_numbers: false
   move_metadata_to_field: journal
   #default_type: journal
+  journal_dir: "/var/log/journal"
 output:
   console:
     pretty: true
