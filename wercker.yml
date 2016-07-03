@@ -1,5 +1,6 @@
+box: golang:1.6.2
+
 build:
-  box: golang:1.6.2
   steps:
     - wercker/setup-go-workspace:
         package-dir: github.com/bcwaldon/journalbeat
@@ -17,7 +18,6 @@ build:
         code: cp bin/linux_amd64/* "$WERCKER_OUTPUT_DIR"
 
 deploy:
-    box: busybox
     steps:
     - internal/docker-push:
         username: $QUAY_USERNAME
