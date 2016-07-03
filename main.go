@@ -15,8 +15,8 @@
 package main
 
 import (
+	journalbeat "github.com/bcwaldon/journalbeat/beat"
 	"github.com/elastic/beats/libbeat/beat"
-	journalbeat "github.com/mheese/journalbeat/beat"
 )
 
 // Name is the name of the beat
