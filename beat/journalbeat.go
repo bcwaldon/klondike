@@ -198,8 +198,13 @@ func (jb *Journalbeat) Setup(b *beat.Beat) error {
 	jb.cursorChan = make(chan string)
 	jb.cursorChanFlush = make(chan int)
 
+	var dir string
+	if jb.JbConfig.Input.JournalDir != nil {
+		dir = *jb.JbConfig.Input.JournalDir
+	}
+
 	jr, err := sdjournal.NewJournalReader(sdjournal.JournalReaderConfig{
-		Path:  jb.JbConfig.Input.JournalDir,
+		Path:  dir,
 		Since: time.Duration(1),
 		//          NumFromTail: 0,
 	})
