@@ -15,7 +15,7 @@
 package beat
 
 import (
-	"github.com/elastic/beats/libbeat/common"
+//"github.com/elastic/beats/libbeat/common"
 )
 
 // JournalReaderConfig provides the config settings for the journald reader
