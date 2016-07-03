@@ -19,8 +19,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/coreos/go-systemd/sdjournal"
 	"github.com/elastic/beats/libbeat/common"
+
+	"github.com/bcwaldon/journalbeat/sdjournal"
 )
 
 // MapStrFromJournalEntry takes a JournalD entry and converts it to an event
@@ -33,36 +34,17 @@ import (
 //   ElasticSearch for metadata information
 // - fields that can be converted to numbers, will be converted to numbers
 func MapStrFromJournalEntry(ev sdjournal.JournalEntry, cleanKeys bool, convertToNumbers bool) common.MapStr {
-	// sdjournal.JournalEntry and common.MapStr are the same type alias:
-	// map[string]interface{}
-	old := (common.MapStr)(ev)
 	m := make(common.MapStr)
-
-	// range over the old map and create a new one
-	for k, v := range old {
+	for k, v := range ev.Fields {
 		nk := makeNewKey(k, cleanKeys)
 		nv := makeNewValue(v, convertToNumbers)
 		m[nk] = nv
 	}
 
 	// ensure the "@timestamp" field
-	timestampFromJournalEntry := func() time.Time {
-		srt, ok := old["_SOURCE_REALTIME_TIMESTAMP"].(int64)
-		if ok {
-			// srt is in microseconds epoch
-			return time.Unix(0, srt*1000)
-		}
-
-		rt, ok := old["__REALTIME_TIMESTAMP"].(int64)
-		if ok {
-			// rt is in microseconds epoch
-			return time.Unix(0, rt*1000)
-		}
-
-		// nothing worked ... get the last resort
-		return time.Now()
-	}
-	m.EnsureTimestampField(timestampFromJournalEntry)
+	m.EnsureTimestampField(func() time.Time {
+		return time.Unix(0, int64(ev.RealtimeTimestamp*1000))
+	})
 
 	// return with the new map
 	return m

@@ -21,10 +21,10 @@ import (
 
 	"github.com/elastic/beats/libbeat/beat"
 	"github.com/elastic/beats/libbeat/cfgfile"
-	//"github.com/elastic/beats/libbeat/common"
-	"github.com/coreos/go-systemd/sdjournal"
 	"github.com/elastic/beats/libbeat/logp"
 	"github.com/elastic/beats/libbeat/publisher"
+
+	"github.com/bcwaldon/journalbeat/sdjournal"
 )
 
 var SeekPositions = map[string]bool{
@@ -53,7 +53,7 @@ type Journalbeat struct {
 	defaultType          string
 
 	jr   *sdjournal.JournalReader
-	done chan int
+	done chan time.Time
 	recv chan sdjournal.JournalEntry
 
 	cursorChan      chan string
@@ -146,82 +146,38 @@ func (jb *Journalbeat) Config(b *beat.Beat) error {
 	return nil
 }
 
-func (jb *Journalbeat) seekToPosition() error {
-	position := jb.seekPosition
-	// try seekToCursor first, if that is requested
-	if position == "cursor" {
-		cursor, err := ioutil.ReadFile(jb.cursorStateFile)
-		if err != nil {
-			logp.Warn("Could not seek to cursor: reading cursor state file failed: %v", err)
-		} else {
-			// try to seek to cursor and if successful return
-			err = seekToHelper("cursor", jb.jr.Journal.SeekCursor(string(cursor)))
-			if err == nil {
-				return nil
-			}
-		}
-
-		if jb.cursorSeekFallback == "none" {
-			return err
-		}
-
-		position = jb.cursorSeekFallback
-	}
-
-	var err error
-	switch position {
-	case "head":
-		err = seekToHelper("head", jb.jr.Journal.SeekHead())
-	case "tail":
-		err = seekToHelper("tail", jb.jr.Journal.SeekTail())
-	}
-	return err
-}
-
-func seekToHelper(position string, err error) error {
-	if err == nil {
-		logp.Info("Seek to " + position + " successful")
-	} else {
-		logp.Warn("Could not seek to %s: %v", position, err)
-	}
-	return err
-}
-
 // Setup prepares Journalbeat for the main loop (starts journalreader, etc.)
 func (jb *Journalbeat) Setup(b *beat.Beat) error {
 	logp.Info("Journalbeat Setup")
 	jb.output = b.Publisher.Connect()
 	// Buffer channel else write to it blocks when Stop is called while
 	// FollowJournal waits to write next  event
-	jb.done = make(chan int, 1)
+	jb.done = make(chan time.Time, 1)
 	jb.recv = make(chan sdjournal.JournalEntry)
 	jb.cursorChan = make(chan string)
 	jb.cursorChanFlush = make(chan int)
 
-	var dir string
+	rcfg := sdjournal.JournalReaderConfig{}
+
 	if jb.JbConfig.Input.JournalDir != nil {
-		dir = *jb.JbConfig.Input.JournalDir
+		rcfg.Path = *jb.JbConfig.Input.JournalDir
 	}
 
-	jr, err := sdjournal.NewJournalReader(sdjournal.JournalReaderConfig{
-		Path:  dir,
-		Since: time.Duration(1),
-		//          NumFromTail: 0,
-	})
+	cursor, err := ioutil.ReadFile(jb.cursorStateFile)
+	if err != nil {
+		logp.Warn("Could not seek to cursor: reading cursor state file failed: %v", err)
+		rcfg.Since = time.Duration(1)
+	} else {
+		rcfg.Cursor = string(cursor)
+	}
+
+	jr, err := sdjournal.NewJournalReader(rcfg)
 	if err != nil {
 		logp.Err("Could not create JournalReader")
 		return err
 	}
 
 	jb.jr = jr
-
-	// seek to position
-	err = jb.seekToPosition()
-	if err != nil {
-		errMsg := fmt.Sprintf("seeking to a good position in journal failed: %v", err)
-		logp.Err(errMsg)
-		return fmt.Errorf("%s", errMsg)
-	}
 
 	// done with setup
 	return nil
@@ -255,7 +211,7 @@ func (jb *Journalbeat) Run(b *beat.Beat) error {
 	go Publish(b, jb)
 
 	// Blocks progressing
-	jb.jr.FollowJournal(jb.done, jb.recv)
+	jb.jr.FollowEvents(jb.done, jb.recv)
 	return nil
 }
 
@@ -265,7 +221,7 @@ func (jb *Journalbeat) Stop() {
 	// A little hack to get Followjournal to close correctly.
 	// Write to buffered close channel and then read next event
 	// else if Publish is stuck on a send it hangs
-	jb.done <- 1
+	jb.done <- time.Unix(0, 0)
 	select {
 	case <-jb.recv:
 	}
@@ -302,16 +258,13 @@ func Publish(beat *beat.Beat, jb *Journalbeat) {
 		success := jb.output.PublishEvent(m, publisher.Sync, publisher.Guaranteed)
 		// should never happen but if it does should definitely log an not save cursor
 		if !success {
-			logp.Err("PublishEvent returned false for cursor %s", ev["__CURSOR"])
+			logp.Err("PublishEvent returned false for cursor %s", ev.Fields["__CURSOR"])
 			continue
 		}
 
 		// save cursor
 		if jb.writeCursorState {
-			cursor, ok := ev["__CURSOR"].(string)
-			if ok {
-				jb.cursorChan <- cursor
-			}
+			jb.cursorChan <- ev.Fields["__CURSOR"]
 		}
 	}
 }

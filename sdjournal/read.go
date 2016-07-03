@@ -16,6 +16,7 @@
 package sdjournal
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -131,11 +132,11 @@ func (r *JournalReader) Read(b []byte) (int, error) {
 
 		// Build a message
 		var msg string
-		msg, err = r.buildMessage()
-
+		msg, err = r.buildJSONMessage()
 		if err != nil {
 			return 0, err
 		}
+
 		r.msgReader = strings.NewReader(msg)
 	}
 
@@ -168,6 +169,79 @@ func (r *JournalReader) Close() error {
 func (r *JournalReader) Rewind() error {
 	r.msgReader = nil
 	return r.journal.SeekHead()
+}
+
+func (r *JournalReader) ReadEntry() (*JournalEntry, error) {
+	var err error
+	var c int
+
+	// Advance the journal cursor
+	c, err = r.journal.Next()
+	if err != nil {
+		return nil, err
+	}
+
+	// EOF detection
+	if c == 0 {
+		return nil, io.EOF
+	}
+
+	return r.journal.GetEntry()
+}
+
+func (r *JournalReader) FollowEvents(until <-chan time.Time, writer chan<- JournalEntry) (err error) {
+	// Process journal entries and events. Entries are flushed until the tail or
+	// timeout is reached, and then we wait for new events or the timeout.
+process:
+	for {
+		msg, err := r.ReadEntry()
+		if err != nil && err != io.EOF {
+			break process
+		}
+
+		select {
+		case <-until:
+			return ErrExpired
+		default:
+			if msg != nil {
+				writer <- *msg
+				continue process
+			}
+		}
+
+		// We're at the tail, so wait for new events or time out.
+		// Holds journal events to process. Tightly bounded for now unless there's a
+		// reason to unblock the journal watch routine more quickly.
+		events := make(chan int, 1)
+		pollDone := make(chan bool, 1)
+		go func() {
+			for {
+				select {
+				case <-pollDone:
+					return
+				default:
+					events <- r.journal.Wait(time.Duration(100) * time.Millisecond)
+				}
+			}
+		}()
+
+		select {
+		case <-until:
+			pollDone <- true
+			return ErrExpired
+		case e := <-events:
+			pollDone <- true
+			switch e {
+			case SD_JOURNAL_NOP, SD_JOURNAL_APPEND, SD_JOURNAL_INVALIDATE:
+				// TODO: need to account for any of these?
+			default:
+				log.Printf("Received unknown event: %d\n", e)
+			}
+			continue process
+		}
+	}
+
+	return
 }
 
 // Follow synchronously follows the JournalReader, writing each new journal entry to writer. The
@@ -249,4 +323,16 @@ func (r *JournalReader) buildMessage() (string, error) {
 	timestamp := time.Unix(0, int64(usec)*int64(time.Microsecond))
 
 	return fmt.Sprintf("%s %s\n", timestamp, msg), nil
+}
+
+func (r *JournalReader) buildJSONMessage() (string, error) {
+	ent, err := r.journal.GetEntry()
+	if err != nil {
+		return "", err
+	}
+	b, err := json.Marshal(ent.Fields)
+	if err != nil {
+		return "", err
+	}
+	return fmt.Sprintf("%s\n", string(b)), err
 }

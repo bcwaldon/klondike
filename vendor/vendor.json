@@ -9,12 +9,6 @@
 			"revisionTime": "2016-06-09T20:05:44Z"
 		},
 		{
-			"checksumSHA1": "IbcIXY8IVGdhMrUALq4RFY68xT8=",
-			"path": "github.com/coreos/go-systemd/sdjournal",
-			"revision": "b32b8467dbea18858bfebf65c1a6a761090f2c31",
-			"revisionTime": "2016-06-21T13:46:01Z"
-		},
-		{
 			"checksumSHA1": "O8c/VKtW34XPJNNlyeb/im8vWSI=",
 			"path": "github.com/coreos/pkg/dlopen",
 			"revision": "a48e304ff9331be6d5df352b6b47bd1395ab5dd7",
