@@ -15,6 +15,12 @@
 			"revisionTime": "2016-06-21T13:46:01Z"
 		},
 		{
+			"checksumSHA1": "O8c/VKtW34XPJNNlyeb/im8vWSI=",
+			"path": "github.com/coreos/pkg/dlopen",
+			"revision": "a48e304ff9331be6d5df352b6b47bd1395ab5dd7",
+			"revisionTime": "2016-06-23T18:35:23Z"
+		},
+		{
 			"checksumSHA1": "5rPfda8jFccr3A6heL+JAmi9K9g=",
 			"path": "github.com/davecgh/go-spew/spew",
 			"revision": "5215b55f46b2b919f50a1df0eaa5886afe4e3b3d",
