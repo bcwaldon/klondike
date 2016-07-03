@@ -5,10 +5,6 @@ build:
         package-dir: github.com/bcwaldon/journalbeat
 
     - script:
-        name: go test
-        code: ./test
-
-    - script:
         name: go build
         code: ./build
 
