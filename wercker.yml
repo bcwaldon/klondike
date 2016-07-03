@@ -6,7 +6,7 @@ build:
 
     - script:
         name: install systemd dependencies
-        code: apt-get update && apt-get install -y pkg-config libsystemd-daemon-dev
+        code: apt-get update && apt-get install -y pkg-config libsystemd-journal-dev
 
     - script:
         name: go build
