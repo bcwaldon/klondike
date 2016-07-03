@@ -5,6 +5,10 @@ build:
         package-dir: github.com/bcwaldon/journalbeat
 
     - script:
+        name: install systemd dependencies
+        code: apt-get update && apt-get install -y pkg-config libsystemd-daemon-dev
+
+    - script:
         name: go build
         code: ./build
 
