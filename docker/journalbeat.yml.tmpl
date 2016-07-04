@@ -1,5 +1,7 @@
 name: journalbeat
+
 #tags: [ "blue", "red" ]
+
 input:
   # What position in journald to seek to at start up
   # options: cursor, tail, head (defaults to tail)
@@ -19,8 +21,9 @@ input:
   #move_metadata_to_field: journal
   #default_type: journal
   journal_dir: "/var/log/journal"
-output:
-  console:
-    pretty: true
-  #logstash:
-  #  hosts: ["localhost:5044"]
+
+#output:
+#  console:
+#    pretty: true
+#  logstash:
+#    hosts: ["localhost:5044"]
