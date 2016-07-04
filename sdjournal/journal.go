@@ -735,6 +735,9 @@ func (j *Journal) GetEntry() (*JournalEntry, error) {
 		entry.Fields[kv[0]] = kv[1]
 	}
 
+	// Manually preserve the cursor as a field
+	entry.Fields[SD_JOURNAL_FIELD_CURSOR] = entry.Cursor
+
 	return entry, nil
 }
 
