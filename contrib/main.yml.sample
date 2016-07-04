@@ -78,6 +78,19 @@ bastion_instance_type: m4.large
 # disk is a gp2 EBS volume, not instance storage.
 bastion_instance_root_disk_size_gb: 32
 
+# aggregator_instance_type is the instance type used when deploying
+# EC2 instances as log aggregators in your cluster.
+#
+# These instances must support the EBS-optimized boot flag.
+# It is suggested that m4 or c4 instances are used, as these
+# there is no additional cost to support EBS optimization.
+aggregator_instance_type: m4.large
+
+# aggregator_instance_root_disk_size_gb controls the size of the root
+# disk provisioned for the aggregator instance (in GB). The underlying
+# disk is a gp2 EBS volume, not instance storage.
+aggregator_instance_root_disk_size_gb: 128
+
 # gateway_instance_type is the instance type used when deploying
 # EC2 instances for Kubernetes service ingress traffic.
 #

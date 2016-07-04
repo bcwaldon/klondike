@@ -2,6 +2,7 @@
 
 USER_DATA=$(cat {{ cluster_dir }}/cloud-config.yml | base64)
 BASTION_USER_DATA=$(cat {{ cluster_dir }}/bastion-cloud-config.yml | base64)
+AGGREGATOR_USER_DATA=$(cat {{ cluster_dir }}/aggregator-cloud-config.yml | base64)
 
 PARAMETERS=( 
 	"ParameterKey=PeerVPC,ParameterValue={{ peer_vpc_id }}"
@@ -27,6 +28,8 @@ PARAMETERS=(
 	"ParameterKey=WorkerInstanceRootDiskIOPs,ParameterValue={{ worker_instance_root_disk_size_gb * 30 }}"
 	"ParameterKey=BastionInstanceType,ParameterValue={{ bastion_instance_type }}"
 	"ParameterKey=BastionInstanceRootDiskSize,ParameterValue={{ bastion_instance_root_disk_size_gb }}"
+	"ParameterKey=AggregatorInstanceType,ParameterValue={{ aggregator_instance_type }}"
+	"ParameterKey=AggregatorInstanceRootDiskSize,ParameterValue={{ aggregator_instance_root_disk_size_gb }}"
 	"ParameterKey=CoreOSImageID,ParameterValue={{ coreos_image_id }}"
 	"ParameterKey=UbuntuImageID,ParameterValue={{ ubuntu_image_id }}"
 	"ParameterKey=ClusterName,ParameterValue={{ cluster }}"
@@ -36,6 +39,7 @@ PARAMETERS=(
 	"ParameterKey=ControllerUserData,ParameterValue=$USER_DATA"
 	"ParameterKey=WorkerUserData,ParameterValue=$USER_DATA"
 	"ParameterKey=BastionUserData,ParameterValue=$BASTION_USER_DATA"
+	"ParameterKey=AggregatorUserData,ParameterValue=$AGGREGATOR_USER_DATA"
 )
 
 function join { local IFS="$1"; shift; echo "$*"; }

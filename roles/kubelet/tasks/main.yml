@@ -4,7 +4,6 @@
   with_items:
   - /etc/systemd/system/docker.service.d
   - /etc/kubernetes/manifests
-  - /etc/logstash
 
 - name: set iptables pod networking rule
   iptables: table=nat chain=POSTROUTING jump=MASQUERADE source={{ cluster_pod_network_cidr }}
@@ -64,16 +63,6 @@
 - name: docker.socket started
   service: name=docker.socket state=started enabled=yes
   sudo: true
-
-- name: deploy logstash
-  when: logstash_enabled
-  template: src={{ item.src }}.j2 dest={{ item.dest }}/{{ item.src }} mode=0644
-  sudo: true
-  with_items:
-  - src: "logstash.yml"
-    dest: "/etc/kubernetes/manifests"
-  - src: "logstash.conf"
-    dest: "/etc/logstash"
 
 - name: deploy datadog
   when: datadog_enabled

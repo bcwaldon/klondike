@@ -7,25 +7,26 @@ spec:
   hostNetwork: true
   containers:
   - name: "logstash"
-    image: "logstash:2.2"
+    image: "{{ logstash_image }}"
     command:
     - /bin/bash
     - -c
-    - "journalctl --dir=/var/log/journal/ --boot --output json --follow | logstash --verbose --config /etc/logstash/logstash.conf"
+    - "logstash --verbose --config /etc/logstash/logstash.conf"
+    volumeMounts:
+    - mountPath: "/etc/logstash"
+      name: "etc-logstash"
+  - name: "journalbeat"
+    image: "{{ journalbeat_image }}"
+    env:
+    - name: LOGSTASH_HOST
+      value: 127.0.0.1:5601
     volumeMounts:
     - mountPath: "/var/log/journal"
       name: "var-log-journal"
-    - mountPath: "/var/run/systemd/journal"
-      name: "var-run-systemd-journal"
-    - mountPath: "/etc/logstash"
-      name: "etc-logstash"
   volumes:
   - name: "var-log-journal"
     hostPath:
       path: "/var/log/journal"
-  - name: "var-run-systemd-journal"
-    hostPath:
-      path: "/var/run/systemd/journal"
   - name: "etc-logstash"
     hostPath:
       path: "/etc/logstash"

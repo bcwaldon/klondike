@@ -15,6 +15,7 @@
 
 - set_fact:
     deploy_key: "{{ shell.stdout }}"
+    log_aggregator_host: "logs.{{ aws_hosted_zone }}"
 
 - name: render templated files
   template: src={{ item.src }} dest={{ cluster_dir }}/{{ item.dest }} mode={{ item.mode }}
@@ -23,6 +24,7 @@
   - { src: "ansible.cfg.j2", dest: "ansible.cfg", mode: "0644"}
   - { src: "ec2.ini.j2", dest: "ec2.ini", mode: "0644"}
   - { src: "cloud-config.yml.j2", dest: "cloud-config.yml", mode: "0644"}
+  - { src: "aggregator-cloud-config.yml.j2", dest: "aggregator-cloud-config.yml", mode: "0644"}
   - { src: "bastion-cloud-config.yml.j2", dest: "bastion-cloud-config.yml", mode: "0644"}
   - { src: "create-stack.sh.j2", dest: "create-stack.sh", mode: "0755"}
   - { src: "kubeconfig.j2", dest: "kubeconfig", mode: "0644"}

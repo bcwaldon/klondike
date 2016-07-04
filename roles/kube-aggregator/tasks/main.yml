@@ -1,0 +1,15 @@
+- name: create directories
+  file: path={{ item }} state=directory
+  sudo: true
+  with_items:
+  - /etc/logstash
+
+- name: deploy logstash
+  when: logstash_enabled
+  template: src={{ item.src }}.j2 dest={{ item.dest }}/{{ item.src }} mode=0644
+  sudo: true
+  with_items:
+  - src: "logstash.conf"
+    dest: "/etc/logstash"
+  - src: "logstash.yml"
+    dest: "/etc/kubernetes/manifests"
