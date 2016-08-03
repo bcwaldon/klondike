@@ -1629,6 +1629,12 @@
             "FromPort": -1,
             "ToPort": -1,
             "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol": "TCP",
+            "FromPort": 4194,
+            "ToPort": 4194,
+            "CidrIp": "0.0.0.0/0"
           }
         ]
       },
@@ -2573,6 +2579,12 @@
           },
           {
             "IpProtocol": "TCP",
+            "FromPort": 4194,
+            "ToPort": 4194,
+            "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol": "TCP",
             "FromPort": 19532,
             "ToPort": 19532,
             "CidrIp": {
@@ -2797,6 +2809,12 @@
             "IpProtocol": "ICMP",
             "FromPort": -1,
             "ToPort": -1,
+            "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol": "TCP",
+            "FromPort": 4194,
+            "ToPort": 4194,
             "CidrIp": "0.0.0.0/0"
           },
           {

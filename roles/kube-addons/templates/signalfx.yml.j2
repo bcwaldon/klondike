@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: kube-signalfx
+  namespace: kube-system
+spec:
+  replicas: 1
+  selector:
+    app: kube-signalfx
+  template:
+    metadata:
+      labels:
+        app: kube-signalfx
+    spec:
+      containers:
+      - name: signalfx-agent
+        image: quay.io/signalfx/cadvisor-integration:latest
+        imagePullPolicy: Always
+        env:
+        - name: SFX_SCRAPPER_API_TOKEN
+          value: "{{ signalfx_api_key }}"
+        - name: SFX_SCRAPPER_CLUSTER_NAME
+          value: {{ cluster }}
+        - name: SFX_SCRAPPER_SEND_RATE
+          value: 5s

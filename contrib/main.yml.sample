@@ -229,6 +229,15 @@ datadog_enabled: false
 # Only used if datadog_enabled is true.
 #datadog_api_key:
 
+# signalfx_enabled controls whether or not the SignalFX agent should be
+# deployed to the cluster. If true, signalfx_api_key must be set.
+signalfx_enabled: false
+
+# signalfx_api_key is the API key that the SignalFX agent will use to
+# push metrics about the Kubernetes cluster to the SignalFX service.
+# Only used if signalfx_enabled is true.
+#signalfx_api_key:
+
 # logstash_enabled controls whether or not log data is collected and
 # forwarded via logstash to an elasticsearch cluster. If true,
 # logstash_elasticsearch_host must be set.
