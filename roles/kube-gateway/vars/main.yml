@@ -2,4 +2,4 @@ apiserver_secure_port: 6443
 apiserver_insecure_port: 8080
 apiserver_local_endpoint: "http://127.0.0.1:{{ apiserver_insecure_port }}"
 
-farva_image: "quay.io/bcwaldon/farva:a94a4a0d42f3d5f5a7e0597d985e27e2fed4eb29"
+farva_image: "quay.io/bcwaldon/farva:3c36fed846cc02efa4647a5e0cd6f5a18c0fc968"
