@@ -30,6 +30,7 @@ http {
 
     proxy_http_version 1.1;
     proxy_set_header Connection "";
+    proxy_set_header Host $host;
 
 {{ range $srv := $.ReverseProxyConfig.HTTPServers }}
     server {
