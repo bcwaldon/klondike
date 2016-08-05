@@ -53,6 +53,7 @@ http {
 
     proxy_http_version 1.1;
     proxy_set_header Connection "";
+    proxy_set_header Host $host;
 
 
     server {
@@ -121,6 +122,7 @@ http {
 
     proxy_http_version 1.1;
     proxy_set_header Connection "";
+    proxy_set_header Host $host;
 
 
     server {
@@ -223,6 +225,7 @@ http {
 
     proxy_http_version 1.1;
     proxy_set_header Connection "";
+    proxy_set_header Host $host;
 
 
     server {
@@ -327,6 +330,7 @@ http {
 
     proxy_http_version 1.1;
     proxy_set_header Connection "";
+    proxy_set_header Host $host;
 
 
 
@@ -392,6 +396,7 @@ http {
 
     proxy_http_version 1.1;
     proxy_set_header Connection "";
+    proxy_set_header Host $host;
 
 
     server {
@@ -439,6 +444,7 @@ http {
 
     proxy_http_version 1.1;
     proxy_set_header Connection "";
+    proxy_set_header Host $host;
 
 
     server {
@@ -491,6 +497,7 @@ http {
 
     proxy_http_version 1.1;
     proxy_set_header Connection "";
+    proxy_set_header Host $host;
 
 
 
