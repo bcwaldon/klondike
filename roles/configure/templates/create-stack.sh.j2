@@ -1,8 +1,10 @@
 #!/bin/bash -e
 
-USER_DATA=$(cat {{ cluster_dir }}/cloud-config.yml | base64)
-BASTION_USER_DATA=$(cat {{ cluster_dir }}/bastion-cloud-config.yml | base64)
-AGGREGATOR_USER_DATA=$(cat {{ cluster_dir }}/aggregator-cloud-config.yml | base64)
+[[ "$OSTYPE" = "linux-gnu" ]] && BASE64ARGS="-w0" 
+
+USER_DATA=$(cat {{ cluster_dir }}/cloud-config.yml | base64 $BASE64ARGS)
+BASTION_USER_DATA=$(cat {{ cluster_dir }}/bastion-cloud-config.yml | base64 $BASE64ARGS)
+AGGREGATOR_USER_DATA=$(cat {{ cluster_dir }}/aggregator-cloud-config.yml | base64 $BASE64ARGS)
 
 PARAMETERS=( 
 	"ParameterKey=PeerVPC,ParameterValue={{ peer_vpc_id }}"
