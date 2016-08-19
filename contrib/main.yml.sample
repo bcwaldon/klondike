@@ -68,9 +68,10 @@ aws_hosted_zone:
 # administrative host, so it does not need a large amount of storage
 # or compute resources.
 #
-# These instances must support the EBS-optimized boot flag.
 # It is suggested that m4 or c4 instances are used, as these
 # there is no additional cost to support EBS optimization.
+# If a non-EBS optimzied instance is used, make sure to set
+# bastion_instance_ebs_optimized to false.
 bastion_instance_type: m4.large
 
 # bastion_instance_root_disk_size_gb controls the size of the root
@@ -78,12 +79,17 @@ bastion_instance_type: m4.large
 # disk is a gp2 EBS volume, not instance storage.
 bastion_instance_root_disk_size_gb: 32
 
+# bastion_instance_ebs_optimized controls whether or not the instance
+# is provisioned as an EBS-optimized instance. This defaults to true.
+bastion_instance_ebs_optimized: true
+
 # aggregator_instance_type is the instance type used when deploying
 # EC2 instances as log aggregators in your cluster.
 #
-# These instances must support the EBS-optimized boot flag.
 # It is suggested that m4 or c4 instances are used, as these
 # there is no additional cost to support EBS optimization.
+# If a non-EBS optimzied instance is used, make sure to set
+# aggregator_instance_ebs_optimized to false.
 aggregator_instance_type: m4.large
 
 # aggregator_instance_root_disk_size_gb controls the size of the root
@@ -91,12 +97,17 @@ aggregator_instance_type: m4.large
 # disk is a gp2 EBS volume, not instance storage.
 aggregator_instance_root_disk_size_gb: 128
 
+# aggregator_instance_ebs_optimized controls whether or not the instance
+# is provisioned as an EBS-optimized instance. This defaults to true.
+aggregator_instance_ebs_optimized: true
+
 # gateway_instance_type is the instance type used when deploying
 # EC2 instances for Kubernetes service ingress traffic.
 #
-# These instances must support the EBS-optimized boot flag.
 # It is suggested that m4 or c4 instances are used, as these
 # there is no additional cost to support EBS optimization.
+# If a non-EBS optimzied instance is used, make sure to set
+# gateway_instance_ebs_optimized to false.
 gateway_instance_type: m4.large
 
 # gateway_instance_count is the number of instances to deploy
@@ -110,12 +121,17 @@ gateway_instance_count: 1
 # disk is a gp2 EBS volume, not instance storage.
 gateway_instance_root_disk_size_gb: 32
 
+# gateway_instance_ebs_optimized controls whether or not the instance
+# is provisioned as an EBS-optimized instance. This defaults to true.
+gateway_instance_ebs_optimized: true
+
 # controller_instance_type is the instance type used when deploying
 # EC2 instances for the Kubernetes control plane.
 #
-# These instances must support the EBS-optimized boot flag.
 # It is suggested that m4 or c4 instances are used, as these
 # there is no additional cost to support EBS optimization.
+# If a non-EBS optimzied instance is used, make sure to set
+# controller_instance_ebs_optimized to false.
 controller_instance_type: m4.large
 
 # controller_instance_count is the number of instances to deploy
@@ -127,12 +143,17 @@ controller_instance_count: 3
 # disk is a gp2 EBS volume, not instance storage.
 controller_instance_root_disk_size_gb: 32
 
+# controller_instance_ebs_optimized controls whether or not the instance
+# is provisioned as an EBS-optimized instance. This defaults to true.
+controller_instance_ebs_optimized: true
+
 # worker_instance_type is the instance type used when deploying
 # EC2 instances for the Kubernetes worker pool.
 #
-# These instances must support the EBS-optimized boot flag.
 # It is suggested that m4 or c4 instances are used, as these
 # there is no additional cost to support EBS optimization.
+# If a non-EBS optimzied instance is used, make sure to set
+# worker_instance_ebs_optimized to false.
 worker_instance_type: c4.large
 
 # worker_instance_count is the number of instances to deploy
@@ -144,6 +165,10 @@ worker_instance_count: 3
 # disk provisioned for each worker instance (in GB). The underlying
 # disk is an io1 EBS volume, not instance storage.
 worker_instance_root_disk_size_gb: 64
+
+# worker_instance_ebs_optimized controls whether or not the instance
+# is provisioned as an EBS-optimized instance. This defaults to true.
+worker_instance_ebs_optimized: true
 
 # cluster_vpc_id is the ID of the VPC into which the Kubernetes
 # cluster should be deployed. This VPC must already have an

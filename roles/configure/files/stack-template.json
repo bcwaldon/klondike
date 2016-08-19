@@ -1217,6 +1217,9 @@
         "UserData": {
           "Ref": "ControllerUserData"
         },
+        "EbsOptimized": {
+          "Ref": "ControllerEbsOptimized"
+        },
         "BlockDeviceMappings": [
           {
             "DeviceName": "/dev/xvda",
@@ -1350,7 +1353,9 @@
         "UserData": {
           "Ref": "WorkerUserData"
         },
-        "EbsOptimized": true,
+        "EbsOptimized": {
+          "Ref": "WorkerEbsOptimized"
+        },
         "BlockDeviceMappings": [
           {
             "DeviceName": "/dev/xvda",
@@ -2228,7 +2233,9 @@
         "UserData": {
           "Ref": "BastionUserData"
         },
-        "EbsOptimized": true,
+        "EbsOptimized": {
+          "Ref": "BastionEbsOptimized"
+        },
         "BlockDeviceMappings": [
           {
             "DeviceName": "/dev/xvda",
@@ -2510,7 +2517,9 @@
         "UserData": {
           "Ref": "AggregatorUserData"
         },
-        "EbsOptimized": true,
+        "EbsOptimized": {
+          "Ref": "AggregatorEbsOptimized"
+        },
         "BlockDeviceMappings": [
           {
             "DeviceName": "/dev/xvda",
@@ -2757,7 +2766,9 @@
         "UserData": {
           "Ref": "GatewayUserData"
         },
-        "EbsOptimized": true,
+        "EbsOptimized": {
+          "Ref": "GatewayEbsOptimized"
+        },
         "BlockDeviceMappings": [
           {
             "DeviceName": "/dev/xvda",
@@ -3302,6 +3313,10 @@
       "Type": "Number",
       "Description": "Size in GB of Bastion EC2 Instance root disk."
     },
+    "BastionEbsOptimized": {
+      "Type": "String",
+      "Description": "Enable optimized EBS I/O"
+    },
     "AggregatorUserData": {
       "Type": "String",
       "Description": "Launch Aggregator EC2 Instances with this UserData"
@@ -3309,6 +3324,10 @@
     "AggregatorInstanceRootDiskSize": {
       "Type": "Number",
       "Description": "Size in GB of Aggregator EC2 Instance root disk."
+    },
+    "AggregatorEbsOptimized": {
+      "Type": "String",
+      "Description": "Enable optimized EBS I/O"
     },
     "ControllerInstanceCount": {
       "Type": "Number",
@@ -3318,6 +3337,10 @@
       "Type": "Number",
       "Description": "Size in GB of Controller EC2 Instance root disk."
     },
+    "ControllerEbsOptimized": {
+      "Type": "String",
+      "Description": "Enable optimized EBS I/O"
+    },
     "GatewayInstanceCount": {
       "Type": "Number",
       "Description": "Number of EC2 Instances to provision as Gateways."
@@ -3325,6 +3348,10 @@
     "GatewayInstanceRootDiskSize": {
       "Type": "Number",
       "Description": "Size in GB of Gateway EC2 Instance root disk."
+    },
+    "GatewayEbsOptimized": {
+      "Type": "String",
+      "Description": "Enable optimized EBS I/O"
     },
     "WorkerInstanceCount": {
       "Type": "Number",
@@ -3337,6 +3364,10 @@
     "WorkerInstanceRootDiskIOPs": {
       "Type": "Number",
       "Description": "Number of IOPs to provision for the Worker EC2 Instance root disk."
+    },
+    "WorkerEbsOptimized": {
+      "Type": "String",
+      "Description": "Enable optimized EBS I/O"
     },
     "HostedZone": {
       "Type": "String",
