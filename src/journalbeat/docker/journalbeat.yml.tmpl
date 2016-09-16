@@ -1,0 +1,29 @@
+name: journalbeat
+
+#tags: [ "blue", "red" ]
+
+input:
+  # What position in journald to seek to at start up
+  # options: cursor, tail, head (defaults to tail)
+  seek_position: cursor
+
+  # If seek_position is set to cursor and seeking to cursor fails
+  # fall back to this method.  If set to none will it will exit
+  # options: tail, head, none (defaults to tail)
+  cursor_seek_fallback: tail
+
+  write_cursor_state: true
+  cursor_state_file: /tmp/journalbeat-cursor-state
+  flush_cursor_secs: 3
+
+  convert_to_numbers: false
+  #clean_field_names: true
+  #move_metadata_to_field: journal
+  #default_type: journal
+  journal_dir: "/var/log/journal/remote/"
+
+#output:
+#  console:
+#    pretty: true
+#  logstash:
+#    hosts: ["localhost:5044"]
