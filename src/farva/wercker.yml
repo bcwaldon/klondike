@@ -1,4 +1,4 @@
-build:
+farva-build:
   box: golang
   steps:
     - wercker/setup-go-workspace:
@@ -19,7 +19,7 @@ build:
         name: copy binaries
         code: cp bin/linux_amd64/* "$WERCKER_OUTPUT_DIR"
 
-deploy:
+farva-deploy:
     box: nginx:1.10.0
     steps:
     - internal/docker-push:
