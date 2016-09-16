@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/bcwaldon/farva/pkg/health"
-	"github.com/bcwaldon/farva/pkg/logger"
-	"github.com/bcwaldon/farva/pkg/logpipe"
+	"github.com/bcwaldon/klondike/src/farva/pkg/health"
+	"github.com/bcwaldon/klondike/src/farva/pkg/logger"
+	"github.com/bcwaldon/klondike/src/farva/pkg/logpipe"
 )
 
 type Config struct {

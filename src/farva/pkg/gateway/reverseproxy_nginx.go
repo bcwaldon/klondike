@@ -2,7 +2,7 @@ package gateway
 
 import (
 	"bytes"
-	"github.com/bcwaldon/farva/pkg/logger"
+	"github.com/bcwaldon/klondike/src/farva/pkg/logger"
 	"io/ioutil"
 	"os"
 	"os/exec"

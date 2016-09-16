@@ -2,7 +2,7 @@ package logpipe
 
 import (
 	"bufio"
-	"github.com/bcwaldon/farva/pkg/logger"
+	"github.com/bcwaldon/klondike/src/farva/pkg/logger"
 	"io"
 	"os"
 	"syscall"

@@ -6,8 +6,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/bcwaldon/farva/pkg/flagutil"
-	"github.com/bcwaldon/farva/pkg/gateway"
+	"github.com/bcwaldon/klondike/src/farva/pkg/flagutil"
+	"github.com/bcwaldon/klondike/src/farva/pkg/gateway"
 )
 
 func main() {

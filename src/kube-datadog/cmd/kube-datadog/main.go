@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/bcwaldon/kube-datadog/pkg/server"
+	"github.com/bcwaldon/klondike/kube-datadog/pkg/server"
 )
 
 func main() {
