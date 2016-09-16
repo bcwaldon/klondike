@@ -15,7 +15,7 @@
 package main
 
 import (
-	journalbeat "github.com/bcwaldon/journalbeat/beat"
+	journalbeat "github.com/bcwaldon/klondike/src/journalbeat/beat"
 	"github.com/elastic/beats/libbeat/beat"
 )
 

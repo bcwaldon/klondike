@@ -297,5 +297,5 @@
 			"revisionTime": "2016-03-01T20:40:22Z"
 		}
 	],
-	"rootPath": "github.com/bcwaldon/journalbeat"
+	"rootPath": "github.com/bcwaldon/klondike/src/journalbeat"
 }

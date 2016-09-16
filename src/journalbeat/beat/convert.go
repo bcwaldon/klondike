@@ -21,7 +21,7 @@ import (
 
 	"github.com/elastic/beats/libbeat/common"
 
-	"github.com/bcwaldon/journalbeat/sdjournal"
+	"github.com/bcwaldon/klondike/src/journalbeat/sdjournal"
 )
 
 // MapStrFromJournalEntry takes a JournalD entry and converts it to an event

@@ -34,7 +34,7 @@ should be self-explanatory for the time being.
 You need to install `systemd` development packages beforehand. In a
 RHEL or Fedora environment, you need to install the `systemd-devel` package, `libsystemd-dev` in debian-based systems, et al.
 
-`go get github.com/bcwaldon/journalbeat`
+`go get github.com/bcwaldon/klondike/src/journalbeat`
 
 **NOTE:** This is not the preferred way from Elastic on how to do it. Needs to
 be revised (of course).

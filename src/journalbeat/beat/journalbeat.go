@@ -24,7 +24,7 @@ import (
 	"github.com/elastic/beats/libbeat/logp"
 	"github.com/elastic/beats/libbeat/publisher"
 
-	"github.com/bcwaldon/journalbeat/sdjournal"
+	"github.com/bcwaldon/klondike/src/journalbeat/sdjournal"
 )
 
 var SeekPositions = map[string]bool{
