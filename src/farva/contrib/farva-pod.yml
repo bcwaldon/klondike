@@ -7,6 +7,6 @@ metadata:
   namespace: default
 spec:
   containers:
-  - image: quay.io/bcwaldon/farva:86d2081b2c387a932d9509754c56a9c898e0b6ce
+  - image: quay.io/bcwaldon/farva:054a6b6489079afd6506f2f93d3344706a9e270fe
     imagePullPolicy: Always
     name: farva

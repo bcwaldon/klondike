@@ -1,2 +1,2 @@
-journalbeat_image: "quay.io/bcwaldon/journalbeat:101fec71a1267bed5c6efdaca9ea9f61fa910c7e"
+journalbeat_image: "quay.io/bcwaldon/journalbeat:054a6b6489079afd6506f2f93d3344706a9e270f"
 logstash_image: "logstash:2.2"
