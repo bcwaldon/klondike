@@ -84,6 +84,23 @@ http {
     }
 
 
+
+    server {
+        listen 9001;
+        server_name localhost;
+
+        access_log off;
+        allow 127.0.0.1;
+        deny all;
+
+        location /nginx_status {
+          stub_status on;
+        }
+    }
+
+
+
+
 }
 
 stream {
@@ -159,6 +176,23 @@ http {
         }
 
     }
+
+
+
+    server {
+        listen 9001;
+        server_name localhost;
+
+        access_log off;
+        allow 127.0.0.1;
+        deny all;
+
+        location /nginx_status {
+          stub_status on;
+        }
+    }
+
+
 
 
 }
@@ -261,6 +295,21 @@ http {
 
 
 
+    server {
+        listen 9001;
+        server_name localhost;
+
+        access_log off;
+        allow 127.0.0.1;
+        deny all;
+
+        location /nginx_status {
+          stub_status on;
+        }
+    }
+
+
+
     upstream foo {
 
         server ping.example.com:443;  # ping
@@ -349,6 +398,7 @@ http {
 
 
 
+
 }
 
 stream {
@@ -421,6 +471,21 @@ http {
     }
 
 
+
+    server {
+        listen 9001;
+        server_name localhost;
+
+        access_log off;
+        allow 127.0.0.1;
+        deny all;
+
+        location /nginx_status {
+          stub_status on;
+        }
+    }
+
+
 }
 
 stream {
@@ -469,6 +534,21 @@ http {
     }
 
 
+
+    server {
+        listen 9001;
+        server_name localhost;
+
+        access_log off;
+        allow 127.0.0.1;
+        deny all;
+
+        location /nginx_status {
+          stub_status on;
+        }
+    }
+
+
 }
 
 stream {
@@ -513,6 +593,7 @@ http {
     proxy_http_version 1.1;
     proxy_set_header Connection "";
     proxy_set_header Host $host;
+
 
 
 

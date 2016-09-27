@@ -18,3 +18,15 @@
   sudo: true
   with_items:
   - gateway.yml
+
+- name: create dd-agent config dir
+  when: datadog_enabled
+  sudo: true
+  file: path=/etc/dd-agent/conf.d state=directory
+
+- name: upload dd-agent nginx config
+  when: datadog_enabled
+  copy: src={{ item }} dest=/etc/dd-agent/conf.d/{{ item }} mode=0644
+  sudo: true
+  with_items:
+  - nginx.yaml

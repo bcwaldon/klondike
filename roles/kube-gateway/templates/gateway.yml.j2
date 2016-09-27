@@ -20,7 +20,46 @@ spec:
     volumeMounts:
     - mountPath: /etc/kubernetes
       name: etc-kubernetes
+{% if datadog_enabled == true %}
+  - image: datadog/docker-dd-agent:latest
+    name: datadog-agent
+    imagePullPolicy: Always
+    ports:
+      - containerPort: 8125
+        name: dogstatsdport
+    env:
+      - name: API_KEY
+        value: "{{ datadog_api_key }}"
+      - name: TAGS
+        value: "KubernetesCluster:{{ cluster }},KubernetesClusterRole:{{ cluster_role }}"
+    volumeMounts:
+      - name: dockersocket
+        mountPath: /var/run/docker.sock
+      - name: procdir
+        mountPath: /host/proc
+        readOnly: true
+      - name: cgroups
+        mountPath: /host/sys/fs/cgroup
+        readOnly: true
+      - name: dd-agent-conf
+        mountPath: /conf.d
+        readOnly: true
+{% endif %}
   volumes:
   - hostPath:
       path: /etc/kubernetes/
     name: etc-kubernetes
+{% if datadog_enabled == true %}
+  - hostPath:
+      path: /var/run/docker.sock
+    name: dockersocket
+  - hostPath:
+      path: /proc
+    name: procdir
+  - hostPath:
+      path: /sys/fs/cgroup
+    name: cgroups
+  - hostPath:
+      path: /etc/dd-agent/conf.d
+    name: dd-agent-conf
+{% endif %}

@@ -66,6 +66,21 @@ http {
 {{- end }}
     }
 {{ end }}
+{{ range $index, $srv := $.ReverseProxyConfig.HTTPServers }}
+{{ if eq ($index) (0) }}
+    server {
+        listen {{ $srv.ListenPort }};
+        server_name localhost;
+
+        access_log off;
+        allow 127.0.0.1;
+        deny all;
+
+        location /nginx_status {
+          stub_status on;
+        }
+    }{{ end }}
+{{ end }}
 {{ range $up := $.ReverseProxyConfig.HTTPUpstreams }}
 {{ if $up.Servers }}
     upstream {{ $up.Name }} {
