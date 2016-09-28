@@ -8,14 +8,9 @@ TAG=$(git describe --exact-match --abbrev=0 --tags ${COMMIT} 2> /dev/null || tru
 
 # use the matching tag as the version, if available
 if [ -z "$TAG" ]; then
-	VERSION=$COMMIT
+  VERSION=$COMMIT
 else
-	VERSION=$TAG
-fi
-
-# check for changed files (not untracked files)
-if [ -n "$(git diff --shortstat 2> /dev/null | tail -n1)" ]; then
-	VERSION="${VERSION}-dirty"
+  VERSION=$TAG
 fi
 
 echo $VERSION
