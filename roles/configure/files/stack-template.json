@@ -1865,7 +1865,21 @@
         "MapPublicIpOnLaunch": false,
         "AvailabilityZone": {
           "Ref": "AvailabilityZone"
-        }
+        },
+        "Tags": [
+          {
+            "Key": "KubernetesCluster",
+            "Value": {
+              "Ref": "ClusterName"
+            }
+          },
+          {
+            "Key": "kubernetes.io/role/internal-elb",
+            "Value": {
+              "Ref": "true"
+            }
+          }
+        ]
       },
       "Metadata": {
         "AWS::CloudFormation::Designer": {
