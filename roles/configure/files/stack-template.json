@@ -1875,9 +1875,7 @@
           },
           {
             "Key": "kubernetes.io/role/internal-elb",
-            "Value": {
-              "Value": "true"
-            }
+            "Value": "true"
           }
         ]
       },
