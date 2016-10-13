@@ -1876,7 +1876,7 @@
           {
             "Key": "kubernetes.io/role/internal-elb",
             "Value": {
-              "Ref": "true"
+              "Value": "true"
             }
           }
         ]
