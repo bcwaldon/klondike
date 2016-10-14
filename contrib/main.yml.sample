@@ -248,3 +248,12 @@ logstash_enabled: false
 # scheme should typically be https. This field is only used if
 # logstash_enabled is true.
 #logstash_elasticsearch_host:
+
+# logspout_enabled controls whether or not log data is collected and forwarded
+# to a remote syslog server. If true, logspout_syslog_host must be set.
+logspout_enabled: false
+
+# logspout_syslog_host is the syslog://<host>:514 representing a remote syslog
+# server where logspout should send its logs. This field is only used if
+# logspout_enabled is true.
+#logspout_syslog_host:

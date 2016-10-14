@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: logspout
+  namespace: kube-system
+spec:
+  containers:
+  - name: logspout
+    image: gliderlabs/logspout:v3.1
+    imagePullPolicy: Always
+    args:
+    - {{ logspout_syslog_host }}
+    volumeMounts:
+    - mountPath: /var/run/docker.sock
+      name: docker-sock
+    env:
+    - name: SYSLOG_FORMAT
+      value: rfc3164
+    - name: SYSLOG_HOSTNAME
+      value: '{% raw %}{{ index .Container.Config.Labels "io.kubernetes.pod.namespace" }}{% endraw %}'
+    - name: SYSLOG_TAG
+      value: 'klondike-{{ cluster }}-{% raw %}{{ index .Container.Config.Labels "io.kubernetes.pod.namespace" }}-{{ index .Container.Config.Labels "io.kubernetes.pod.name" }}{% endraw %}'
+  volumes:
+  - name: docker-sock
+    hostPath:
+      path: /var/run/docker.sock
