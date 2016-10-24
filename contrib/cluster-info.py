@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 #
 # Copyright 2016 Planet Labs
 #
@@ -13,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-#!/usr/bin/env python
 
 import argparse
 import json
