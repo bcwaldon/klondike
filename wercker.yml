@@ -13,39 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-journalbeat-build:
-  box: golang:1.6.2
-  steps:
-    - wercker/setup-go-workspace:
-        package-dir: github.com/bcwaldon/klondike
-
-    - script:
-        name: install systemd dependencies
-        code: apt-get update && apt-get install -y pkg-config libsystemd-dev
-
-    - script:
-        cwd: src/journalbeat/
-        name: go build
-        code: ./build
-
-    - script:
-        cwd: src/journalbeat/
-        name: save artifacts
-        code: |
-          cp bin/linux_amd64/* "$WERCKER_OUTPUT_DIR"
-          cp docker/* "$WERCKER_OUTPUT_DIR"
-
-journalbeat-deploy:
-  box: golang:1.6.2
-  steps:
-  - internal/docker-push:
-      username: $QUAY_USERNAME
-      password: $QUAY_PASSWORD
-      working-dir: /pipeline/source/
-      tag: $WERCKER_GIT_COMMIT
-      repository: quay.io/bcwaldon/journalbeat
-      registry: https://quay.io
-      cmd: ./run.sh
 
 farva-build:
   box: golang
