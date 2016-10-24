@@ -32,6 +32,12 @@
     deploy_key: "{{ shell.stdout }}"
     log_aggregator_host: "logs.{{ aws_hosted_zone }}"
 
+- name: Identify git version
+  command: "{{ item }}"
+  with_items:
+  - bash ./roles/configure/files/git-tag.sh
+  register: version
+
 - name: render templated files
   template: src={{ item.src }} dest={{ cluster_dir }}/{{ item.dest }} mode={{ item.mode }}
   with_items:

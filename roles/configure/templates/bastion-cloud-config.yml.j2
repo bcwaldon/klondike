@@ -52,6 +52,14 @@ write_files:
     wget https://storage.googleapis.com/kubernetes-release/release/v1.2.2/bin/linux/amd64/kubectl -O /tmp/kubectl
     chmod a+x /tmp/kubectl
     sudo mv /tmp/kubectl /usr/local/bin/kubectl
-
+    git_version={{ version.results[0].stdout }}
+    git_version_length=${{ '{' }}#git_version{{ '}' }}
     git clone https://github.com/bcwaldon/klondike /home/ubuntu/klondike
+    cd /home/ubuntu/klondike
+    # Git sha-1 hashes are 40 characters long
+    if [ $size == 40 ]; then
+       git reset --hard {{ version.results[0].stdout }}
+    else
+       git checkout tags/{{ version.results[0].stdout }}
+    fi
     cd /home/ubuntu/klondike && contrib/s3-config pull {{ cluster}} {{ s3_config_bucket }}
