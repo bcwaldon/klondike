@@ -24,15 +24,6 @@ coreos:
         ExecStart=/bin/bash -c 'openssl genrsa -out /etc/kubernetes/kubelet-key.pem 2048'
         ExecStart=/bin/bash -c 'IP=$(curl http://169.254.169.254/latest/meta-data/local-ipv4) openssl req -new -key /etc/kubernetes/kubelet-key.pem -out /etc/kubernetes/kubelet-csr.pem -subj "/CN=kubelet" -config /etc/kubernetes/openssl.cnf'
 
-    - name: systemd-journal-upload.service
-      command: start
-      enable: true
-      drop-ins:
-      - name: 10-Restart-always.conf
-        content: |
-          [Service]
-          Restart=always
-
 write_files:
 - path: /etc/kubernetes/openssl.cnf
   content: |
@@ -46,16 +37,3 @@ write_files:
     subjectAltName = @alt_names
     [alt_names]
     IP.1 = $ENV::IP
-
-- path: "/etc/systemd/journal-upload.conf"
-  permissions: "0644"
-  owner: "root"
-  content: |
-    [Upload]
-    URL=http://{{ log_aggregator_host }}:19532
-
-- path: "/etc/tmpfiles.d/systemd-upload.conf"
-  permissions: "0644"
-  owner: "root"
-  content: |
-    d /var/lib/systemd/journal-upload 0755 systemd-journal-upload systemd-journal-upload

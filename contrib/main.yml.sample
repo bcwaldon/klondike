@@ -98,24 +98,6 @@ bastion_instance_root_disk_size_gb: 32
 # is provisioned as an EBS-optimized instance. This defaults to true.
 bastion_instance_ebs_optimized: true
 
-# aggregator_instance_type is the instance type used when deploying
-# EC2 instances as log aggregators in your cluster.
-#
-# It is suggested that m4 or c4 instances are used, as these
-# there is no additional cost to support EBS optimization.
-# If a non-EBS optimzied instance is used, make sure to set
-# aggregator_instance_ebs_optimized to false.
-aggregator_instance_type: m4.large
-
-# aggregator_instance_root_disk_size_gb controls the size of the root
-# disk provisioned for the aggregator instance (in GB). The underlying
-# disk is a gp2 EBS volume, not instance storage.
-aggregator_instance_root_disk_size_gb: 128
-
-# aggregator_instance_ebs_optimized controls whether or not the instance
-# is provisioned as an EBS-optimized instance. This defaults to true.
-aggregator_instance_ebs_optimized: true
-
 # gateway_instance_type is the instance type used when deploying
 # EC2 instances for Kubernetes service ingress traffic.
 #
@@ -277,17 +259,6 @@ signalfx_enabled: false
 # push metrics about the Kubernetes cluster to the SignalFX service.
 # Only used if signalfx_enabled is true.
 #signalfx_api_key:
-
-# logstash_enabled controls whether or not log data is collected and
-# forwarded via logstash to an elasticsearch cluster. If true,
-# logstash_elasticsearch_host must be set.
-logstash_enabled: false
-
-# logstash_elasticsearch_host is the <scheme>://<host> representing an
-# elasticsearch cluster where logstash should send its logs. The
-# scheme should typically be https. This field is only used if
-# logstash_enabled is true.
-#logstash_elasticsearch_host:
 
 # logspout_enabled controls whether or not log data is collected and forwarded
 # to a remote syslog server. If true, logspout_syslog_host must be set.

@@ -1,9 +1,0 @@
-cluster_role: aggregator
-
-kubelet_schedulable: false
-kubelet_enable_pod_networking: false
-kubelet_enable_pod_proxy: false
-
-apiserver_client_endpoint: "{{ control_plane_endpoint }}"
-apiserver_client_tls_enabled: true
-apiserver_client_tls_client_name: admin

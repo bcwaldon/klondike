@@ -4,7 +4,6 @@
 
 USER_DATA=$(cat {{ cluster_dir }}/cloud-config.yml | base64 $BASE64ARGS)
 BASTION_USER_DATA=$(cat {{ cluster_dir }}/bastion-cloud-config.yml | base64 $BASE64ARGS)
-AGGREGATOR_USER_DATA=$(cat {{ cluster_dir }}/aggregator-cloud-config.yml | base64 $BASE64ARGS)
 
 PARAMETERS=( 
 	"ParameterKey=PeerVPC,ParameterValue={{ peer_vpc_id }}"
@@ -34,9 +33,6 @@ PARAMETERS=(
 	"ParameterKey=BastionInstanceType,ParameterValue={{ bastion_instance_type }}"
 	"ParameterKey=BastionInstanceRootDiskSize,ParameterValue={{ bastion_instance_root_disk_size_gb }}"
 	"ParameterKey=BastionEbsOptimized,ParameterValue={{ bastion_instance_ebs_optimized }}"
-	"ParameterKey=AggregatorInstanceType,ParameterValue={{ aggregator_instance_type }}"
-	"ParameterKey=AggregatorInstanceRootDiskSize,ParameterValue={{ aggregator_instance_root_disk_size_gb }}"
-	"ParameterKey=AggregatorEbsOptimized,ParameterValue={{ aggregator_instance_ebs_optimized }}"
 	"ParameterKey=CoreOSImageID,ParameterValue={{ coreos_image_id }}"
 	"ParameterKey=UbuntuImageID,ParameterValue={{ ubuntu_image_id }}"
 	"ParameterKey=ClusterName,ParameterValue={{ cluster }}"
@@ -46,7 +42,6 @@ PARAMETERS=(
 	"ParameterKey=ControllerUserData,ParameterValue=$USER_DATA"
 	"ParameterKey=WorkerUserData,ParameterValue=$USER_DATA"
 	"ParameterKey=BastionUserData,ParameterValue=$BASTION_USER_DATA"
-	"ParameterKey=AggregatorUserData,ParameterValue=$AGGREGATOR_USER_DATA"
 )
 
 function join { local IFS="$1"; shift; echo "$*"; }
