@@ -57,7 +57,7 @@ write_files:
     git clone https://github.com/bcwaldon/klondike /home/ubuntu/klondike
     cd /home/ubuntu/klondike
     # Git sha-1 hashes are 40 characters long
-    if [ $size == 40 ]; then
+    if [ $git_version_length == 40 ]; then
        git reset --hard {{ version.results[0].stdout }}
     else
        git checkout tags/{{ version.results[0].stdout }}
