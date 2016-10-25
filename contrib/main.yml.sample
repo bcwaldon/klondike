@@ -268,3 +268,7 @@ logspout_enabled: false
 # server where logspout should send its logs. This field is only used if
 # logspout_enabled is true.
 #logspout_syslog_host:
+
+# kubernetes_log_verbose controls whether or not the Kubernetes components
+# log at a high level of verbosity or not.
+kubernetes_log_verbose: false

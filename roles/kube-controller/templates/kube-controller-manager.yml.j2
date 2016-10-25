@@ -12,7 +12,9 @@ spec:
     - "/hyperkube"
     - "controller-manager"
     - "--master={{ apiserver_local_endpoint }}"
+{% if kubernetes_log_verbose %}
     - "--v=2"
+{% endif %}
     - "--root-ca-file=/etc/kubernetes/ca.pem"
     - "--service-account-private-key-file=/etc/kubernetes/apiserver-key.pem"
     - "--cloud-provider=aws"

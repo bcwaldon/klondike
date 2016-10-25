@@ -12,5 +12,7 @@ spec:
     - "/hyperkube"
     - "scheduler"
     - "--master={{ apiserver_local_endpoint }}"
+{% if kubernetes_log_verbose %}
     - "--v=2"
+{% endif %}
     - "--leader-elect=true"

@@ -15,7 +15,9 @@ spec:
     - "--etcd-servers={{ etcd_client_endpoint }}"
     - "--advertise-address={{ ec2_private_ip_address }}"
     - "--service-cluster-ip-range={{ cluster_service_network_cidr }}"
+{% if kubernetes_log_verbose %}
     - "--v=2"
+{% endif %}
     - "--client-ca-file=/etc/kubernetes/ca.pem"
     - "--tls-cert-file=/etc/kubernetes/apiserver.pem"
     - "--tls-private-key-file=/etc/kubernetes/apiserver-key.pem"
