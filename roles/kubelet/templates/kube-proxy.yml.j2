@@ -11,7 +11,9 @@ spec:
     args:
     - "/hyperkube"
     - "proxy"
+{% if kubernetes_log_verbose %}
     - "--v=2"
+{% endif %}
     - "--proxy-mode=iptables"
     - "--bind-address={{ ec2_private_ip_address }}"
     - "--hostname-override={{ ec2_id }}"
