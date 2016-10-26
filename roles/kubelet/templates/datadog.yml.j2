@@ -32,9 +32,11 @@ spec:
       - name: KUBE_DATADOG_TAGS
         value: "KubernetesCluster:{{ cluster }},KubernetesClusterRole:{{ cluster_role }},host:{{ ec2_id }}"
       - name: KUBE_DATADOG_KUBELET
-        value: "{{ec2_private_ip_address}}:10255"
+        value: "{{ ec2_private_ip_address }}:10255"
       - name: KUBE_DATADOG_SOURCE
         value: kubelet
+      - name: KUBE_DATADOG_DOGSTATSD
+        value: {{ datadog_statsd_host }}
   volumes:
     - hostPath:
         path: /var/run/docker.sock
