@@ -1,5 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "klondike - Kubernetes deployment",
   "Metadata": {
     "AWS::CloudFormation::Designer": {
       "46c5f359-b0f8-400a-924a-7416577bb1e4": {
