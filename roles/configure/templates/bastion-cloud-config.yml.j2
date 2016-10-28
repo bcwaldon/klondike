@@ -49,7 +49,7 @@ write_files:
     go get github.com/cloudflare/cfssl/cmd/cfssljson
     sudo mv $GOPATH/bin/cfssljson /usr/local/bin
 
-    wget https://storage.googleapis.com/kubernetes-release/release/v1.2.2/bin/linux/amd64/kubectl -O /tmp/kubectl
+    wget https://storage.googleapis.com/kubernetes-release/release/v{{ kubernetes_version }}/bin/linux/amd64/kubectl -O /tmp/kubectl
     chmod a+x /tmp/kubectl
     sudo mv /tmp/kubectl /usr/local/bin/kubectl
     git_version={{ version.results[0].stdout }}

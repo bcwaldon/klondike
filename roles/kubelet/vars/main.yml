@@ -13,5 +13,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-hyperkube_image: gcr.io/google_containers/hyperkube:v1.2.2
-kubelet_version: v1.2.2_coreos.0  # from https://quay.io/repository/coreos/hyperkube?tab=tags
+hyperkube_image: gcr.io/google_containers/hyperkube:v{{ kubernetes_version }}
+kubelet_version: v{{ kubernetes_version }}_coreos.0  # from https://quay.io/repository/coreos/hyperkube?tab=tags

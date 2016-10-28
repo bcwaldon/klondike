@@ -7,3 +7,5 @@ ca_name: kubernetes
 kube_datadog_image: quay.io/bcwaldon/kube-datadog:054a6b6489079afd6506f2f93d3344706a9e270f
 
 kubelet_enable_pod_proxy: true
+
+kubernetes_version: 1.2.2

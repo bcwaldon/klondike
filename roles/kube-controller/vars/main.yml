@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-hyperkube_image: "gcr.io/google_containers/hyperkube:v1.2.2"
+hyperkube_image: "gcr.io/google_containers/hyperkube:v{{ kubernetes_version }}"
 
 apiserver_secure_port: 6443
 apiserver_insecure_port: 8080
