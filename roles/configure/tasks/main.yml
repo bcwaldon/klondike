@@ -52,5 +52,5 @@
   copy: src={{ item.src }} dest={{ cluster_dir }}/{{ item.dest }} mode={{ item.mode }}
   with_items:
   - { src: "ec2-inventory.py", dest: "inventory", mode: "0755"}
-  - { src: "stack-template.json", dest: "stack-template.json", mode: "0644"}
+  - { src: "stack-template.yaml", dest: "stack-template.yaml", mode: "0644"}
 

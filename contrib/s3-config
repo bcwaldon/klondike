@@ -4,7 +4,7 @@ ACTION=$1
 CLUSTER=$2
 TARBALL=klondike-cluster-$CLUSTER.tar.gz
 S3_LOC_TARBALL=s3://$3/$TARBALL
-TEMPLATE=stack-template.json
+TEMPLATE=stack-template.yaml
 S3_LOC_TEMPLATE=s3://$3/$TEMPLATE
 
 function push {
