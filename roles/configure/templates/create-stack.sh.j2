@@ -51,4 +51,4 @@ aws cloudformation create-stack \
 	--capabilities CAPABILITY_IAM \
 	--parameters $(join " " "${PARAMETERS[@]}") \
 	--disable-rollback \
-	--template-url https://s3.amazonaws.com/{{ s3_config_bucket }}/stack-template.json
+	--template-url https://s3.amazonaws.com/{{ s3_config_bucket }}/stack-template.yaml

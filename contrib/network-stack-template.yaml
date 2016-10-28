@@ -1,0 +1,57 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  ClusterVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock:
+        Ref: ClusterNetworkCIDR
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      InstanceTenancy: default
+      Tags:
+      - Key: Name
+        Value:
+          Ref: AWS::StackName
+  ClusterInternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties: {}
+  ClusterVPCGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      InternetGatewayId:
+        Ref: ClusterInternetGateway
+      VpcId:
+        Ref: ClusterVPC
+    DependsOn:
+    - ClusterVPC
+    - ClusterInternetGateway
+  PeerConnection:
+    Type: AWS::EC2::VPCPeeringConnection
+    Properties:
+      PeerVpcId:
+        Ref: PeerVPC
+      VpcId:
+        Ref: ClusterVPC
+    DependsOn:
+    - ClusterVPC
+  RoutePeerVPCToClusterVPC:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: PeerRouteTable
+      DestinationCidrBlock:
+        Ref: ClusterNetworkCIDR
+      VpcPeeringConnectionId:
+        Ref: PeerConnection
+    DependsOn:
+    - PeerConnection
+Parameters:
+  ClusterNetworkCIDR:
+    Type: String
+    Description: Network used for the ClusterVPC
+  PeerVPC:
+    Type: String
+    Description: ID of peered VPC
+  PeerRouteTable:
+    Type: String
+    Description: ID of route table in peered VPC
