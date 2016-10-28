@@ -5,7 +5,7 @@ A CloudFormation template exists in contrib/ that may be used to deploy the bare
 
 ```
 aws cloudformation create-stack --stack-name klondike-vpc \
-  --template-body=file://contrib/network-stack-template.json \
+  --template-body=file://contrib/network-stack-template.yaml \
   --parameters ParameterKey=ClusterNetworkCIDR,ParameterValue=${ClusterNetworkCIDR} \
                ParameterKey=PeerVPC,ParameterValue=${PeerVPC} \
                ParameterKey=PeerRouteTable,ParameterValue=${PeerRouteTable}
