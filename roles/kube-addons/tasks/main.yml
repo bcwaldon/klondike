@@ -19,7 +19,6 @@
 - name: deploy core addons
   include: deploy.yml
   with_items:
-  - kube-system.yml
   - dns.yml
   - datadog.yml
   - dashboard.yml
