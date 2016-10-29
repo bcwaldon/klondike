@@ -16,7 +16,7 @@ On Fedora:
     dnf install kubernetes-client
 
 Alternatively, kubectl binary builds are available on Google storage from the Kubernetes team.
-Download the latest binary `${VERSION}` (i.e. v1.2.2) for your `${OS}` (i.e. linux, darwin) and `${ARCH}` (i.e. amd64):
+Download the latest binary `${VERSION}` (i.e. v1.3.9) for your `${OS}` (i.e. linux, darwin) and `${ARCH}` (i.e. amd64):
 
     wget https://storage.googleapis.com/kubernetes-release/release/${VERSION}/bin/${OS}/${ARCH}/kubectl
 
