@@ -45,35 +45,3 @@ farva-deploy:
         tag: $WERCKER_GIT_COMMIT
         repository: quay.io/bcwaldon/farva
         registry: https://quay.io
-
-kube-datadog-build:
-  box: golang
-  steps:
-    - wercker/setup-go-workspace:
-        package-dir: github.com/bcwaldon/klondike
-
-    - script:
-        cwd: src/kube-datadog/
-        name: go test
-        code: ./test
-
-    - script:
-        cwd: src/kube-datadog/
-        name: go build
-        code: ./build
-
-    - script:
-        cwd: src/kube-datadog/
-        name: copy binary
-        code: cp bin/linux_amd64/kube-datadog "$WERCKER_OUTPUT_DIR"
-
-kube-datadog-deploy:
-    box: golang
-    steps:
-    - internal/docker-scratch-push:
-        username: $QUAY_USERNAME
-        password: $QUAY_PASSWORD
-        cmd: /kube-datadog
-        tag: $WERCKER_GIT_COMMIT
-        repository: quay.io/bcwaldon/kube-datadog
-        registry: https://quay.io
