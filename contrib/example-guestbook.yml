@@ -1,0 +1,118 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: example
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: guestbook
+  namespace: example
+spec:
+  backend:
+    serviceName: guestbook
+    servicePort: 3000
+
+---
+
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  labels: {app: guestbook}
+  name: guestbook
+  namespace: example
+spec:
+  replicas: 3
+  selector: {app: guestbook}
+  template:
+    metadata:
+      labels: {app: guestbook}
+    spec:
+      containers:
+      - image: gcr.io/google_containers/guestbook:v3
+        name: guestbook
+        ports:
+        - {containerPort: 3000, name: http-server}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels: {app: guestbook}
+  name: guestbook
+  namespace: example
+spec:
+  ports:
+  - {port: 3000, targetPort: 3000}
+  selector: {app: guestbook}
+
+---
+
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  labels: {app: redis, role: master}
+  name: redis-master
+  namespace: example
+spec:
+  replicas: 1
+  selector: {app: redis, role: master}
+  template:
+    metadata:
+      labels: {app: redis, role: master}
+    spec:
+      containers:
+      - image: redis:2.8.23
+        name: redis-master
+        ports:
+        - {containerPort: 6379, name: redis-server}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels: {app: redis, role: master}
+  name: redis-master
+  namespace: example
+spec:
+  ports:
+  - {port: 6379, targetPort: redis-server}
+  selector: {app: redis, role: master}
+
+---
+
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  labels: {app: redis, role: slave}
+  name: redis-slave
+  namespace: example
+spec:
+  replicas: 2
+  selector: {app: redis, role: slave}
+  template:
+    metadata:
+      labels: {app: redis, role: slave}
+    spec:
+      containers:
+      - image: kubernetes/redis-slave:v2
+        name: redis-slave
+        ports:
+        - {containerPort: 6379, name: redis-server}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels: {app: redis, role: slave}
+  name: redis-slave
+  namespace: example
+spec:
+  ports:
+  - {port: 6379, targetPort: redis-server}
+  selector: {app: redis, role: slave}
