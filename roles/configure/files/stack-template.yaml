@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: klondike - Kubernetes deployment
+Description: klondike - Kubernetes cluster
 Resources:
   ControllerLC:
     Type: AWS::AutoScaling::LaunchConfiguration
