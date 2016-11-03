@@ -7,7 +7,7 @@ spec:
   hostNetwork: true
   containers:
   - image: quay.io/signalfuse/collectd:latest
-    name: signalfx-collectd
+    name: collectd
     imagePullPolicy: Always
     env:
       - name: SF_API_TOKEN
