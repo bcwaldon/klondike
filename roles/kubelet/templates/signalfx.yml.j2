@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: signalfx-collectd
+  namespace: kube-system
+spec:
+  hostNetwork: true
+  containers:
+  - image: quay.io/signalfuse/collectd:latest
+    name: signalfx-collectd
+    imagePullPolicy: Always
+    env:
+      - name: SF_API_TOKEN
+        value: "{{ signalfx_api_key }}"
+    volumeMounts:
+      - name: docker-sock
+        mountPath: /var/run/docker.sock
+      - name: proc
+        mountPath: /mnt/proc
+        readOnly: true
+      - name: hostname
+        mountPath: /mnt/hostname
+        readOnly: true
+      - name: etc
+        mountPath: /mnt/etc
+        readOnly: true
+  volumes:
+    - name: docker-sock
+      hostPath:
+        path: /var/run/docker.sock
+    - name: proc
+      hostPath:
+        path: /proc
+    - name: hostname
+      hostPath:
+        path: /etc/hostname
+    - name: etc
+      hostPath:
+        path: /usr/share/coreos

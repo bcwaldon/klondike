@@ -87,6 +87,14 @@
   - src: "datadog.yml"
     dest: "/etc/kubernetes/manifests"
 
+- name: deploy signalfx
+  when: signalfx_enabled
+  template: src={{ item.src }}.j2 dest={{ item.dest }}/{{ item.src }} mode=0644
+  sudo: true
+  with_items:
+  - src: "signalfx.yml"
+    dest: "/etc/kubernetes/manifests"
+
 - name: deploy logspout
   when: logspout_enabled
   template: src={{ item.src }}.j2 dest={{ item.dest }}/{{ item.src }} mode=0644

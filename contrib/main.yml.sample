@@ -246,11 +246,6 @@ peer_connection_id:
 # deployed across the cluster. If true, datadog_api_key must be set.
 datadog_enabled: false
 
-# datadog_statsd_host is the <host>:<port> representing a DataDog statsd
-# endpoint. You would only modify this if you are running a non-standard
-# configuration.
-datadog_statsd_host: 127.0.0.1:8125
-
 # datadog_api_key is the API key that the DataDog agent will use to
 # push metrics about the Kubernetes cluster to the DataDog service.
 # Only used if datadog_enabled is true.

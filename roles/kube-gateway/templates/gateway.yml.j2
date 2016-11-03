@@ -21,7 +21,7 @@ spec:
     - mountPath: /etc/kubernetes
       name: etc-kubernetes
 {% if datadog_enabled == true %}
-  - image: datadog/docker-dd-agent:latest
+  - image: datadog/docker-dd-agent:kubernetes
     name: datadog-agent
     imagePullPolicy: Always
     ports:
