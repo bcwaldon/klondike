@@ -68,7 +68,17 @@ http {
 
     proxy_http_version 1.1;
     proxy_set_header Connection "";
-    proxy_set_header Host $host;
+
+    # Override the Host header with the value of the
+    # X-Forwarded-Host header only if it is provided.
+    # This allows the upstream service with the most
+    # accurate value for the Host header without having
+    # to be aware they are behind a proxy.
+    map $http_x_forwarded_host $host_value {
+        default $http_host;
+        ~.+ $http_x_forwarded_host;
+    }
+    proxy_set_header Host $host_value;
 
 
     server {
@@ -154,7 +164,17 @@ http {
 
     proxy_http_version 1.1;
     proxy_set_header Connection "";
-    proxy_set_header Host $host;
+
+    # Override the Host header with the value of the
+    # X-Forwarded-Host header only if it is provided.
+    # This allows the upstream service with the most
+    # accurate value for the Host header without having
+    # to be aware they are behind a proxy.
+    map $http_x_forwarded_host $host_value {
+        default $http_host;
+        ~.+ $http_x_forwarded_host;
+    }
+    proxy_set_header Host $host_value;
 
 
     server {
@@ -274,7 +294,17 @@ http {
 
     proxy_http_version 1.1;
     proxy_set_header Connection "";
-    proxy_set_header Host $host;
+
+    # Override the Host header with the value of the
+    # X-Forwarded-Host header only if it is provided.
+    # This allows the upstream service with the most
+    # accurate value for the Host header without having
+    # to be aware they are behind a proxy.
+    map $http_x_forwarded_host $host_value {
+        default $http_host;
+        ~.+ $http_x_forwarded_host;
+    }
+    proxy_set_header Host $host_value;
 
 
     server {
@@ -394,7 +424,17 @@ http {
 
     proxy_http_version 1.1;
     proxy_set_header Connection "";
-    proxy_set_header Host $host;
+
+    # Override the Host header with the value of the
+    # X-Forwarded-Host header only if it is provided.
+    # This allows the upstream service with the most
+    # accurate value for the Host header without having
+    # to be aware they are behind a proxy.
+    map $http_x_forwarded_host $host_value {
+        default $http_host;
+        ~.+ $http_x_forwarded_host;
+    }
+    proxy_set_header Host $host_value;
 
 
 
@@ -461,7 +501,17 @@ http {
 
     proxy_http_version 1.1;
     proxy_set_header Connection "";
-    proxy_set_header Host $host;
+
+    # Override the Host header with the value of the
+    # X-Forwarded-Host header only if it is provided.
+    # This allows the upstream service with the most
+    # accurate value for the Host header without having
+    # to be aware they are behind a proxy.
+    map $http_x_forwarded_host $host_value {
+        default $http_host;
+        ~.+ $http_x_forwarded_host;
+    }
+    proxy_set_header Host $host_value;
 
 
     server {
@@ -524,7 +574,17 @@ http {
 
     proxy_http_version 1.1;
     proxy_set_header Connection "";
-    proxy_set_header Host $host;
+
+    # Override the Host header with the value of the
+    # X-Forwarded-Host header only if it is provided.
+    # This allows the upstream service with the most
+    # accurate value for the Host header without having
+    # to be aware they are behind a proxy.
+    map $http_x_forwarded_host $host_value {
+        default $http_host;
+        ~.+ $http_x_forwarded_host;
+    }
+    proxy_set_header Host $host_value;
 
 
     server {
@@ -592,7 +652,17 @@ http {
 
     proxy_http_version 1.1;
     proxy_set_header Connection "";
-    proxy_set_header Host $host;
+
+    # Override the Host header with the value of the
+    # X-Forwarded-Host header only if it is provided.
+    # This allows the upstream service with the most
+    # accurate value for the Host header without having
+    # to be aware they are behind a proxy.
+    map $http_x_forwarded_host $host_value {
+        default $http_host;
+        ~.+ $http_x_forwarded_host;
+    }
+    proxy_set_header Host $host_value;
 
 
 
