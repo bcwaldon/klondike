@@ -21,7 +21,7 @@ An operator uses the bastion for initial cluster deployment, as well as on-going
 ## Quickstart
 
 This quickstart guide is intended to get a cluster spun up in as few steps as possible.
-For more thorough information, visit the [klondike documentation](https://github.com/bcwaldon/klondike/tree/master/docs/index.md).
+For more thorough information, visit the [klondike documentation](https://github.com/planetlabs/klondike/tree/master/docs/index.md).
 
 The creation of a new cluster depends on having installed a few tools locally.
 Start off by getting these installed, then continue on with cluster bootstrapping.
@@ -80,7 +80,7 @@ dnf install ansible
 1. Check out the project and `cd` into the directory:
 
 	```
-	git clone git@github.com:bcwaldon/klondike.git
+	git clone git@github.com:planetlabs/klondike.git
 	cd klondike/
 	```
 
