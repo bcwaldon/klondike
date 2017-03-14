@@ -1,8 +1,5 @@
 # Exploring the Klondike
 
-A Confused Guide with Jacob Straszysnki
----------------------------------------
-
 In this walkthrough we're going to work our way from the bastion host that
 arbiters access to our cluster, to a node, which functions as the "physical"
 host onto which kubernetes' virtual "pods" are scheduled, and finally to a pod.
@@ -51,7 +48,7 @@ Our bastion's IP address is `***.***.***.***`.
 SSH into the Bastion!
 ---------------------
 
-When the `cascade` cluster was [./README.md](created) we uploaded artifacts to
+When the `cascade` cluster was [created](./README.md) we uploaded artifacts to
 S3. Let's download them - they include a private key that we can use to SSH
 into the cluster.
 
@@ -142,7 +139,7 @@ IP:       10.1.2.6
 ...
 ```
 
-You're output won't match the above exactly, but as long as there's some
+Your output won't match the above exactly, but as long as there's some
 service listening on port 80, you should be able to curl it:
 
 ```bash
