@@ -38,8 +38,6 @@ Resources:
         Ref: ControllerInstanceCount
       LaunchConfigurationName:
         Ref: ControllerLC
-      AvailabilityZones:
-      - Ref: AvailabilityZone
       Tags:
       - Key: KubernetesCluster
         Value:
@@ -51,7 +49,9 @@ Resources:
       LoadBalancerNames:
       - Ref: ControllerPrivateELB
       VPCZoneIdentifier:
-      - Ref: ControllerSubnet
+      - Ref: ControllerSubnetA
+      - Ref: ControllerSubnetB
+      - Ref: ControllerSubnetC
     Metadata:
       AWS::CloudFormation::Designer:
         id: 46c5f359-b0f8-400a-924a-7416577bb1e4
@@ -64,10 +64,10 @@ Resources:
         Ref: WorkerInstanceCount
       LaunchConfigurationName:
         Ref: WorkerLC
-      AvailabilityZones:
-      - Ref: AvailabilityZone
       VPCZoneIdentifier:
-      - Ref: WorkerSubnet
+      - Ref: WorkerSubnetA
+      - Ref: WorkerSubnetB
+      - Ref: WorkerSubnetC
       Tags:
       - Key: KubernetesCluster
         Value:
@@ -420,38 +420,79 @@ Resources:
       FromPort: 0
       ToPort: 65535
       IpProtocol: UDP
-  WorkerSubnet:
+  WorkerSubnetA:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId:
         Ref: ClusterVPC
-      CidrBlock:
-        Ref: WorkerSubnetCIDR
+      CidrBlock: { "Fn::Select": [ "0", { Ref: WorkerSubnetCIDRs } ] }
       MapPublicIpOnLaunch: false
-      AvailabilityZone:
-        Ref: AvailabilityZone
+      AvailabilityZone: { "Fn::Join": ["", [{ Ref: "AWS::Region" }, "a" ] ] }
       Tags:
-      - Key: KubernetesCluster
-        Value:
-          Ref: ClusterName
-      - Key: kubernetes.io/role/internal-elb
-        Value: 'true'
-    Metadata:
-      AWS::CloudFormation::Designer:
-        id: 6c2ea801-0bfa-4e7b-92c8-3eef2f97dcce
-  ControllerSubnet:
+      - Key: "KubernetesCluster"
+        Value: { Ref: ClusterName }
+      - Key: "kubernetes.io/role/internal-elb"
+        Value: "true"
+  WorkerSubnetB:
     Type: AWS::EC2::Subnet
     Properties:
-      VpcId:
-        Ref: ClusterVPC
-      CidrBlock:
-        Ref: ControllerSubnetCIDR
+      VpcId: { Ref: ClusterVPC }
+      CidrBlock: { "Fn::Select": [ "1", { Ref: WorkerSubnetCIDRs } ] }
       MapPublicIpOnLaunch: false
-      AvailabilityZone:
-        Ref: AvailabilityZone
-    Metadata:
-      AWS::CloudFormation::Designer:
-        id: f591c362-5976-4efe-aca1-f1c0cb9f31af
+      AvailabilityZone: { "Fn::Join": ["", [{ Ref: "AWS::Region" }, "b" ] ] }
+      Tags:
+      - Key: "KubernetesCluster"
+        Value: { Ref: ClusterName }
+      - Key: "kubernetes.io/role/internal-elb"
+        Value: "true"
+  WorkerSubnetC:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: { Ref: ClusterVPC }
+      CidrBlock: { "Fn::Select": [ "2", { Ref: WorkerSubnetCIDRs } ] }
+      MapPublicIpOnLaunch: false
+      AvailabilityZone: { "Fn::Join": ["", [{ Ref: "AWS::Region" }, "c" ] ] }
+      Tags:
+      - Key: "KubernetesCluster"
+        Value: { Ref: ClusterName }
+      - Key: "kubernetes.io/role/internal-elb"
+        Value: "true"
+  ControllerSubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: { Ref: ClusterVPC }
+      CidrBlock: { "Fn::Select": [ "0", { Ref: ControllerSubnetCIDRs } ] }
+      MapPublicIpOnLaunch: false
+      AvailabilityZone: { "Fn::Join": ["", [{ Ref: "AWS::Region" }, "a" ] ] }
+      Tags:
+      - Key: "KubernetesCluster"
+        Value: { Ref: ClusterName }
+      - Key: "kubernetes.io/role/internal-elb"
+        Value: "true"
+  ControllerSubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: { Ref: ClusterVPC }
+      CidrBlock: { "Fn::Select": [ "1", { Ref: ControllerSubnetCIDRs } ] }
+      MapPublicIpOnLaunch: false
+      AvailabilityZone: { "Fn::Join": ["", [{ Ref: "AWS::Region" }, "b" ] ] }
+      Tags:
+      - Key: "KubernetesCluster"
+        Value: { Ref: ClusterName }
+      - Key: "kubernetes.io/role/internal-elb"
+        Value: "true"
+  ControllerSubnetC:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: { Ref: ClusterVPC }
+      CidrBlock: { "Fn::Select": [ "2", { Ref: ControllerSubnetCIDRs } ] }
+      MapPublicIpOnLaunch: false
+      AvailabilityZone: { "Fn::Join": ["", [{ Ref: "AWS::Region" }, "c" ] ] }
+      Tags:
+      - Key: "KubernetesCluster"
+        Value: { Ref: ClusterName }
+      - Key: "kubernetes.io/role/internal-elb"
+        Value: "true"
   PublicNATGateway:
     Type: AWS::EC2::NatGateway
     Properties:
@@ -472,16 +513,27 @@ Resources:
     Metadata:
       AWS::CloudFormation::Designer:
         id: 37fc6d23-1902-4172-ab24-1c0cd8eab5b7
-  ControllerSubnetRouteTableAssociation:
+  ControllerSubnetARouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       RouteTableId:
         Ref: PrivateRouteTable
       SubnetId:
-        Ref: ControllerSubnet
-    Metadata:
-      AWS::CloudFormation::Designer:
-        id: 3ea679dd-6851-4f71-b9da-063ff1955416
+        Ref: ControllerSubnetA
+  ControllerSubnetBRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: PrivateRouteTable
+      SubnetId:
+        Ref: ControllerSubnetB
+  ControllerSubnetCRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: PrivateRouteTable
+      SubnetId:
+        Ref: ControllerSubnetC
   PublicRouteToInternet:
     Type: AWS::EC2::Route
     Properties:
@@ -526,16 +578,27 @@ Resources:
     Metadata:
       AWS::CloudFormation::Designer:
         id: 505c2107-b4cb-466c-a646-6caadb889c56
-  WorkerSubnetRouteTableAssociation:
+  WorkerSubnetARouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       RouteTableId:
         Ref: PrivateRouteTable
       SubnetId:
-        Ref: WorkerSubnet
-    Metadata:
-      AWS::CloudFormation::Designer:
-        id: 628052e5-746b-4228-8295-5d536a59f131
+        Ref: WorkerSubnetA
+  WorkerSubnetBRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: PrivateRouteTable
+      SubnetId:
+        Ref: WorkerSubnetB
+  WorkerSubnetCRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: PrivateRouteTable
+      SubnetId:
+        Ref: WorkerSubnetC
   PublicNATGatewayIP:
     Type: AWS::EC2::EIP
     Properties:
@@ -548,7 +611,9 @@ Resources:
     Properties:
       Scheme: internal
       Subnets:
-      - Ref: ControllerSubnet
+      - Ref: ControllerSubnetA
+      - Ref: ControllerSubnetB
+      - Ref: ControllerSubnetC
       SecurityGroups:
       - Ref: ControllerPrivateELBSecurityGroup
       Listeners:
@@ -633,7 +698,7 @@ Resources:
     Type: AWS::EC2::NetworkInterface
     Properties:
       SubnetId:
-        Ref: ControllerSubnet
+        Ref: ControllerSubnetA
       GroupSet:
       - Fn::GetAtt:
         - BastionSecurityGroup
@@ -774,8 +839,7 @@ Resources:
       CidrBlock:
         Ref: PublicSubnetCIDR
       MapPublicIpOnLaunch: true
-      AvailabilityZone:
-        Ref: AvailabilityZone
+      AvailabilityZone: { "Fn::Join": ["", [{ Ref: "AWS::Region" }, "a" ] ] }
       Tags:
       - Key: KubernetesCluster
         Value:
@@ -794,8 +858,6 @@ Resources:
         Ref: GatewayInstanceCount
       LaunchConfigurationName:
         Ref: GatewayLC
-      AvailabilityZones:
-      - Ref: AvailabilityZone
       Tags:
       - Key: KubernetesCluster
         Value:
@@ -805,7 +867,9 @@ Resources:
         Value: gateway
         PropagateAtLaunch: true
       VPCZoneIdentifier:
-      - Ref: ControllerSubnet
+      - Ref: ControllerSubnetA
+      - Ref: ControllerSubnetB
+      - Ref: ControllerSubnetC
       LoadBalancerNames:
       - Ref: GatewayPublicELB
       - Ref: GatewayPrivateELB
@@ -986,7 +1050,9 @@ Resources:
     Properties:
       Scheme: internal
       Subnets:
-      - Ref: ControllerSubnet
+      - Ref: ControllerSubnetA
+      - Ref: ControllerSubnetB
+      - Ref: ControllerSubnetC
       SecurityGroups:
       - Ref: GatewayPrivateELBSecurityGroup
       Listeners:
@@ -1104,26 +1170,20 @@ Parameters:
     Description: Launch Bastion EC2 Instances using this Ubuntu AMI
   GatewayInstanceType:
     Type: String
-    Description: Launch EC2 Instances in the Gateway AutoScaling Group using this
-      Instance type
+    Description: Launch EC2 Instances in the Gateway AutoScaling Group using this Instance type
     Default: m3.large
   ControllerInstanceType:
     Type: String
-    Description: Launch EC2 Instances in the Controller AutoScaling Group using this
-      Instance type
+    Description: Launch EC2 Instances in the Controller AutoScaling Group using this Instance type
     Default: m3.large
   WorkerInstanceType:
     Type: String
-    Description: Launch EC2 Instances in the Worker AutoScaling Group using this Instance
-      type
+    Description: Launch EC2 Instances in the Worker AutoScaling Group using this Instance type
     Default: m3.large
   BastionInstanceType:
     Type: String
     Description: Launch the Bastion EC2 Instance using this Instance type
     Default: m3.medium
-  AvailabilityZone:
-    Type: AWS::EC2::AvailabilityZone::Name
-    Description: Deploy all resources into this AvailabilityZone
   ClusterName:
     Type: String
     Description: Name of cluster; resources are tagged with this value
@@ -1147,20 +1207,16 @@ Parameters:
     Description: Network used for the PeerVPC
   PeerConnectionID:
     Type: String
-    Description: ID of existing VPC Peering Connection that connects the PeerVPC to
-      the ClusterVPC
+    Description: ID of existing VPC Peering Connection that connects the PeerVPC to the ClusterVPC
   PublicSubnetCIDR:
     Type: String
-    Description: Subnet used for the public-facing EC2 entities; must be contained
-      within ClusterNetworkCIDR
-  ControllerSubnetCIDR:
-    Type: String
-    Description: Subnet used for the controller EC2 instances; must be contained within
-      ClusterNetworkCIDR
-  WorkerSubnetCIDR:
-    Type: String
-    Description: Subnet used for the worker EC2 instances; must be contained within
-      ClusterNetworkCIDR
+    Description: Subnet used for the public-facing EC2 entities; must be contained within ClusterNetworkCIDR
+  ControllerSubnetCIDRs:
+    Type: CommaDelimitedList
+    Description: 3 CIDR blocks used for the controller and gateway EC2 instances; must be contained within ClusterNetworkCIDR
+  WorkerSubnetCIDRs:
+    Type: CommaDelimitedList
+    Description: 3 CIDR blocks used for the worker EC2 instances; must be contained within ClusterNetworkCIDR
   GatewayUserData:
     Type: String
     Description: Launch Gateway EC2 Instances with this UserData
@@ -1211,9 +1267,7 @@ Parameters:
     Description: Enable optimized EBS I/O
   HostedZone:
     Type: String
-    Description: DNS zone hosted in Route 53 that will be used to provide DNS resolution
-      for the Kubernetes API to external clients
+    Description: DNS zone hosted in Route 53 that will be used to provide DNS resolution for the Kubernetes API to external clients
   S3ConfigBucket:
     Type: String
-    Description: S3 bucket that hosts the config tarball for this cluster. An object
-      by the name of <ClusterName>.tar.gz must be present in this bucket.
+    Description: S3 bucket that hosts the config tarball for this cluster. An object by the name of <ClusterName>.tar.gz must be present in this bucket.

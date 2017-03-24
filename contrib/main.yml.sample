@@ -24,12 +24,6 @@ s3_config_bucket:
 # aws_region is the AWS region in which the cluster will be deployed.
 aws_region:
 
-# aws_availability_zone is the AWS availability zone the cluster
-# will be deployed in. This must be within the AWS region indicated
-# by aws_region. For example, if aws_region were us-west-2, usable
-# availablility zones include us-west-2a, us-west-2b and us-west-2c.
-aws_availability_zone:
-
 # coreos_image_id is the AMI ID used to deploy both controller
 # and worker EC2 instances. This AMI must be available in the region
 # indicated by aws_region.
@@ -183,26 +177,9 @@ cluster_vpn_gateway_id:
 
 # cluster_instance_network_cidr defines the range of IPs to use
 # for the VPC, which contains all EC2 instances. These IPs must
-# not conflict with the pod- or service-level networking.
+# not conflict with the pod- or service-level networking. The
+# provided CIDR block must be a /23
 cluster_instance_network_cidr: 10.0.0.0/23
-
-# public_instance_subnet_cidr defines the range of IPs to use
-# for internet-facing EC2 instances. This must be a subnet within
-# the cluster_instance_network_cidr, not conflicting with any
-# other *_instance_network_cidr values.
-public_instance_subnet_cidr: 10.0.0.0/25
-
-# controller_instance_subnet_cidr defines the range of IPs to use
-# for controller EC2 instances. This must be a subnet within
-# the cluster_instance_network_cidr, not conflicting with any
-# other *_instance_network_cidr values.
-controller_instance_subnet_cidr: 10.0.0.128/25
-
-# worker_instance_subnet_cidr defines the range of IPs to use
-# for worker EC2 instances. This must be a subnet within
-# the cluster_instance_network_cidr, not conflicting with any
-# other *_instance_network_cidr values.
-worker_instance_subnet_cidr: 10.0.1.0/24
 
 # cluster_pod_network_cidr defines the range of IPs to use for
 # the kubernetes pod network. These IPs must not conflict with

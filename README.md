@@ -52,12 +52,12 @@ brew install cfssl
 On other operating systems, `cfssl` must be installed manually.
 Follow the [instructions on GitHub](https://github.com/cloudflare/cfssl#installation).
 
-#### Install awscli
+#### Install awscli & netaddr
 
-This tool is installed using `pip`:
+These tools are installed using `pip`:
 
 ```
-pip install awscli
+pip install awscli netaddr
 ```
 
 #### Install ansible
