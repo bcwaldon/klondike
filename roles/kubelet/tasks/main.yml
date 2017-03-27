@@ -102,3 +102,8 @@
   with_items:
   - src: "logspout.yml"
     dest: "/etc/kubernetes/manifests"
+
+- name: clean docker images cron
+  minute: */15
+  user: root
+  job: "docker rm $(docker images -aq --filter status=exited)"
