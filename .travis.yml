@@ -26,8 +26,8 @@ before_script:
 - docker pull $BUILD_IMAGE
 
 script:
-- docker run --volume ${PWD}:/go/src/github.com/bcwaldon/klondike -w /go/src/github.com/bcwaldon/klondike/src/farva $BUILD_IMAGE ./test
-- docker run --volume ${PWD}:/go/src/github.com/bcwaldon/klondike -w /go/src/github.com/bcwaldon/klondike/src/farva $BUILD_IMAGE ./build
+- docker run --volume ${PWD}:/go/src/github.com/planetlabs/klondike -w /go/src/github.com/planetlabs/klondike/src/farva $BUILD_IMAGE ./test
+- docker run --volume ${PWD}:/go/src/github.com/planetlabs/klondike -w /go/src/github.com/planetlabs/klondike/src/farva $BUILD_IMAGE ./build
 
 after_success:
 - docker login -e "" -u $QUAY_USERNAME -p $QUAY_PASSWORD $PUBLISH_DOCKER_REGISTRY
