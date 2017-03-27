@@ -1,0 +1,35 @@
+#
+# Copyright 2017 Planet Labs
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+services:
+- docker
+
+env:
+  BUILD_IMAGE: golang:1.7
+  PUBLISH_DOCKER_REGISTRY: https://quay.io
+  PUBLISH_DOCKER_REPO: quay.io/bcwaldon/farva
+
+before_script:
+- docker pull $BUILD_IMAGE
+
+script:
+- docker run --volume ${PWD}:/go/src/github.com/bcwaldon/klondike -w /go/src/github.com/bcwaldon/klondike/src/farva $BUILD_IMAGE ./test
+- docker run --volume ${PWD}:/go/src/github.com/bcwaldon/klondike -w /go/src/github.com/bcwaldon/klondike/src/farva $BUILD_IMAGE ./build
+
+after_success:
+- docker login -e "" -u $QUAY_USERNAME -p $QUAY_PASSWORD $PUBLISH_DOCKER_REGISTRY
+- docker build -f docker/Dockerfile -t ${PUBLISH_DOCKER_REPO}:${TRAVIS_COMMIT} .
+- docker push ${PUBLISH_DOCKER_REPO}:${TRAVIS_COMMIT}
