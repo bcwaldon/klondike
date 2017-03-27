@@ -12,6 +12,8 @@ spec:
     env:
       - name: SF_API_TOKEN
         value: "{{ signalfx_api_key }}"
+      - name: DIMENSIONS
+        value: "cluster={{ ec2_tag_KubernetesCluster }} group={{ ec2_tag_group }}"
     volumeMounts:
       - name: docker-sock
         mountPath: /var/run/docker.sock
