@@ -18,7 +18,7 @@ package gateway
 import (
 	"fmt"
 	"github.com/Sirupsen/logrus"
-	"github.com/bcwaldon/klondike/src/farva/pkg/logger"
+	"github.com/planetlabs/klondike/src/farva/pkg/logger"
 	kapi "k8s.io/kubernetes/pkg/api"
 	kextensions "k8s.io/kubernetes/pkg/apis/extensions"
 	krestclient "k8s.io/kubernetes/pkg/client/restclient"

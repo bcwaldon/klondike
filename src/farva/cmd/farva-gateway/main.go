@@ -21,8 +21,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/bcwaldon/klondike/src/farva/pkg/flagutil"
-	"github.com/bcwaldon/klondike/src/farva/pkg/gateway"
+	"github.com/planetlabs/klondike/src/farva/pkg/flagutil"
+	"github.com/planetlabs/klondike/src/farva/pkg/gateway"
 )
 
 func main() {

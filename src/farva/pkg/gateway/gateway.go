@@ -20,9 +20,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/bcwaldon/klondike/src/farva/pkg/health"
-	"github.com/bcwaldon/klondike/src/farva/pkg/logger"
-	"github.com/bcwaldon/klondike/src/farva/pkg/logpipe"
+	"github.com/planetlabs/klondike/src/farva/pkg/health"
+	"github.com/planetlabs/klondike/src/farva/pkg/logger"
+	"github.com/planetlabs/klondike/src/farva/pkg/logpipe"
 )
 
 type Config struct {
