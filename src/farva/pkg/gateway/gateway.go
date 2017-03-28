@@ -31,6 +31,7 @@ type Config struct {
 	ClusterZone      string
 	NGINXDryRun      bool
 	NGINXHealthPort  int
+	NGINXMaxBodySize string
 	HTTPListenPort   int
 	FarvaHealthPort  int
 	AnnotationPrefix string
@@ -82,7 +83,7 @@ func New(cfg Config) (*Gateway, error) {
 	}
 	rg := newReverseProxyConfigGetter(kc, krc)
 
-	nginxCfg := newNGINXConfig(cfg.NGINXHealthPort, cfg.ClusterZone, cfg.FifoPath, cfg.FifoPath)
+	nginxCfg := newNGINXConfig(cfg.NGINXHealthPort, cfg.ClusterZone, cfg.FifoPath, cfg.FifoPath, cfg.NGINXMaxBodySize)
 	var nm NGINXManager
 	if cfg.NGINXDryRun {
 		nm = newLoggingNGINXManager()

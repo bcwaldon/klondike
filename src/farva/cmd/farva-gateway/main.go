@@ -33,6 +33,7 @@ func main() {
 	fs.StringVar(&cfg.KubeconfigFile, "kubeconfig", "", "Set this to provide an explicit path to a kubeconfig, otherwise the in-cluster config will be used.")
 	fs.BoolVar(&cfg.NGINXDryRun, "nginx-dry-run", false, "Log nginx management commands rather than executing them.")
 	fs.IntVar(&cfg.NGINXHealthPort, "nginx-health-port", gateway.DefaultNGINXConfig.HealthPort, "Port to listen on for nginx health checks.")
+	fs.StringVar(&cfg.NGINXMaxBodySize, "nginx-max-body-size", gateway.DefaultNGINXConfig.MaxBodySize, "Global default max body size for incoming requests.")
 	fs.IntVar(&cfg.FarvaHealthPort, "farva-health-port", gateway.DefaultConfig.FarvaHealthPort, "Port to listen on for farva health checks.")
 	fs.IntVar(&cfg.HTTPListenPort, "http-listen-port", gateway.DefaultConfig.HTTPListenPort, "Port to listen on for HTTP traffic.")
 	fs.StringVar(&cfg.FifoPath, "fifo-path", gateway.DefaultConfig.FifoPath, "Location of nginx stderr and stdout logging fifo.")
