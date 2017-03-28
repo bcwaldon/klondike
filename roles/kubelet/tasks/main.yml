@@ -103,7 +103,13 @@
   - src: "logspout.yml"
     dest: "/etc/kubernetes/manifests"
 
-- name: clean docker images cron
-  minute: */15
-  user: root
-  job: "docker rm $(docker images -aq --filter status=exited)"
+- name: deploy docker-gc units
+  copy: src={{ item }} dest=/etc/systemd/system/{{ item }} mode=0644
+  sudo: true
+  with_items:
+  - docker-gc.timer
+  - docker-gc.service
+
+- name: start and enable docker-gc timer
+  service: name=docker-gc.timer state=started enabled=true
+  sudo: true
