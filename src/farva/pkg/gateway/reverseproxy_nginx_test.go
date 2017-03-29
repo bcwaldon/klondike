@@ -55,13 +55,13 @@ error_log /dev/stderr;
 daemon on;
 worker_processes auto;
 
-client_max_body_size 10m;
-
 events {
     worker_connections 512;
 }
 
 http {
+    client_max_body_size 10m;
+
     server_names_hash_bucket_size 128;
     log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
                       '$status $body_bytes_sent "$http_referer" '
@@ -153,13 +153,13 @@ error_log /dev/stderr;
 daemon on;
 worker_processes auto;
 
-client_max_body_size 10m;
-
 events {
     worker_connections 512;
 }
 
 http {
+    client_max_body_size 10m;
+
     server_names_hash_bucket_size 128;
     log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
                       '$status $body_bytes_sent "$http_referer" '
@@ -285,13 +285,13 @@ error_log /dev/stderr;
 daemon on;
 worker_processes auto;
 
-client_max_body_size 10m;
-
 events {
     worker_connections 512;
 }
 
 http {
+    client_max_body_size 10m;
+
     server_names_hash_bucket_size 128;
     log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
                       '$status $body_bytes_sent "$http_referer" '
@@ -417,13 +417,13 @@ error_log /dev/stderr;
 daemon on;
 worker_processes auto;
 
-client_max_body_size 10m;
-
 events {
     worker_connections 512;
 }
 
 http {
+    client_max_body_size 10m;
+
     server_names_hash_bucket_size 128;
     log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
                       '$status $body_bytes_sent "$http_referer" '
@@ -496,13 +496,13 @@ error_log /dev/stderr;
 daemon on;
 worker_processes auto;
 
-client_max_body_size 10m;
-
 events {
     worker_connections 512;
 }
 
 http {
+    client_max_body_size 10m;
+
     server_names_hash_bucket_size 128;
     log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
                       '$status $body_bytes_sent "$http_referer" '
@@ -571,13 +571,13 @@ error_log /dev/stderr;
 daemon on;
 worker_processes auto;
 
-client_max_body_size 10m;
-
 events {
     worker_connections 512;
 }
 
 http {
+    client_max_body_size 10m;
+
     server_names_hash_bucket_size 128;
     log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
                       '$status $body_bytes_sent "$http_referer" '
@@ -651,13 +651,13 @@ error_log /dev/stderr;
 daemon on;
 worker_processes auto;
 
-client_max_body_size 10m;
-
 events {
     worker_connections 512;
 }
 
 http {
+    client_max_body_size 10m;
+
     server_names_hash_bucket_size 128;
     log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
                       '$status $body_bytes_sent "$http_referer" '
